@@ -9,6 +9,7 @@ import Abdurahman from "../../assets/userSide/home/abdurahmanhome.webp";
 
 const Carousel = () => {
   const settings = {
+    lazyLoad:true,
     arrows: false,
     dots: true,
     infinite: true,

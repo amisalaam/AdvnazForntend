@@ -3,7 +3,7 @@ import React from 'react';
 const DoctorDashboard = () => {
     return (
         <div>
-           <h1>HWLooHFFJDJ KKDFN</h1>
+           <h1>DoctorDashboard</h1>
         </div>
     );
 }

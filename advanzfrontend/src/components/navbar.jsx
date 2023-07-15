@@ -2,6 +2,8 @@ import React, { Fragment, useEffect, useState, } from "react";
 import { Link,Navigate,useNavigate } from "react-router-dom";
 import { logout  } from "../actions/auth";
 import { toast, ToastContainer } from "react-toastify";
+import AOS from "aos";
+import "aos/dist/aos.css";
 import "react-toastify/dist/ReactToastify.css";
 
 
@@ -9,6 +11,14 @@ import { connect } from "react-redux";
 import AdvanzLogo from "../assets/authentication/advanzLogo.png";
 
 const Navbar = ({ logout, isAuthenticated,user }) => {
+  useEffect(() => {
+    AOS.init({
+      duration: 1800,
+      offset: 300,
+      once:false,
+      
+    });
+  }, []);
   const navigate = useNavigate();
 
   
@@ -31,7 +41,7 @@ const Navbar = ({ logout, isAuthenticated,user }) => {
   
   const guestLinks = () => (
     
-    <ul className="text-xl font-bold flex flex-col p-4 md:p-0  border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-advanzBlue   ">
+    <ul className="text-xl  font-bold flex flex-col p-4 md:p-0  border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-advanzBlue   ">
         <li>
           <a
             href="#"

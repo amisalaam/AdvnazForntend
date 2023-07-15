@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Provider } from "react-redux";
-import AOS from "aos";
-import "aos/dist/aos.css";
+
 import store from "./store";
 import Layout from "./hocs/Layout";
 import Home from "./containers/userSide/home";
@@ -13,16 +12,12 @@ import ResetPassword from "./containers/authentication/ResetPassword";
 import ResetPasswordConfirm from "./containers/authentication/ResetPasswordConfirm";
 import DoctorDashboard from "./containers/doctorSide/doctorDashboard";
 import AdminDashboard from "./containers/adminSide/adminDashboard";
+import DoctorAppointment from "./containers/userSide/DoctorAppointment";
+import AllDoctors from "./containers/userSide/AllDoctors";
+// import DoctorAppointment from "./containers/userSide/DoctorAppointment";
 
 const App = () => {
-  useEffect(() => {
-    AOS.init({
-      duration: 1800,
-      offset: 450,
-      once:false,
-      
-    });
-  }, []);
+  
   return (
     <Provider store={store}>
       <Router>
@@ -39,6 +34,10 @@ const App = () => {
             />
             {/* USER SIDE PATHS  */}
             <Route path="/" element={<Home />} />
+            <Route path="/appointment" element={<AllDoctors/>} />
+            <Route path="/appointment/booking/:id/" element={<DoctorAppointment/>} />
+
+
             {/* DOCTOR SIDE PATHS  */}
             <Route path="/doctor/dashboard" element={<DoctorDashboard/>} />
             {/* ADMIN SIDE PATHS */}

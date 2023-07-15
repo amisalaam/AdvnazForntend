@@ -63,10 +63,7 @@ export const load_user = () => async (dispatch) => {
       },
     };
     try {
-      const res = await axios.get(`${API_URL}/api/me/`, config);
-     
-      
-
+      const res = await axios.get(`${API_URL}/api/get/users/`, config);
 
       dispatch({
         type: USER_LOADED_SUCCESS,

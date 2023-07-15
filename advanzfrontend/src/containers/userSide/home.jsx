@@ -3,12 +3,24 @@ import AshikAshraf from "../../assets/userSide/home/ashikashrafhome.jpg";
 import Abdurahman from "../../assets/userSide/home/abdurahmanhome.webp";
 import Carousel from "../../components/carousel/servicecarousel";
 import Maincarousel from "../../components/carousel/maincarousel";
+import Banner1 from '../../assets/userSide/home/home1.jpg';
+
 import DoctorCarousel from "../../components/carousel/doctorcarousel";
 
 const Home = () => {
+  
   return (
    <>
-      <Maincarousel />
+      <div className="bg-cover bg-center min-h-screen flex items-center justify-center" style={{ backgroundImage: `url(${Banner1})` }}>
+  <div className="container mx-auto text-center">
+    <h1 className="text-5xl font-bold text-advanzRed mb-4 sm:text-6xl md:text-3xl lg:text-8xl">
+      Welcome to Our Website
+    </h1>
+    <p className="text-lg text-advanzRed sm:text-xl md:text-2xl lg:text-2xl">
+      We provide amazing services to enhance your online presence.
+    </p>
+  </div>
+</div>
 
       {/* welcomediv */}
 
@@ -117,7 +129,7 @@ const Home = () => {
         </div>
 
         <div className="md:border-t-2 md:border-white md:p-5 md:mt-8 my-7" ></div>
-        <h5 className="mb-2 lg:text-3xl text-xl font-bold text-gray-900 text-white lg:py-4" data-aos='fade-down' data-aos-delay='500' >
+        <h5 className="mb-2 lg:text-3xl text-xl font-bold text-white lg:py-4" data-aos='fade-down' data-aos-delay='500' >
           WELCOME TO ADVANZ MEDICAL CENTRE
         </h5>
 
