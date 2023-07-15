@@ -7,8 +7,9 @@ export default {
   theme: {
     extend: {
       colors: {
-        advanzBlue:"#10256D",
-        advanzRed:'#950000'
+        advanzBlue:"#172554",
+        advanzRed:'#950000',
+        loadingbg:'#192842',
       },
       fontFamily: {
         sans: ['"Noto Sans Thai"', 'sans-serif'],

@@ -12,8 +12,8 @@ const Home = () => {
   return (
    <>
       <div className="bg-cover bg-center min-h-screen flex items-center justify-center" style={{ backgroundImage: `url(${Banner1})` }}>
-  <div className="container mx-auto text-center">
-    <h1 className="text-5xl font-bold text-advanzRed mb-4 sm:text-6xl md:text-3xl lg:text-8xl">
+  <div className="container mx-auto text-center max-w-[25 rem]">
+    <h1 className="text-4xl font-bold text-advanzRed mb-4 sm:text-6xl md:text-3xl lg:text-8xl">
       Welcome to Our Website
     </h1>
     <p className="text-lg text-advanzRed sm:text-xl md:text-2xl lg:text-2xl">

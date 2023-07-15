@@ -118,7 +118,7 @@ const AllDoctors = () => {
               {departments.map((department) => (
                 <button
                   key={department}
-                  className={`mr-1 mb-4 px-4 py-2 rounded text-white ${
+                  className={`mr-2 mb-4 px-4 py-2 rounded text-white ${
                     selectedDepartment === department
                       ? "bg-advanzRed"
                       : "bg-advanzBlue"

@@ -14,6 +14,7 @@ import DoctorDashboard from "./containers/doctorSide/doctorDashboard";
 import AdminDashboard from "./containers/adminSide/adminDashboard";
 import DoctorAppointment from "./containers/userSide/DoctorAppointment";
 import AllDoctors from "./containers/userSide/AllDoctors";
+import LoadingComponent from "./components/Loading";
 // import DoctorAppointment from "./containers/userSide/DoctorAppointment";
 
 const App = () => {
@@ -33,7 +34,7 @@ const App = () => {
               element={<ResetPasswordConfirm />}
             />
             {/* USER SIDE PATHS  */}
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<LoadingComponent />} />
             <Route path="/appointment" element={<AllDoctors/>} />
             <Route path="/appointment/booking/:id/" element={<DoctorAppointment/>} />
 
