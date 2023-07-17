@@ -101,6 +101,7 @@ export const signup = (name,email, password,re_password) => async (dispatch) => 
       payload: res.data,
       
     });
+    toast.success('Signup Success. Please Check your given email address');
 
   } catch (err) {
     console.log(err)

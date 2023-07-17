@@ -47,7 +47,8 @@ export default function (state = initialState, action) {
     case SIGNUP_SUCCESS:
       return{
         ...state,
-        isAuthenticated:false
+        isAuthenticated:false,
+        message:'Signup Succeessful'
       }
 
     case USER_LOADED_SUCCESS:
@@ -80,6 +81,7 @@ export default function (state = initialState, action) {
         refresh: null,
         isAuthenticated: false,
         user: null,
+        message:'Signup Failed'
       };
     case PASSWORD_RESET_CONFIRMS_FAIL:
     case PASSWORD_RESET_SUCCESS:

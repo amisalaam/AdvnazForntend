@@ -1,17 +1,30 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import AshikAshraf from "../../assets/userSide/home/ashikashrafhome.jpg";
 import Abdurahman from "../../assets/userSide/home/abdurahmanhome.webp";
 import Carousel from "../../components/carousel/servicecarousel";
-import Maincarousel from "../../components/carousel/maincarousel";
+
 import Banner1 from '../../assets/userSide/home/home1.jpg';
+import LoadingComponent from "../../components/Loading";
 
 import DoctorCarousel from "../../components/carousel/doctorcarousel";
 
-const Home = () => {
+
+  const Home = () => {
+    const [loading, setLoading] = useState(true);
+  
+    useEffect(() => {
+      window.onload = () => {
+        setLoading(false);
+      };
+    }, []);
+  
+    if (loading) {
+      return <LoadingComponent />;
+    }
   
   return (
    <>
-      <div className="bg-cover bg-center min-h-screen flex items-center justify-center" style={{ backgroundImage: `url(${Banner1})` }}>
+      <div className="bg-cover bg-center min-h-[38rem] flex items-center justify-center" style={{ backgroundImage: `url(${Banner1})` }}>
   <div className="container mx-auto text-center max-w-[25 rem]">
     <h1 className="text-4xl font-bold text-advanzRed mb-4 sm:text-6xl md:text-3xl lg:text-8xl">
       Welcome to Our Website
@@ -128,12 +141,12 @@ const Home = () => {
           </a>
         </div>
 
-        <div className="md:border-t-2 md:border-white md:p-5 md:mt-8 my-7" ></div>
-        <h5 className="mb-2 lg:text-3xl text-xl font-bold text-white lg:py-4" data-aos='fade-down' data-aos-delay='500' >
+        <div className="md:border-t-2 md:border-white md:p-5 md:mt-8 my-7  " ></div>
+        <h5 className="mb-2 lg:text-3xl text-xl font-bold text-white lg:py-4"  >
           WELCOME TO ADVANZ MEDICAL CENTRE
         </h5>
 
-        <p className="lg:mb-20 text-base text-gray-300 md:text-lg  lg:w-3/4 mx-auto my-10" data-aos='fade-down' data-aos-delay='700' >
+        <p className="lg:mb-20 text-base text-gray-300 md:text-lg  lg:w-3/4 mx-auto my-10 " style={{ lineHeight: "2" }} >
           We embrace the power of healing and the art of compassionate care.
           With dedicated professionals and a patient-centered approach, we
           strive to restore wellness and bring harmony to every individual we
@@ -147,12 +160,12 @@ const Home = () => {
       {/* DOCTOR ABDHURAHMAN */}
       <div className="md:grid md:grid-cols-2" >
         <div className="md:pl-4 lg:pl-20 flex flex-col justify-center">
-          <h1 className="my-4 mx-4 lg:text-3xl text-2xl font-bold text-advanzRed "data-aos='fade-down' data-aos-delay='400'>
+          <h1 className="my-4 mx-4 lg:text-3xl text-2xl font-bold text-advanzRed ">
             Complete Medical Solutions <br />
             in One Place
           </h1>
-          <div data-aos='fade-down' data-aos-delay='500'>
-          <p className="my-4 mx-4  lg:leading-loose"  >
+          <div >
+          <p className="my-4 mx-4  leading-loose"  >
             As the founder of this hospital, my vision was to create a place
             where excellence meets compassion, where healing becomes an art.
             This hospital stands as a testament to my unwavering commitment to
@@ -166,7 +179,7 @@ const Home = () => {
         </div>
         <div className="md:p-8 lg:pr-20 p-8" >
           <img
-            className="w-full h-auto object-cover max-w-full md:py-10 md:pr-10 "data-aos='fade-up' data-aos-delay='1000' 
+            className="w-full h-auto object-cover max-w-full md:py-10 md:pr-10 "
             src={Abdurahman}
             alt=""
           />
@@ -176,11 +189,11 @@ const Home = () => {
       <div className="flex flex-col lg:flex-row ">
         <div className="lg:w-1/3 max-w-md hidden lg:block object-cover flex-grow px-16">
           <div className="w-full max-w-sm p-3 bg-advanzBlue border border-gray-200 rounded-2xl shadow sm:p-8 text-center m-10 mb-20">
-            <h5 className="mb-4 text-2xl font-medium text-white "data-aos='fade-down' data-aos-delay='100'>
+            <h5 className="mb-4 text-2xl font-medium text-white ">
               DEPARTMENTS
             </h5>
 
-            <ul role="list" className="space-y-5 my-4"data-aos='fade-right' data-aos-delay='100'>
+            <ul role="list" className="space-y-5 my-4">
               <li className="flex space-x-3" >
                 <svg
                   aria-hidden="true"
@@ -318,7 +331,7 @@ const Home = () => {
           </div>
         </div>
         <div className="flex-1 overflow-hidden ">
-          <h1 className="y-4 mx-4 lg:text-3xl text-2xl font-bold text-advanzRed ">
+          <h1 className=" mx-4 lg:text-3xl text-2xl font-bold text-advanzRed ">
             Our services
           </h1>
           <Carousel />
@@ -327,11 +340,11 @@ const Home = () => {
       {/* ASHIK ASHRAF HOME */}
       <div className="md:grid md:grid-cols-2">
         <div className="md:pl-4 lg:pl-20 flex flex-col justify-center">
-          <h1 className="my-4 mx-4 lg:text-3xl text-2xl font-bold text-advanzRed "data-aos='fade-down' data-aos-delay='300'>
+          <h1 className=" mx-4 lg:text-3xl text-2xl font-bold text-advanzRed ">
             Complete Medical Solutions <br />
             in One Place
           </h1>
-          <div data-aos='fade-down' data-aos-delay='400'>
+          <div>
           <p className="my-4 mx-4  lg:leading-loose">
             As the founder of this hospital, my vision was to create a place
             where excellence meets compassion, where healing becomes an art.
@@ -342,9 +355,9 @@ const Home = () => {
             personalized attention.
           </p>
           </div>
-          <p className="text-right m-3">Dr: Ashik Ashraf</p>
+          <p className="text-right ">Dr: Ashik Ashraf</p>
         </div>
-        <div className="md:p-8 lg:pr-20 "data-aos='fade-up' data-aos-delay='500'>
+        <div className="md:p-8 lg:pr-20 ">
           <img
             className="w-full h-auto object-cover max-w-full md:py-10 md:pr-10"
             src={AshikAshraf}

@@ -15,6 +15,7 @@ import AdminDashboard from "./containers/adminSide/adminDashboard";
 import DoctorAppointment from "./containers/userSide/DoctorAppointment";
 import AllDoctors from "./containers/userSide/AllDoctors";
 import LoadingComponent from "./components/Loading";
+import UserDashboard from "./containers/userSide/Dashboard/UserDashboard";
 // import DoctorAppointment from "./containers/userSide/DoctorAppointment";
 
 const App = () => {
@@ -35,6 +36,7 @@ const App = () => {
             />
             {/* USER SIDE PATHS  */}
             <Route path="/" element={<LoadingComponent />} />
+            <Route path="/user/dashboard/" element={<UserDashboard />} />
             <Route path="/appointment" element={<AllDoctors/>} />
             <Route path="/appointment/booking/:id/" element={<DoctorAppointment/>} />
 

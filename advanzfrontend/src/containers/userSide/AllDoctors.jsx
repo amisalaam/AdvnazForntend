@@ -3,9 +3,11 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { Transition } from "@headlessui/react"; // Import Transition from @headlessui/react
 import BG from "../../assets/userSide/Booking/bookingImg2.jpg";
+import LoadingComponent from "../../components/Loading";
 
 const AllDoctors = () => {
   const [departments, setDepartments] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [selectedDepartment, setSelectedDepartment] = useState("All Doctors");
   const [doctors, setDoctors] = useState([]);
   const [filteredDoctors, setFilteredDoctors] = useState([]);
@@ -25,6 +27,7 @@ const AllDoctors = () => {
         setDepartments(allDepartments);
         setDoctors(doctors);
         setFilteredDoctors(doctors);
+        setLoading(false);
       } catch (error) {
         console.error(error);
       }
@@ -59,10 +62,10 @@ const AllDoctors = () => {
     }
   };
 
-  const handleCardButtonClick = () => {
-    // Handle button click here
-    // You can add your desired logic or action
-  };
+  if (loading) {
+    return <LoadingComponent />; 
+  }
+
 
   return (
     <div>
