@@ -35,7 +35,7 @@ const App = () => {
               element={<ResetPasswordConfirm />}
             />
             {/* USER SIDE PATHS  */}
-            <Route path="/" element={<LoadingComponent />} />
+            <Route path="/" element={<Home />} />
             <Route path="/user/dashboard/" element={<UserDashboard />} />
             <Route path="/appointment" element={<AllDoctors/>} />
             <Route path="/appointment/booking/:id/" element={<DoctorAppointment/>} />
