@@ -5,6 +5,17 @@ import classNames from "classnames";
 import LoadingComponent from "../../components/Loading";
 import { useParams } from "react-router";
 import axios from "axios";
+import io from 'socket.io-client';
+
+const sendNotificationToDoctor = (socket, selectedSlot, doctorId) => {
+  // Send the slot_booked event to the doctor's channel
+  const notification = {
+    type: 'slot_booked',
+    message: `Slot ${selectedSlot.id} has been booked!`,
+  };
+  socket.emit('notification', notification);
+  console.log(notification);
+};
 
 const UserPage = () => {
   const [doctor, setDoctor] = useState({});
@@ -120,25 +131,40 @@ const UserPage = () => {
 
   const handleSubmit = async () => {
     if (selectedSlot) {
-      try {
-        await axios.put(
-          `${API_URL}/doctor/api/update/slots/${selectedSlot.id}/`,
-          {
-            is_booked: true,
-          }
-        );
-        console.log("Slot successfully booked!");
-        setBookedSlot(selectedSlot);
-      } catch (e) {
-        console.log(e);
-      }
+        try {
+            await axios.put(
+                `${API_URL}/doctor/api/update/slots/${selectedSlot.id}/${id}/`,
+                {
+                    is_booked: true,
+                }
+            );
+            console.log("Slot successfully booked!");
+
+            // Connect to the doctor's WebSocket channel
+            const socket = new WebSocket(`ws://localhost:8000/ws/doctor/${id}/`);
+
+            socket.onopen = () => {
+                // Send notification to the doctor
+                const notification = {
+                    type: 'slot_booked',
+                    message: `Slot ${selectedSlot.id} has been booked!`,
+                };
+                socket.send(JSON.stringify(notification));
+
+                // Close the WebSocket connection
+                socket.close();
+            };
+
+            setBookedSlot(selectedSlot);
+        } catch (e) {
+            console.log(e);
+        }
     }
-  };
+};
 
   if (loading) {
     return <LoadingComponent />;
   }
-
   return (
     <div className="bg-cover bg-center bg-gradient-to-t from-white to-advanzBlue min-h-screen flex items-center justify-center">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 max-w-screen-lg mx-auto overflow-hidden rounded-xl bg-white bg-clip-border text-gray-700">
