@@ -5,10 +5,9 @@ import classNames from "classnames";
 import LoadingComponent from "../../components/Loading";
 import { useParams } from "react-router";
 import axios from "axios";
-import io from 'socket.io-client';
+
 
 const sendNotificationToDoctor = (socket, selectedSlot, doctorId) => {
-  // Send the slot_booked event to the doctor's channel
   const notification = {
     type: 'slot_booked',
     message: `Slot ${selectedSlot.id} has been booked!`,
@@ -31,9 +30,7 @@ const UserPage = () => {
   const [bookedSlot, setBookedSlot] = useState(null);
   const [selectedSlot, setSelectedSlot] = useState(null);
   const API_URL = import.meta.env.VITE_API_URL;
-
   const [showSlots, setShowSlots] = useState(true);
-
   const { id } = useParams();
 
   useEffect(() => {
@@ -121,7 +118,7 @@ const UserPage = () => {
       }
       return {
         ...slot,
-        selected: false, // Deselect other slots
+        selected: false,
       };
     });
 
@@ -131,40 +128,48 @@ const UserPage = () => {
 
   const handleSubmit = async () => {
     if (selectedSlot) {
-        try {
-            await axios.put(
-                `${API_URL}/doctor/api/update/slots/${selectedSlot.id}/${id}/`,
-                {
-                    is_booked: true,
-                }
-            );
-            console.log("Slot successfully booked!");
+      try {
+        await axios.put(
+          `${API_URL}/doctor/api/update/slots/${selectedSlot.id}/${id}/`,
+          {
+            is_booked: true,
+          }
+        );
+        console.log("Slot successfully booked!");
 
-            // Connect to the doctor's WebSocket channel
-            const socket = new WebSocket(`ws://localhost:8000/ws/doctor/${id}/`);
+        const socket = new WebSocket(`ws://localhost:8000/ws/doctor/${id}/`);
 
-            socket.onopen = () => {
-                // Send notification to the doctor
-                const notification = {
-                    type: 'slot_booked',
-                    message: `Slot ${selectedSlot.id} has been booked!`,
-                };
-                socket.send(JSON.stringify(notification));
+        socket.onopen = () => {
+          const notification = {
+            type: 'slot_booked',
+            message: `Slot ${selectedSlot.id} has been booked!`,
+          };
+          socket.send(JSON.stringify(notification));
+          socket.close();
+        };
 
-                // Close the WebSocket connection
-                socket.close();
-            };
+        const superuserSocket = new WebSocket('ws://localhost:8000/ws/superuser-notifications/');
 
-            setBookedSlot(selectedSlot);
-        } catch (e) {
-            console.log(e);
-        }
+        superuserSocket.onopen = () => {
+          const superuserNotification = {
+            type: 'notification',
+            message: `Slot ${selectedSlot.id} has been booked by Doctor ${id}!`,
+          };
+          superuserSocket.send(JSON.stringify(superuserNotification));
+          superuserSocket.close();
+        };
+
+        setBookedSlot(selectedSlot);
+      } catch (e) {
+        console.log(e);
+      }
     }
-};
+  };
 
   if (loading) {
     return <LoadingComponent />;
   }
+
   return (
     <div className="bg-cover bg-center bg-gradient-to-t from-white to-advanzBlue min-h-screen flex items-center justify-center">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 max-w-screen-lg mx-auto overflow-hidden rounded-xl bg-white bg-clip-border text-gray-700">
