@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const UserSidebar = () => {
+const AdminSidebar = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
@@ -175,4 +175,4 @@ const UserSidebar = () => {
   );
 };
 
-export default UserSidebar;
+export default AdminSidebar;

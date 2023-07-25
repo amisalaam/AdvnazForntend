@@ -1,108 +1,68 @@
 import React from "react";
 import UserSidebar from "../../../components/user/UserSidebar";
-import DashboardChart from "../../../components/user/DashboardChart";
+import DashboardChart from "../../../components/user/UserDashboardLineChart";
 import profile from "../../../assets/userSide/Booking/bgBookingImage.jpg";
-import DonutChart from "../../../components/user/dounutChart";
-
-// Register the required scales and elements with Chart.js
+import DonutChart from "../../../components/user/UserDonutChart";
+import UserLatestBooking from "../../../components/user/UserLatestBooking";
 
 const UserDashboard = () => {
   return (
-    <div className="flex">
+    <div className="flex flex-col md:flex-row">
       <UserSidebar />
-      <div className="b h-[40rem] flex-1">
-        <div className="grid grid-cols-3">
-          <div className="bg-black h-[6rem] w-[10 rem] rounded-md m-6">
-            <h2 className="text-white text-center p-5">Total Appointment</h2>
+      <div className=" md:h-[40rem] flex-1">
+        <div className="grid gap-7   md:grid-cols-3">
+        <div className="bg-gradient-to-br from-pink-700 via-pink-300 to-pink-700 h-[6rem] md:w-[15rem] rounded-md m-5">
+            <h2 className="text-white ml-5 mt-3 font-bold text-1xl">
+              Pending Appointment
+            </h2>
+            <h2 className="text-white mt-3 ml-5 text-4xl font-bold">36</h2>
           </div>
-          <div className="bg-black h-[6rem] w-[10 rem] rounded-md m-6">
-          <h2 className="text-white text-center p-5">Upcoming Appointment</h2>
+          
+          <div className="bg-gradient-to-br from-emerald-900 via-emerald-300 to-emerald-800 h-[6rem] md:w-[15rem] rounded-md m-5">
+            <h2 className="text-white ml-5 mt-3 font-bold text-1xl">
+              Pending Appointment
+            </h2>
+            <h2 className="text-white mt-3 ml-5 text-4xl font-bold">36</h2>
           </div>
-          <div className="bg-black h-[6rem] w-[10 rem] rounded-md m-6">
-          <h2 className="text-white text-center p-5">Visited Doctors</h2>
+          
+          <div className="bg-gradient-to-br from-indigo-900 via-blue-300 to-indigo-800 h-[6rem] md:w-[15rem] rounded-md m-5">
+            <h2 className="text-white ml-5 mt-3 font-bold text-1xl">
+              Pending Appointment
+            </h2>
+            <h2 className="text-white mt-3 ml-5 text-4xl font-bold">36</h2>
           </div>
+          
         </div>
-      
+
         <DashboardChart />
-      
-        
-        
-      
+        <UserLatestBooking />
       </div>
-      <div className="b  flex-2 ">
-        <div className=" max-w-sm bg-white border border-gray-200 rounded-lg shadow w-[20rem] ">
-          <div className="flex justify-end px-4 pt-4">
-            <button
-              id="dropdownButton"
-              data-dropdown-toggle="dropdown"
-              className="inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100  focus:ring-4 focus:outline-none focus:ring-gray-200  rounded-lg text-sm p-1.5"
-              type="button"
-            >
-              <span className="sr-only">Open dropdown</span>
-              <svg
-                className="w-5 h-5"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="currentColor"
-                viewBox="0 0 16 3"
-              >
-                <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z" />
-              </svg>
-            </button>
-            {/* <!-- Dropdown menu --> */}
-            <div
-              id="dropdown"
-              className="z-10 hidden text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
-            >
-              <ul className="py-2" aria-labelledby="dropdownButton">
-                <li>
-                  <a
-                    href="#"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100  "
-                  >
-                    Edit
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100  "
-                  >
-                    Export Data
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100  "
-                  >
-                    Delete
-                  </a>
-                </li>
-              </ul>
-            </div>
+      <div className="mt-5 md:flex-2">
+        <div className="max-w-sm  border border-gray-200 rounded-lg shadow w-full mx-auto md:w-[20rem] md:mx-0 md:mr-4">
+          <div className="flex justify-end px-5 pt-5">
+            {/* Add any additional content here */}
           </div>
           <div className="flex flex-col items-center pb-10">
             <img
               className="w-24 h-24 mb-3 rounded-full shadow-lg"
               src={profile}
+              alt="Profile"
             />
-            <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
-              Bonnie Green
+            <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-gray-500">
+              Username
             </h5>
             <span className="text-sm text-gray-500 dark:text-gray-400">
-              Visual Designer
+              country : India
+            </span><span className="text-sm text-gray-500 dark:text-gray-400">
+              Age: 30
             </span>
+
             <div className="flex mt-4 space-x-3 md:mt-6">
-              <a
-                href="#"
-                className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:text-white dark:border-gray-600  dark:hover:border-gray-700 "
-              >
-                Message
-              </a>
+             <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 w-[8rem] ">Edit</button> 
             </div>
           </div>
         </div>
+        <DonutChart />
       </div>
     </div>
   );

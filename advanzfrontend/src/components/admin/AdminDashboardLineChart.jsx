@@ -3,16 +3,16 @@ import { Line } from 'react-chartjs-2';
 import { Chart, CategoryScale, LinearScale, LineController, PointElement, LineElement } from 'chart.js';
 Chart.register(CategoryScale, LinearScale, LineController, PointElement, LineElement);
 
-const DashboardChart = () => {
+const AdminDashboardLineChart = () => {
   const data = {
-    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange', 'dsgrht', 'ddd'],
+    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',],
     datasets: [
       {
-        label: 'Line 1',
-        data: [12, 19, 3, 5, 2, 3],
+        label: 'Orthopedic',
+        data: [12, 19, 3, 5, 2, 3, 8, 10],
         backgroundColor: 'transparent',
         borderColor: 'rgba(255, 99, 132, 1)',
-        borderWidth: 2,
+        borderWidth: 4,
         pointBackgroundColor: 'rgba(255, 99, 132, 1)',
         pointBorderColor: 'rgba(255, 255, 255, 1)',
         pointBorderWidth: 1,
@@ -20,11 +20,11 @@ const DashboardChart = () => {
         fill: false,
       },
       {
-        label: 'Line 2',
+        label: 'Dental',
         data: [8, 12, 6, 10, 4, 7, 9, 2],
         backgroundColor: 'transparent',
         borderColor: 'rgba(54, 162, 235, 1)',
-        borderWidth: 2,
+        borderWidth: 4,
         pointBackgroundColor: 'rgba(54, 162, 235, 1)',
         pointBorderColor: 'rgba(255, 255, 255, 1)',
         pointBorderWidth: 1,
@@ -32,12 +32,24 @@ const DashboardChart = () => {
         fill: false,
       },
       {
-        label: 'Line 3',
-        data: [5, 8, 2, 7, 6, 4],
+        label: 'Pediatric',
+        data: [5, 8, 2, 7, 6, 4, 12, 15],
         backgroundColor: 'transparent',
         borderColor: 'rgba(75, 192, 192, 1)',
-        borderWidth: 2,
+        borderWidth: 4,
         pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+        pointBorderColor: 'rgba(255, 255, 255, 1)',
+        pointBorderWidth: 1,
+        pointRadius: 0,
+        fill: false,
+      },
+      {
+        label: 'General Medicine',
+        data: [10, 15, 6, 8, 4, 9, 5, 13],
+        backgroundColor: 'transparent',
+        borderColor: 'rgba(255, 205, 86, 1)',
+        borderWidth: 4,
+        pointBackgroundColor: 'rgba(255, 205, 86, 1)',
         pointBorderColor: 'rgba(255, 255, 255, 1)',
         pointBorderWidth: 1,
         pointRadius: 0,
@@ -47,10 +59,11 @@ const DashboardChart = () => {
   };
 
   const options = {
+    maintainAspectRatio: false,
     scales: {
       y: {
         type: 'linear',
-        beginAtZero: true,
+        beginAtZero: false,
         grid: {
           display: false,
         },
@@ -58,6 +71,7 @@ const DashboardChart = () => {
           font: {
             weight: 'bold',
           },
+          stepSize: 5,
         },
       },
       x: {
@@ -65,10 +79,15 @@ const DashboardChart = () => {
           display: false,
         },
       },
+      barPercentage: 0.1,
     },
     plugins: {
       legend: {
-        display: false,
+        display: true,
+        position: 'top',
+        labels: {
+          usePointStyle: true,
+        },
       },
     },
     elements: {
@@ -82,29 +101,28 @@ const DashboardChart = () => {
     interaction: {
       intersect: false,
     },
+    categoryPercentage: 0.1,
   };
 
-  const legend = {
-    display: true,
-    position: 'top',
-    labels: {
-      usePointStyle: true,
-    },
-  };
 
+ 
   return (
-    <div className='w-[40rem] ml-[40px]' style={{ height: '300px' }}>
-      <div className='card border border-gray-200 rounded-lg shadow'>
+    <div className=''>
+      <div className='card border border-gray-200 rounded-lg shadow mx-5'>
         <div className='card-header'>
-          <h3 className='card-heading'>Health Status</h3>
+          <h3 className='card-heading text-2xl m-6 text-advanzRed '>Department</h3>
           <div className='label-box'></div>
         </div>
         <div className='card-body'>
-          <Line data={data} options={options} legend={legend} />
+          {/* Apply responsive styles to the parent container */}
+          <div className='overflow-x-auto'>
+            <div className='w-full h-60'>
+              <Line data={data} options={options} />
+            </div>
+          </div>
         </div>
       </div>
     </div>
   );
 };
-
-export default DashboardChart;
+export default AdminDashboardLineChart;
