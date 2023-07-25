@@ -1,9 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import UserSidebar from "../../../components/user/UserSidebar";
-import DashboardChart from "../../../components/user/UserDashboardLineChart";
 import profile from "../../../assets/userSide/Booking/bgBookingImage.jpg";
-import DonutChart from "../../../components/user/UserDonutChart";
 import UserLatestBooking from "../../../components/user/UserLatestBooking";
+import UserDonutChart from "../../../components/user/UserDonutChart";
+
+const AnimatedNumber = ({ initialValue, finalValue }) => {
+  const [currentValue, setCurrentValue] = useState(initialValue);
+
+  useEffect(() => {
+    const step = Math.ceil((finalValue - initialValue) / 200); 
+    const interval = setInterval(() => {
+      setCurrentValue((prevValue) => {
+        const newValue = prevValue + step;
+        return newValue >= finalValue ? finalValue : newValue;
+      });
+    }, 50); 
+
+    return () => clearInterval(interval);
+  }, [initialValue, finalValue]);
+
+  return <h2 className="text-white mt-3 ml-5 text-4xl font-bold">{currentValue}</h2>;
+};
 
 const UserDashboard = () => {
   return (
@@ -11,30 +28,28 @@ const UserDashboard = () => {
       <UserSidebar />
       <div className=" md:h-[40rem] flex-1">
         <div className="grid gap-7   md:grid-cols-3">
-        <div className="bg-gradient-to-br from-pink-700 via-pink-300 to-pink-700 h-[6rem] md:w-[15rem] rounded-md m-5">
+          <div className="bg-gradient-to-br from-pink-700 via-pink-300 to-pink-700 h-[6rem] md:w-[15rem] rounded-md m-5">
             <h2 className="text-white ml-5 mt-3 font-bold text-1xl">
               Pending Appointment
             </h2>
-            <h2 className="text-white mt-3 ml-5 text-4xl font-bold">36</h2>
+            <AnimatedNumber initialValue={0} finalValue={36} />
           </div>
-          
+
           <div className="bg-gradient-to-br from-emerald-900 via-emerald-300 to-emerald-800 h-[6rem] md:w-[15rem] rounded-md m-5">
             <h2 className="text-white ml-5 mt-3 font-bold text-1xl">
-              Pending Appointment
+              Completed Appointment
             </h2>
-            <h2 className="text-white mt-3 ml-5 text-4xl font-bold">36</h2>
+            <AnimatedNumber initialValue={0} finalValue={28} />
           </div>
-          
+
           <div className="bg-gradient-to-br from-indigo-900 via-blue-300 to-indigo-800 h-[6rem] md:w-[15rem] rounded-md m-5">
             <h2 className="text-white ml-5 mt-3 font-bold text-1xl">
-              Pending Appointment
+              Visited Doctors
             </h2>
-            <h2 className="text-white mt-3 ml-5 text-4xl font-bold">36</h2>
+            <AnimatedNumber initialValue={0} finalValue={34} />
           </div>
-          
         </div>
 
-        <DashboardChart />
         <UserLatestBooking />
       </div>
       <div className="mt-5 md:flex-2">
@@ -52,17 +67,23 @@ const UserDashboard = () => {
               Username
             </h5>
             <span className="text-sm text-gray-500 dark:text-gray-400">
-              country : India
-            </span><span className="text-sm text-gray-500 dark:text-gray-400">
+              Country: India
+            </span>
+            <span className="text-sm text-gray-500 dark:text-gray-400">
               Age: 30
             </span>
 
             <div className="flex mt-4 space-x-3 md:mt-6">
-             <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 w-[8rem] ">Edit</button> 
+              <button
+                type="button"
+                className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 w-[8rem]"
+              >
+                Edit
+              </button>
             </div>
           </div>
         </div>
-        <DonutChart />
+        <UserDonutChart />
       </div>
     </div>
   );

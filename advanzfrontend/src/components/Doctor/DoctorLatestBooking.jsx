@@ -12,7 +12,55 @@ const DoctorLatestBooking = () => {
       </div>
       <div className="flow-root">
         <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700">
-          <li className="py-3 sm:py-4">
+        <li className="py-3 sm:py-4 my-3">
+            <div className="flex items-center space-x-4">
+              <div className="flex-shrink-0">
+                <img className="w-8 h-8 rounded-full" src={profile} alt="Neil image" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-gray-900 truncate">Neil Sims</p>
+                <p className="text-sm text-gray-500 truncate">email@windster.com</p>
+                <div className="flex space-x-4 text-xs text-gray-500">
+                  <p>Department: General</p>
+                  <p>Gender: Male</p>
+                  <p>Locality: India</p>
+                </div>
+              </div>
+              <div className="inline-flex items-center text-base font-semibold text-gray-900">$320</div>
+            </div>
+          </li> <li className="py-3 sm:py-4">
+            <div className="flex items-center space-x-4">
+              <div className="flex-shrink-0">
+                <img className="w-8 h-8 rounded-full" src={profile} alt="Neil image" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-gray-900 truncate">Neil Sims</p>
+                <p className="text-sm text-gray-500 truncate">email@windster.com</p>
+                <div className="flex space-x-4 text-xs text-gray-500">
+                  <p>Department: General</p>
+                  <p>Gender: Male</p>
+                  <p>Locality: India</p>
+                </div>
+              </div>
+              <div className="inline-flex items-center text-base font-semibold text-gray-900">$320</div>
+            </div>
+          </li> <li className="py-3 sm:py-4 my-3">
+            <div className="flex items-center space-x-4">
+              <div className="flex-shrink-0">
+                <img className="w-8 h-8 rounded-full" src={profile} alt="Neil image" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-gray-900 truncate">Neil Sims</p>
+                <p className="text-sm text-gray-500 truncate">email@windster.com</p>
+                <div className="flex space-x-4 text-xs text-gray-500">
+                  <p>Department: General</p>
+                  <p>Gender: Male</p>
+                  <p>Locality: India</p>
+                </div>
+              </div>
+              <div className="inline-flex items-center text-base font-semibold text-gray-900">$320</div>
+            </div>
+          </li> <li className="py-3 sm:py-4 my-3">
             <div className="flex items-center space-x-4">
               <div className="flex-shrink-0">
                 <img className="w-8 h-8 rounded-full" src={profile} alt="Neil image" />
