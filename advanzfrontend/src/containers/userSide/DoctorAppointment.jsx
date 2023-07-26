@@ -5,6 +5,7 @@ import classNames from "classnames";
 import LoadingComponent from "../../components/Loading";
 import { useParams } from "react-router";
 import axios from "axios";
+import { config } from "dotenv";
 
 
 const sendNotificationToDoctor = (socket, selectedSlot, doctorId) => {
@@ -127,18 +128,27 @@ const UserPage = () => {
   };
 
   const handleSubmit = async () => {
-    if (selectedSlot) {
+    if (selectedSlot && localStorage.getItem("access")) {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `JWT ${localStorage.getItem("access")}`,
+          Accept: "application/json",
+        },
+      };
+  
       try {
         await axios.put(
           `${API_URL}/doctor/api/update/slots/${selectedSlot.id}/${id}/`,
           {
             is_booked: true,
-          }
+          },
+          config
         );
         console.log("Slot successfully booked!");
-
+  
         const socket = new WebSocket(`ws://localhost:8000/ws/doctor/${id}/`);
-
+  
         socket.onopen = () => {
           const notification = {
             type: 'slot_booked',
@@ -147,9 +157,9 @@ const UserPage = () => {
           socket.send(JSON.stringify(notification));
           socket.close();
         };
-
+  
         const superuserSocket = new WebSocket('ws://localhost:8000/ws/superuser-notifications/');
-
+  
         superuserSocket.onopen = () => {
           const superuserNotification = {
             type: 'notification',
@@ -158,7 +168,7 @@ const UserPage = () => {
           superuserSocket.send(JSON.stringify(superuserNotification));
           superuserSocket.close();
         };
-
+  
         setBookedSlot(selectedSlot);
       } catch (e) {
         console.log(e);

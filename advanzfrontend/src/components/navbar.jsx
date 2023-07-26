@@ -2,7 +2,6 @@ import React, { Fragment, useEffect, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { logout } from "../actions/auth";
 import { toast, ToastContainer } from "react-toastify";
-
 import "react-toastify/dist/ReactToastify.css";
 
 import { connect } from "react-redux";
@@ -34,10 +33,10 @@ const Navbar = ({ logout, isAuthenticated, user }) => {
       </li>
       <li>
         <Link
-          to="/about"
+          to="/doctors"
           className="block py-2 pl-3 pr-4 md:text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-advanzRed md:p-0"
         >
-          About
+          Doctors
         </Link>
       </li>
       <li>
@@ -58,10 +57,10 @@ const Navbar = ({ logout, isAuthenticated, user }) => {
       </li>
       <li>
         <Link
-          to="/contact"
+          to="/login"
           className="block py-2 pl-3 pr-4 md:text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-advanzRed md:p-0"
         >
-          Contact
+        Login
         </Link>
       </li>
     </ul>
@@ -80,10 +79,10 @@ const Navbar = ({ logout, isAuthenticated, user }) => {
       </li>
       <li>
         <Link
-          to="/about"
+          to="/doctors"
           className="block py-2 pl-3 pr-4 md:text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-advanzRed md:p-0"
         >
-          About
+          Doctors
         </Link>
       </li>
       <li>

@@ -17,6 +17,7 @@ import AllDoctors from "./containers/userSide/AllDoctors";
 import LoadingComponent from "./components/Loading";
 import UserDashboard from "./containers/userSide/Dashboard/UserDashboard";
 // import DoctorAppointment from "./containers/userSide/DoctorAppointment";
+import ViewDoctors from "./containers/adminSide/ViewDoctors";
 
 const App = () => {
   
@@ -38,14 +39,15 @@ const App = () => {
             {/* USER SIDE PATHS  */}
             <Route path="/" element={<Home />} />
             <Route path="/user/dashboard/" element={<UserDashboard />} />
-            <Route path="/appointment" element={<AllDoctors/>} />
-            <Route path="/appointment/booking/:id/" element={<DoctorAppointment/>} />
+            <Route path="/doctors" element={<AllDoctors/>} />
+            <Route path="/doctors/booking/:id/" element={<DoctorAppointment/>} />
 
 
             {/* DOCTOR SIDE PATHS  */}
             <Route path="/doctor/dashboard" element={<DoctorDashboard/>} />
             {/* ADMIN SIDE PATHS */}
             <Route path="/admin/dashboard" element={<AdminDashboard/>} />
+            <Route path="/admin/dashboard/doctors" element={<ViewDoctors/>} />
 
           </Routes>
         </Layout>

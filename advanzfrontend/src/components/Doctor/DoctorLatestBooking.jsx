@@ -1,7 +1,8 @@
 import React from 'react';
 import profile from "../../assets/userSide/Booking/bgBookingImage.jpg";
 
-const DoctorLatestBooking = () => {
+const 
+ DoctorLatestBooking = () => {
   return (
     <div className=" max-w-[60rem] p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 m-5">
       <div className="flex items-center justify-between mb-4">

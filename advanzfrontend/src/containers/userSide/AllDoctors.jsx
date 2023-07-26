@@ -165,7 +165,7 @@ const AllDoctors = () => {
           className="absolute bottom-4 right-4 px-4 py-2 rounded-md text-white bg-advanzBlue hover:bg-advanzRed"
           
           style={{ width: 'fit-content' }}
-          to={`/appointment/booking/${doctor.user}`}
+          to={`/doctors/booking/${doctor.user}`}
         >
           View Details
         </Link>
