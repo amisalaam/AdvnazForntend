@@ -4,8 +4,16 @@ import AdminDashboardLineChart from "../../components/admin/AdminDashboardLineCh
 import AdminDonutChart from "../../components/admin/AdminDonutChart";
 import AdminLatestBooking from "../../components/admin/AdminLatestBooking";
 import profile from "../../assets/userSide/Booking/bgBookingImage2.jpg";
+import notificationAudio from "../../assets/userSide/Booking/notificationSound.wav";
+
 
 import { IoNotificationsSharp } from "react-icons/io5";
+import axios from "axios";
+import { logout } from "../../actions/auth";
+const API_URL = import.meta.env.VITE_API_URL;
+import { connect } from "react-redux";
+
+
 
 const AnimatedNumber = ({ initialValue, finalValue }) => {
   const [currentValue, setCurrentValue] = useState(initialValue);
@@ -29,32 +37,72 @@ const AnimatedNumber = ({ initialValue, finalValue }) => {
 
 const AdminDashboard = () => {
   const [messages, setMessages] = useState([]);
-  const notificationCount = 2;
+  const [showNotification, setShowNotification] = useState(false);
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleNotificationClick = () => {
     setIsDropdownOpen((prevState) => !prevState);
   };
-
   useEffect(() => {
-    const socket = new WebSocket(
-      "ws://localhost:8000/ws/superuser-notifications/"
-    ); // Replace with your backend WebSocket URL for NotificationConsumer
+    const socket = new WebSocket("ws://localhost:8000/ws/superuser-notifications/");
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `JWT ${localStorage.getItem("access")}`,
+        Accept: "application/json",
+      },
+    };
+
+    const fetchDataAndProcessMessages = async () => {
+      try {
+        // Fetch data from the server using Axios
+        const res = await axios.get(`${API_URL}/doctor/api/get/admin/notification/`, config);
+        const newMessages = res.data;
+
+        // Set messages with the fetched data
+        setMessages(newMessages);
+      } catch (err) {
+        console.log(err);
+      }
+    };
 
     socket.onmessage = (event) => {
       const message = JSON.parse(event.data);
       console.log(message);
+      // Add the new message to the top of the messages array
       setMessages((prevMessages) => [message, ...prevMessages]);
+      const audio = new Audio(notificationAudio);
+      audio.play();
+      setShowNotification(true);
     };
+
+
+    // Fetch initial data and process messages
+    if (localStorage.getItem("access")) {
+      fetchDataAndProcessMessages();
+    }
 
     return () => {
       socket.close();
     };
   }, []);
+  useEffect(() => {
+    if (showNotification) {
+      const audio = new Audio(notificationAudio);
+      audio.play();
+      const notificationTimeout = setTimeout(() => {
+        setShowNotification(false);
+      }, 9000);
+
+      return () => clearTimeout(notificationTimeout);
+    }
+  }, [showNotification]);
+  const notificationCount = messages.length;
 
   return (
     <div>
-      <div className="flex flex-col md:flex-row">
+      <div className="flex flex-col md:flex-row ">
         <AdminSidebar />
         <div className="md:h-[40rem] flex-1">
           <div className="grid gap-7 md:grid-cols-3">
@@ -72,7 +120,7 @@ const AdminDashboard = () => {
               <AnimatedNumber initialValue={0} finalValue={36} />
             </div>
 
-            <div className="bg-gradient-to-bl from-emerald-900 via-emerald-400 to-emerald-800 h-[6rem] md:w-[15rem] rounded-md m-5">
+            <div className="bg-gradient-to-bl from-emerald-900 via-emerald-400 to-emerald-800 h-[6rem] md:w-[15rem] rounded-md m-5 ">
               <h2 className="text-white ml-5 mt-3 font-bold text-1xl">
                 Total Appointments
               </h2>
@@ -84,7 +132,7 @@ const AdminDashboard = () => {
           <AdminLatestBooking />
         </div>
         <div className="mt-5 md:flex-2">
-          <div className="max-w-sm border border-gray-200 rounded-lg shadow w-full mx-auto md:w-[20rem] md:mx-0 md:mr-4 ">
+          <div className="max-w-sm border border-gray-200 rounded-lg shadow w-full  md:w-[18rem] md:mx-0 md:mr-4 ">
             <div className="flex justify-end px-5 pt-5">
               <div className="relative">
                 <IoNotificationsSharp
@@ -92,6 +140,14 @@ const AdminDashboard = () => {
                   className="text-blue-500 cursor-pointer"
                   onClick={handleNotificationClick}
                 />
+                {showNotification && (
+                  <div
+                    className="notification-box fixed top-5 right-5 bg-blue-500 text-white p-4 rounded-lg cursor-pointer"
+                    onClick={() => setShowNotification(false)}
+                  >
+                    New Notification Received!
+                  </div>
+                )}
                 {notificationCount > 0 && (
                   <span className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 rounded-full bg-red-600 text-white px-2 text-xs">
                     {notificationCount}
@@ -155,10 +211,16 @@ const AdminDashboard = () => {
             </div>
           </div>
           <AdminDonutChart />
+
         </div>
       </div>
     </div>
   );
 };
 
-export default AdminDashboard;
+const mapStateToProps = (state) => ({
+  user: state.auth.user,
+});
+
+export default connect(mapStateToProps, { logout })(AdminDashboard);
+

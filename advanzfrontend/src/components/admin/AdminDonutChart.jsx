@@ -16,7 +16,7 @@ const AdminDonutChart = () => {
     midAngle,
     innerRadius,
     outerRadius,
-    percent,
+    
     index,
   }) => {
     const RADIAN = Math.PI / 180;

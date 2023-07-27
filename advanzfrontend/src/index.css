@@ -2,6 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-.scorll-hide::-webkit-scrollbar{
+/* .scorll-hide::-webkit-scrollbar{
     display: none;
-}
+} */

@@ -13,11 +13,15 @@ import DoctorCarousel from "../../components/carousel/doctorcarousel";
     const [loading, setLoading] = useState(true);
   
     useEffect(() => {
-      window.onload = () => {
+      const loadingTimeout = setTimeout(() => {
         setLoading(false);
+      }, 3500);
+  
+      return () => {
+        clearTimeout(loadingTimeout);
       };
     }, []);
-  
+   
     if (loading) {
       return <LoadingComponent />;
     }

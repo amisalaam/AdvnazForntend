@@ -101,7 +101,7 @@ const AdminDashboardLineChart = () => {
           display: false,
         },
       },
-      barPercentage: 0.1,
+      
     },
     plugins: {
       legend: {

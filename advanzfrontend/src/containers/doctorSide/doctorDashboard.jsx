@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import DoctorDonutChart from "../../components/Doctor/DoctorDonutChart";
 import DoctorSidebar from "../../components/Doctor/DoctorSidebar";
 import DoctorLatestBooking from "../../components/Doctor/DoctorLatestBooking";
 import profile from "../../assets/userSide/Booking/bgBookingImage2.jpg";
+import notificationAudio from "../../assets/userSide/Booking/notificationSound.wav";
 import { IoNotificationsSharp } from "react-icons/io5";
 import axios from "axios";
+import { logout } from "../../actions/auth";
+const API_URL = import.meta.env.VITE_API_URL;
+import { connect } from "react-redux";
 
 const AnimatedNumber = ({ initialValue, finalValue }) => {
   const [currentValue, setCurrentValue] = useState(initialValue);
@@ -26,10 +30,10 @@ const AnimatedNumber = ({ initialValue, finalValue }) => {
   );
 };
 
-const DoctorDashboard = () => {
+const DoctorDashboard = (user) => {
   const [messages, setMessages] = useState([]);
+  const [showNotification, setShowNotification] = useState(false);
 
-  const notificationCount = 2;
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleNotificationClick = () => {
@@ -37,23 +41,78 @@ const DoctorDashboard = () => {
   };
 
   useEffect(() => {
-    const socket = new WebSocket(`ws://localhost:8000/ws/doctor/${3}/`); 
+    if (user && user.user && user.user.id) {
+      const doctorId = user.user.id;
+      const socket = new WebSocket(
+        `ws://localhost:8000/ws/doctor/${doctorId}/`
+      );
 
-    socket.onmessage = (event) => {
-      const message = JSON.parse(event.data);
-      console.log(message);
-      setMessages((prevMessages) => [message, ...prevMessages]);
-    };
+      socket.onmessage = (event) => {
+        const message = JSON.parse(event.data);
+        console.log(message);
+        setMessages((prevMessages) => [message, ...prevMessages]);
+        setShowNotification(true);
+        const audio = new Audio(notificationAudio);
+        audio.play();
+      };
 
-    return () => {
-      socket.close();
-    };
-  }, []);
+      // Fetch data from the API only once when the WebSocket connection is established
+      const fetchUserData = async () => {
+        try {
+          const config = {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `JWT ${localStorage.getItem("access")}`,
+              Accept: "application/json",
+            },
+          };
+
+          const res = await axios.get(
+            `${API_URL}/doctor/api/get/doctor/notification/${doctorId}/`,
+            config
+          );
+          console.log(res);
+          setMessages(res.data); // Update messages with the fetched data
+        } catch (err) {
+          console.log(err);
+        }
+      };
+
+      fetchUserData();
+
+      // Clean up the WebSocket connection when the component unmounts
+      return () => {
+        socket.close();
+      };
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (showNotification) {
+      const audio = new Audio(notificationAudio);
+      audio.play();
+      const notificationTimeout = setTimeout(() => {
+        setShowNotification(false);
+      }, 9000);
+
+      return () => clearTimeout(notificationTimeout);
+    }
+  }, [showNotification]);
+
+  const notificationCount = messages.length;
 
   return (
     <div>
       <div className="flex flex-col md:flex-row">
         <DoctorSidebar />
+        {showNotification && (
+          <div
+            className="notification-box fixed top-5 right-5 bg-blue-500 text-white p-4 rounded-lg cursor-pointer"
+            onClick={() => setShowNotification(false)}
+          >
+            New Notification Received!
+          </div>
+        )}
         <div className="md:h-[40rem] flex-1">
           <div className="grid gap-7 md:grid-cols-3">
             <div className="bg-gradient-to-br from-pink-700 via-pink-300 to-pink-700 h-[6rem] md:w-[15rem] rounded-md m-5">
@@ -90,6 +149,7 @@ const DoctorDashboard = () => {
                   className="text-blue-500 cursor-pointer"
                   onClick={handleNotificationClick}
                 />
+
                 {notificationCount > 0 && (
                   <span className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 rounded-full bg-red-600 text-white px-2 text-xs">
                     {notificationCount}
@@ -99,18 +159,19 @@ const DoctorDashboard = () => {
                 {isDropdownOpen && (
                   <div className="absolute right-0 mt-2 w-[25rem] bg-divide-y divide-gray-100 rounded-md z-10">
                     {/* Replace this dummy content with your actual notifications */}
-                    <div className="notifications-container overflow-y-auto max-h-[18rem] scorll-hide">
+                    <div className="notifications-container overflow-y-auto max-h-[18rem] scroll-hide">
                       {messages.map((message, index) => (
                         <div
                           key={index}
-                          className="flex items-center bg-blue-500 rounded-md p-4 shadow-lg mt-4"
+                          className="flex items-center bg-blue-500 rounded-md p-4 shadow-lg mt-4 transition-all duration-300 hover:bg-blue-600"
                         >
                           <img
-                            src={message.profile_picture_url || profile }                            alt="Profile 1"
+                            src={message.profile_picture_url || profile}
+                            alt="Profile 1"
                             className="w-12 h-12 rounded-full object-cover flex-shrink-0 border-2 border-white"
                           />
                           <div className="ml-4">
-                            <span className="block text-sm text-white">
+                            <span className="block text-sm text-white font-semibold">
                               {message.timestamp}
                             </span>
                             <p className="text-sm text-gray-100 mt-2">
@@ -156,5 +217,8 @@ const DoctorDashboard = () => {
     </div>
   );
 };
+const mapStateToProps = (state) => ({
+  user: state.auth.user,
+});
 
-export default DoctorDashboard;
+export default connect(mapStateToProps, { logout })(DoctorDashboard);
