@@ -102,6 +102,14 @@ const AdminDashboard = () => {
 
   return (
     <div>
+       {showNotification && (
+                  <div
+                    className="notification-box fixed top-5 right-5 bg-blue-500 text-white p-4 rounded-lg cursor-pointer"
+                    onClick={() => setShowNotification(false)}
+                  >
+                    New Notification Received!
+                  </div>
+                )}
       <div className="flex flex-col md:flex-row ">
         <AdminSidebar />
         <div className="md:h-[40rem] flex-1">
@@ -140,14 +148,7 @@ const AdminDashboard = () => {
                   className="text-blue-500 cursor-pointer"
                   onClick={handleNotificationClick}
                 />
-                {showNotification && (
-                  <div
-                    className="notification-box fixed top-5 right-5 bg-blue-500 text-white p-4 rounded-lg cursor-pointer"
-                    onClick={() => setShowNotification(false)}
-                  >
-                    New Notification Received!
-                  </div>
-                )}
+               
                 {notificationCount > 0 && (
                   <span className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 rounded-full bg-red-600 text-white px-2 text-xs">
                     {notificationCount}

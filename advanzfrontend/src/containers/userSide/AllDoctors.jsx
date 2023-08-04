@@ -143,7 +143,7 @@ const AllDoctors = () => {
     >
       <div className="relative h-64 sm:h-80 md:h-96 overflow-hidden rounded-xl bg-white bg-clip-border text-gray-700">
         <img
-          src={`${API_URL}${doctor.doctor_profile_image}`}
+          src={`${API_URL}${doctor?.doctor_profile_image}`}
           className="h-full w-full object-cover"
           alt="Doctor"
         />
