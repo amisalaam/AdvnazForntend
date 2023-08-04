@@ -18,6 +18,9 @@ import LoadingComponent from "./components/Loading";
 import UserDashboard from "./containers/userSide/Dashboard/UserDashboard";
 // import DoctorAppointment from "./containers/userSide/DoctorAppointment";
 import ViewDoctors from "./containers/adminSide/ViewDoctors";
+import ViewUsers from "./containers/adminSide/viewUsers";
+import CreateSlots from "./containers/adminSide/CreateSlots";
+import ViewBookedSlots from "./containers/adminSide/ViewBookedSlots";
 
 const App = () => {
   
@@ -48,6 +51,8 @@ const App = () => {
             {/* ADMIN SIDE PATHS */}
             <Route path="/admin/dashboard" element={<AdminDashboard/>} />
             <Route path="/admin/dashboard/doctors" element={<ViewDoctors/>} />
+            <Route path="/admin/dashboard/users" element={<ViewUsers/>} />
+            <Route path="/admin/dashboard/booked/slots" element={<ViewBookedSlots/>} />
 
           </Routes>
         </Layout>

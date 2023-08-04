@@ -94,8 +94,8 @@ const ViewAllDoctors = ({ user }) => {
   
 
   return (
-    <div className="flex flex-col items-center bg-acontent  p-4">
-      <div className="mx-auto p-4 bg-white shadow-xl rounded-xl lg:w-[75rem]">
+    <div className="flex flex-col items-center bg-acontent flex-grow  p-4">
+      <div className="mx-auto p-4 bg-white shadow-xl rounded-xl lg:w-full">
         <div className="bg-white px-3 rounded-xl">
           <button
             onClick={handleAddDoctorModalOpen}
@@ -237,14 +237,22 @@ const ViewAllDoctors = ({ user }) => {
           <ReactPaginate
       previousLabel={"Previous"}
       nextLabel={"Next"}
+      breakLabel={"..."}
       pageCount={Math.ceil(filteredDoctors.length / doctorsPerPage)}
+      marginPagesDisplayed={2}
+      pageRangeDisplayed={5}
       onPageChange={handlePageChange}
-      containerClassName={"flex justify-center mt-4"}
-      pageClassName={"px-3 py-2 rounded-full mx-1 cursor-pointer transition-colors duration-600 ease-in-out"}
-      previousLinkClassName={"bg-blue-600 text-white px-4 py-2 rounded-lg mr-2 transition-colors duration-600 ease-in-out hover:bg-blue-700"}
-      nextLinkClassName={"bg-blue-600 text-white px-4 py-2 rounded-lg ml-2 transition-colors duration-600 ease-in-out hover:bg-blue-700"}
-      disabledClassName={"text-gray-500 cursor-not-allowed"}
-      activeClassName={"bg-blue-800 text-white px-4 py-2 rounded-lg"}
+      containerClassName={"pagination flex justify-center mt-4 space-x-2"}
+  subContainerClassName={"pages pagination space-x-2"}
+  activeClassName={"bg-blue-500 text-white"}
+  previousClassName={"px-3 py-2 border rounded-lg border-gray-300"}
+  nextClassName={"px-3 py-2 border rounded-lg border-gray-300"}
+  pageClassName={"px-3 py-2 border rounded-lg border-gray-300"}
+  breakClassName={"px-3 py-2 border rounded-lg border-gray-300"}
+  pageLinkClassName={"text-blue-500"}
+  activeLinkClassName={"bg-blue-500 text-white"}
+  previousLinkClassName={"text-gray-600"}
+  nextLinkClassName={"text-gray-600"}
     />
         </div>
       </div>
