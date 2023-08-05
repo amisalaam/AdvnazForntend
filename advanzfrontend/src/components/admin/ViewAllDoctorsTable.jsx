@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import axios from "axios";
 import { connect } from "react-redux";
+import ReactPaginate from "react-paginate";
 import DoctorModal from "./DoctorDetailsModal";
 import AddDoctorModal from "./AddDoctorModal";
-import ReactPaginate from "react-paginate";
 
 const ViewAllDoctors = ({ user }) => {
   const API_URL = import.meta.env.VITE_API_URL;
 
+  // State variables
   const [filteredDoctors, setFilteredDoctors] = useState([]);
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -19,13 +20,22 @@ const ViewAllDoctors = ({ user }) => {
   const [currentPage, setCurrentPage] = useState(0);
 
   const doctorsPerPage = 5;
+  const showPagination = filteredDoctors.length > doctorsPerPage;
+  // Memoized values
+  const offset = currentPage * doctorsPerPage;
+  const currentDoctors = useMemo(
+    () => filteredDoctors.slice(offset, offset + doctorsPerPage),
+    [filteredDoctors, offset]
+  );
+  const pageCount = useMemo(
+    () => Math.ceil(filteredDoctors.length / doctorsPerPage),
+    [filteredDoctors, doctorsPerPage]
+  );
 
+  // Event handlers
   const handlePageChange = ({ selected }) => {
     setCurrentPage(selected);
   };
-
-  const offset = currentPage * doctorsPerPage;
-  const currentDoctors = filteredDoctors.slice(offset, offset + doctorsPerPage);
 
   const handleViewMoreClick = (doctor) => {
     setSelectedDoctor(doctor);
@@ -49,9 +59,11 @@ const ViewAllDoctors = ({ user }) => {
     setFilteredDoctors((prevFilteredDoctors) => [
       ...prevFilteredDoctors,
       newDoctor,
+      setAddingModalOpen(false)
     ]);
   };
 
+  // Fetch data on component mount
   useEffect(() => {
     if (user && user.is_superuser) {
       const fetchData = async () => {
@@ -61,37 +73,38 @@ const ViewAllDoctors = ({ user }) => {
           );
           setDoctors(response.data);
           setFilteredDoctors(response.data);
-          console.log(response.data)
           setLoading(false);
         } catch (err) {
-          setError(
-            err.message || "An error occurred while fetching data."
-          );
+          setError(err.message || "An error occurred while fetching data.");
           setLoading(false);
         }
       };
       fetchData();
     }
-  }, [user]);
+  }, [user, API_URL]);
 
+  // Update filteredDoctors on searchQuery change
   useEffect(() => {
     const filteredResults = doctors.filter((doctor) => {
+      const searchString = searchQuery.toLowerCase();
       const nameMatch = doctor?.user?.name
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase());
+        ?.toLowerCase()
+        .includes(searchString);
       const emailMatch = doctor?.user?.email
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase());
+        ?.toLowerCase()
+        .includes(searchString);
       const departmentMatch = doctor?.department?.department_name
+        ?.toLowerCase()
+        .includes(searchString);
+      const isActiveMatch = doctor?.user?.is_active
+        ?.toString()
         .toLowerCase()
-        .includes(searchQuery.toLowerCase());
-      return nameMatch || emailMatch || departmentMatch;
+        .includes(searchString);
+      return nameMatch || emailMatch || departmentMatch || isActiveMatch;
     });
 
     setFilteredDoctors(filteredResults);
   }, [searchQuery, doctors]);
-
-  
 
   return (
     <div className="flex flex-col items-center bg-acontent flex-grow  p-4">
@@ -149,9 +162,7 @@ const ViewAllDoctors = ({ user }) => {
                     {currentDoctors?.length > 0 ? (
                       currentDoctors?.map((doctor, index) => (
                         <tr className="hover:bg-gray-100" key={index}>
-                          <th
-                            className="flex flex-col gap-3 sm:flex-row items-start sm:items-center px-6 py-4 text-base text-gray-900"
-                          >
+                          <th className="flex flex-col gap-3 sm:flex-row items-start sm:items-center px-6 py-4 text-base text-gray-900">
                             <div className="relative h-10 w-10">
                               {doctor?.doctor_profile_image ? (
                                 <img
@@ -180,7 +191,7 @@ const ViewAllDoctors = ({ user }) => {
                             <p>{doctor?.department?.department_name}</p>
                           </td>
                           <td className="px-6 py-4 hidden md:table-cell">
-                            {doctor?.user.is_active ? (
+                            {doctor?.user?.is_active ? (
                               <span className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-600">
                                 <span className="h-1.5 w-1.5 rounded-full bg-green-600"></span>
                                 Active
@@ -234,26 +245,28 @@ const ViewAllDoctors = ({ user }) => {
           )}
 
           {/* Pagination */}
-          <ReactPaginate
-      previousLabel={"Previous"}
-      nextLabel={"Next"}
-      breakLabel={"..."}
-      pageCount={Math.ceil(filteredDoctors.length / doctorsPerPage)}
-      marginPagesDisplayed={2}
-      pageRangeDisplayed={5}
-      onPageChange={handlePageChange}
-      containerClassName={"pagination flex justify-center mt-4 space-x-2"}
-  subContainerClassName={"pages pagination space-x-2"}
-  activeClassName={"bg-blue-500 text-white"}
-  previousClassName={"px-3 py-2 border rounded-lg border-gray-300"}
-  nextClassName={"px-3 py-2 border rounded-lg border-gray-300"}
-  pageClassName={"px-3 py-2 border rounded-lg border-gray-300"}
-  breakClassName={"px-3 py-2 border rounded-lg border-gray-300"}
-  pageLinkClassName={"text-blue-500"}
-  activeLinkClassName={"bg-blue-500 text-white"}
-  previousLinkClassName={"text-gray-600"}
-  nextLinkClassName={"text-gray-600"}
-    />
+          {showPagination && (
+            <ReactPaginate
+              previousLabel={"Previous"}
+              nextLabel={"Next"}
+              breakLabel={"..."}
+              pageCount={Math.ceil(filteredDoctors.length / doctorsPerPage)}
+              marginPagesDisplayed={2}
+              pageRangeDisplayed={5}
+              onPageChange={handlePageChange}
+              containerClassName={"pagination flex justify-center mt-4 space-x-2"}
+              subContainerClassName={"pages pagination space-x-2"}
+              activeClassName={"bg-blue-500 text-white"}
+              previousClassName={"px-3 py-2 border rounded-lg border-gray-300"}
+              nextClassName={"px-3 py-2 border rounded-lg border-gray-300"}
+              pageClassName={"px-3 py-2 border rounded-lg border-gray-300"}
+              breakClassName={"px-3 py-2 border rounded-lg border-gray-300"}
+              pageLinkClassName={"text-blue-500"}
+              activeLinkClassName={"bg-blue-500 text-white"}
+              previousLinkClassName={"text-gray-600"}
+              nextLinkClassName={"text-gray-600"}
+            />
+          )}
         </div>
       </div>
     </div>

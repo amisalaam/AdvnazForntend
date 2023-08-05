@@ -5,15 +5,15 @@ import classNames from "classnames";
 import LoadingComponent from "../../components/Loading";
 import { useParams } from "react-router";
 import axios from "axios";
-import { config } from "dotenv";
-
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const sendNotificationToDoctor = (socket, selectedSlot, doctorId) => {
   const notification = {
-    type: 'slot_booked',
+    type: "slot_booked",
     message: `Slot ${selectedSlot.id} has been booked!`,
   };
-  socket.emit('notification', notification);
+  socket.emit("notification", notification);
   console.log(notification);
 };
 
@@ -67,9 +67,7 @@ const UserPage = () => {
       const futureSlots = response.data.filter((slot) => {
         const slotDate = new Date(slot.date);
         const slotDateStr = slotDate.toDateString();
-        return (
-          slotDate > currentDateTime && slotDateStr === selectedDateStr
-        );
+        return slotDate > currentDateTime && slotDateStr === selectedDateStr;
       });
 
       setAvailableSlots(
@@ -136,7 +134,7 @@ const UserPage = () => {
           Accept: "application/json",
         },
       };
-  
+
       try {
         await axios.put(
           `${API_URL}/doctor/api/update/slots/${selectedSlot.id}/${id}/`,
@@ -146,29 +144,31 @@ const UserPage = () => {
           config
         );
         console.log("Slot successfully booked!");
-  
+
         const socket = new WebSocket(`ws://localhost:8000/ws/doctor/${id}/`);
-  
+
         socket.onopen = () => {
           const notification = {
-            type: 'slot_booked',
+            type: "slot_booked",
             message: `Slot ${selectedSlot.id} has been booked!`,
           };
           socket.send(JSON.stringify(notification));
           socket.close();
         };
-  
-        const superuserSocket = new WebSocket('ws://localhost:8000/ws/superuser-notifications/');
-  
+
+        const superuserSocket = new WebSocket(
+          "ws://localhost:8000/ws/superuser-notifications/"
+        );
+
         superuserSocket.onopen = () => {
           const superuserNotification = {
-            type: 'notification',
+            type: "notification",
             message: `Slot ${selectedSlot.id} has been booked by Doctor ${id}!`,
           };
           superuserSocket.send(JSON.stringify(superuserNotification));
           superuserSocket.close();
         };
-  
+        toast.success(`You have made a booking for Dr. ${doctor.name} at ${selectedSlot.start_time}`);
         setBookedSlot(selectedSlot);
       } catch (e) {
         console.log(e);
@@ -211,7 +211,9 @@ const UserPage = () => {
               tileClassName={tileClassName}
               tileContent={({ date }) =>
                 date.getTime() === selectedDate.getTime() ? (
-                  <span style={{ backgroundColor: "red", color: "black" }}></span>
+                  <span
+                    style={{ backgroundColor: "red", color: "black" }}
+                  ></span>
                 ) : null
               }
               tileDisabled={tileDisabled}
@@ -236,8 +238,10 @@ const UserPage = () => {
                         className={classNames(
                           "font-semibold py-2 px-4 border-[3px] rounded-xl m-1",
                           {
-                            "bg-blue-700 text-white border-blue-700": slot.selected,
-                            "border-blue-700 text-blue-700": !slot.selected && !slot.is_booked,
+                            "bg-blue-700 text-white border-blue-700":
+                              slot.selected,
+                            "border-blue-700 text-blue-700":
+                              !slot.selected && !slot.is_booked,
                           }
                         )}
                         onClick={() => handleSlotSelect(slot.id)}

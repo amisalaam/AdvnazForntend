@@ -1,8 +1,8 @@
 import React from 'react';
 import AdminSidebar from '../../components/admin/AdminSidebar';
-import ViewAllBookedSlots from '../../components/admin/ViewAllBookedSlots';
+import ViewAllBookedSlots from '../../components/admin/AdminViewAllSlotsTable';
 
-const ViewBookedSlots = () => {
+const ViewSlots = () => {
     return (
         
             <div className="flex flex-wrap">
@@ -13,4 +13,4 @@ const ViewBookedSlots = () => {
     );
 }
 
-export default ViewBookedSlots;
+export default ViewSlots;

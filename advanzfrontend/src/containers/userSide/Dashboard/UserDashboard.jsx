@@ -1,28 +1,32 @@
 import React, { useEffect, useState } from "react";
 import UserSidebar from "../../../components/user/UserSidebar";
 import profile from "../../../assets/userSide/Booking/bgBookingImage.jpg";
+import {logout} from "../../../actions/auth"
 import UserLatestBooking from "../../../components/user/UserLatestBooking";
 import UserDonutChart from "../../../components/user/UserDonutChart";
+import { connect } from "react-redux";
 
 const AnimatedNumber = ({ initialValue, finalValue }) => {
   const [currentValue, setCurrentValue] = useState(initialValue);
-
+  
   useEffect(() => {
-    const step = Math.ceil((finalValue - initialValue) / 200); 
+    const step = Math.ceil((finalValue - initialValue) / 200);
     const interval = setInterval(() => {
       setCurrentValue((prevValue) => {
         const newValue = prevValue + step;
         return newValue >= finalValue ? finalValue : newValue;
       });
-    }, 50); 
+    }, 50);
 
     return () => clearInterval(interval);
   }, [initialValue, finalValue]);
 
-  return <h2 className="text-white mt-3 ml-5 text-4xl font-bold">{currentValue}</h2>;
+  return (
+    <h2 className="text-white mt-3 ml-5 text-4xl font-bold">{currentValue}</h2>
+  );
 };
 
-const UserDashboard = () => {
+const UserDashboard = ({logout}) => {
   return (
     <div className="flex flex-col md:flex-row">
       <UserSidebar />
@@ -73,12 +77,19 @@ const UserDashboard = () => {
               Age: 30
             </span>
 
-            <div className="flex mt-4 space-x-3 md:mt-6">
+            <div className="flex mt-2 space-x-3 md:mt-2">
               <button
                 type="button"
-                className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 w-[8rem]"
+                className="text-white bg-advanzBlue hover:bg-blue-900 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2  w-[7rem]"
               >
                 Edit
+              </button>{" "}
+              <button
+                type="button"
+                onClick={logout}
+                className="text-white bg-red-900 hover:bg-red-600 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2  w-[7rem]"
+              >
+                Logout
               </button>
             </div>
           </div>
@@ -88,5 +99,9 @@ const UserDashboard = () => {
     </div>
   );
 };
+const mapStateToProps = (state) => ({
+ 
+ 
+});
+export default connect(mapStateToProps, { logout })(UserDashboard);
 
-export default UserDashboard;

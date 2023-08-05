@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import AdminSidebar from '../../components/admin/AdminSidebar';
 
-import ViewAllDoctors from '../../components/admin/ViewAllDoctors';
+import ViewAllDoctors from '../../components/admin/ViewAllDoctorsTable';
 
 
 

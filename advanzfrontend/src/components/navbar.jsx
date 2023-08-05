@@ -3,9 +3,10 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import { logout } from "../actions/auth";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { BsJustify } from "react-icons/bs";
 import { connect } from "react-redux";
 import AdvanzLogo from "../assets/authentication/advanzLogo.png";
+import { IoIosPie } from "react-icons/io";
 
 const Navbar = ({ logout, isAuthenticated, user }) => {
   const navigate = useNavigate();
@@ -60,7 +61,7 @@ const Navbar = ({ logout, isAuthenticated, user }) => {
           to="/login"
           className="block py-2 pl-3 pr-4 md:text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-advanzRed md:p-0"
         >
-        Login
+          Login
         </Link>
       </li>
     </ul>
@@ -102,12 +103,31 @@ const Navbar = ({ logout, isAuthenticated, user }) => {
         </Link>
       </li>
       <li>
-        <button
-          onClick={logout}
-          className="block py-2 pl-3 pr-4 md:text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-advanzRed md:p-0"
-        >
-          Logout
-        </button>
+        {user && user.is_doctor ? (
+          <Link
+            to="/doctor/dashboard"
+            className=" p-1 md:text-white rounded bg-advanzRed hover:bg-red-900     flex items-center"
+          >
+            <IoIosPie size={25} />
+            Dashboard
+          </Link>
+        ) : user && user.is_superuser ? (
+          <Link
+            to="/admin/dashboard"
+            className=" p-1 md:text-white rounded bg-advanzRed hover:bg-red-900     flex items-center"
+          >
+            <IoIosPie size={25} />
+            Dashboard
+          </Link>
+        ) : (
+          <Link
+            to="/user/dashboard"
+            className=" p-1 md:text-white rounded bg-advanzRed hover:bg-red-900     flex items-center"
+          >
+            <IoIosPie size={25} />
+            Dashboard
+          </Link>
+        )}
       </li>
     </ul>
   );
@@ -122,11 +142,7 @@ const Navbar = ({ logout, isAuthenticated, user }) => {
       <div className="bg-advanzBlue md:pe-20">
         <div className="flex flex-wrap items-center justify-between mx-auto">
           <div className="bg-white relative p-2 before:contents[''] before:absolute before:w-0 before:h-0 before:top-0 before:-right-[65px] before:border-[36px] before:border-advanzBlue before:border-t-white before:border-l-white">
-            <img
-              src={AdvanzLogo}
-              className="h-7 xl:h-14"
-              alt="AdvanzLogo"
-            />
+            <img src={AdvanzLogo} className="h-7 xl:h-14" alt="AdvanzLogo" />
           </div>
           <ToastContainer />
 
@@ -139,21 +155,7 @@ const Navbar = ({ logout, isAuthenticated, user }) => {
             aria-expanded={isDropdownOpen ? "true" : "false"}
           >
             <span className="sr-only">Open main menu</span>
-            <svg
-              className={`w-6 h-6 ${
-                isDropdownOpen ? "text-blue-700" : ""
-              }`}
-              aria-hidden="true"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fillRule="evenodd"
-                d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                clipRule="evenodd"
-              ></path>
-            </svg>
+            <BsJustify size={25} />
           </button>
           <div
             className={`${

@@ -20,7 +20,9 @@ import UserDashboard from "./containers/userSide/Dashboard/UserDashboard";
 import ViewDoctors from "./containers/adminSide/ViewDoctors";
 import ViewUsers from "./containers/adminSide/viewUsers";
 import CreateSlots from "./containers/adminSide/CreateSlots";
-import ViewBookedSlots from "./containers/adminSide/ViewBookedSlots";
+import AdminViewSlots from "./containers/adminSide/ViewSlots";
+import ViewSlots from "./containers/doctorSide/ViewSlots";
+import ViewBooking from "./containers/doctorSide/ViewBooking";
 
 const App = () => {
   
@@ -48,11 +50,13 @@ const App = () => {
 
             {/* DOCTOR SIDE PATHS  */}
             <Route path="/doctor/dashboard" element={<DoctorDashboard/>} />
+            <Route path="/doctor/dashboard/slots" element={<ViewSlots/>} />
+            <Route path="/doctor/dashboard/booking" element={<ViewBooking/>} />
             {/* ADMIN SIDE PATHS */}
             <Route path="/admin/dashboard" element={<AdminDashboard/>} />
             <Route path="/admin/dashboard/doctors" element={<ViewDoctors/>} />
             <Route path="/admin/dashboard/users" element={<ViewUsers/>} />
-            <Route path="/admin/dashboard/booked/slots" element={<ViewBookedSlots/>} />
+            <Route path="/admin/dashboard/slots" element={<AdminViewSlots/>} />
 
           </Routes>
         </Layout>

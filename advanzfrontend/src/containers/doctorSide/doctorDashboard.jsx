@@ -30,7 +30,8 @@ const AnimatedNumber = ({ initialValue, finalValue }) => {
   );
 };
 
-const DoctorDashboard = (user) => {
+const DoctorDashboard = ({user,logout}) => {
+  console.log(user)
   const [messages, setMessages] = useState([]);
   const [showNotification, setShowNotification] = useState(false);
 
@@ -41,8 +42,8 @@ const DoctorDashboard = (user) => {
   };
 
   useEffect(() => {
-    if (user && user.user && user.user.id) {
-      const doctorId = user.user.id;
+    if (user && user.id && user.is_doctor) {
+      const doctorId = user.id;
       const socket = new WebSocket(
         `ws://localhost:8000/ws/doctor/${doctorId}/`
       );
@@ -103,9 +104,7 @@ const DoctorDashboard = (user) => {
 
   return (
     <div>
-      <div className="flex flex-col md:flex-row">
-        <DoctorSidebar />
-        {showNotification && (
+      {showNotification && (
           <div
             className="notification-box fixed top-5 right-5 bg-blue-500 text-white p-4 rounded-lg cursor-pointer"
             onClick={() => setShowNotification(false)}
@@ -113,6 +112,9 @@ const DoctorDashboard = (user) => {
             New Notification Received!
           </div>
         )}
+      <div className="flex flex-col md:flex-row">
+        <DoctorSidebar />
+        
         <div className="md:h-[40rem] flex-1">
           <div className="grid gap-7 md:grid-cols-3">
             <div className="bg-gradient-to-br from-pink-700 via-pink-300 to-pink-700 h-[6rem] md:w-[15rem] rounded-md m-5">
@@ -201,12 +203,19 @@ const DoctorDashboard = (user) => {
                 Age: 30
               </span>
 
-              <div className="flex mt-4 space-x-3 md:mt-4">
+              <div className="flex mt-2 space-x-3 md:mt-2">
                 <button
                   type="button"
-                  className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 w-[8rem]"
+                  className="text-white bg-advanzBlue hover:bg-blue-900 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2  w-[7rem]"
                 >
                   Edit
+                </button>{" "}
+                <button
+                  type="button"
+                  onClick={logout}
+                  className="text-white bg-red-900 hover:bg-red-600 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2  w-[7rem]"
+                >
+                  Logout
                 </button>
               </div>
             </div>

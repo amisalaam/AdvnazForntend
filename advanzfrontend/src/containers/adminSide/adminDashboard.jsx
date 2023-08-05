@@ -7,13 +7,12 @@ import profile from "../../assets/userSide/Booking/bgBookingImage2.jpg";
 import notificationAudio from "../../assets/userSide/Booking/notificationSound.wav";
 
 
+
 import { IoNotificationsSharp } from "react-icons/io5";
 import axios from "axios";
 import { logout } from "../../actions/auth";
 const API_URL = import.meta.env.VITE_API_URL;
 import { connect } from "react-redux";
-
-
 
 const AnimatedNumber = ({ initialValue, finalValue }) => {
   const [currentValue, setCurrentValue] = useState(initialValue);
@@ -35,7 +34,7 @@ const AnimatedNumber = ({ initialValue, finalValue }) => {
   );
 };
 
-const AdminDashboard = () => {
+const AdminDashboard = ({logout}) => {
   const [messages, setMessages] = useState([]);
   const [showNotification, setShowNotification] = useState(false);
 
@@ -45,7 +44,9 @@ const AdminDashboard = () => {
     setIsDropdownOpen((prevState) => !prevState);
   };
   useEffect(() => {
-    const socket = new WebSocket("ws://localhost:8000/ws/superuser-notifications/");
+    const socket = new WebSocket(
+      "ws://localhost:8000/ws/superuser-notifications/"
+    );
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -57,7 +58,10 @@ const AdminDashboard = () => {
     const fetchDataAndProcessMessages = async () => {
       try {
         // Fetch data from the server using Axios
-        const res = await axios.get(`${API_URL}/doctor/api/get/admin/notification/`, config);
+        const res = await axios.get(
+          `${API_URL}/doctor/api/get/admin/notification/`,
+          config
+        );
         const newMessages = res.data;
 
         // Set messages with the fetched data
@@ -76,7 +80,6 @@ const AdminDashboard = () => {
       audio.play();
       setShowNotification(true);
     };
-
 
     // Fetch initial data and process messages
     if (localStorage.getItem("access")) {
@@ -102,14 +105,14 @@ const AdminDashboard = () => {
 
   return (
     <div>
-       {showNotification && (
-                  <div
-                    className="notification-box fixed top-5 right-5 bg-blue-500 text-white p-4 rounded-lg cursor-pointer"
-                    onClick={() => setShowNotification(false)}
-                  >
-                    New Notification Received!
-                  </div>
-                )}
+      {showNotification && (
+        <div
+          className="notification-box fixed top-5 right-5 bg-blue-500 text-white p-4 rounded-lg cursor-pointer"
+          onClick={() => setShowNotification(false)}
+        >
+          New Notification Received!
+        </div>
+      )}
       <div className="flex flex-col md:flex-row ">
         <AdminSidebar />
         <div className="md:h-[40rem] flex-1">
@@ -148,7 +151,7 @@ const AdminDashboard = () => {
                   className="text-blue-500 cursor-pointer"
                   onClick={handleNotificationClick}
                 />
-               
+
                 {notificationCount > 0 && (
                   <span className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 rounded-full bg-red-600 text-white px-2 text-xs">
                     {notificationCount}
@@ -204,15 +207,21 @@ const AdminDashboard = () => {
               <div className="flex mt-2 space-x-3 md:mt-2">
                 <button
                   type="button"
-                  className="text-white bg-advanzBlue hover:bg-advanzRed focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2  w-[8rem]"
+                  className="text-white bg-advanzBlue hover:bg-blue-900 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2  w-[7rem]"
                 >
                   Edit
+                </button>{" "}
+                <button
+                  type="button"
+                  onClick={logout}
+                  className="text-white bg-red-900 hover:bg-red-600 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2  w-[7rem]"
+                >
+                  Logout
                 </button>
               </div>
             </div>
           </div>
           <AdminDonutChart />
-
         </div>
       </div>
     </div>
@@ -224,4 +233,3 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, { logout })(AdminDashboard);
-

@@ -2,78 +2,94 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { connect } from "react-redux";
 import ReactPaginate from "react-paginate";
-import profile from "../../assets/userSide/Booking/bgBookingImage.jpg";
+import profile from "../../assets/userside/Booking/bgBookingImage.jpg";
 
-const ViewAllUsers = ({ user }) => {
+const ViewAllSlotsTable = ({ user }) => {
   const API_URL = import.meta.env.VITE_API_URL;
-  const ITEMS_PER_PAGE = 6; // Change this value to set the number of users per page
+  const ITEMS_PER_PAGE = 6; // Change this value to set the number of slots per page
 
-  const [users, setUsers] = useState([]);
+  const [slots, setslots] = useState([]);
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-  const [filter, setFilter] = useState("all"); // 'all', 'blocked', or 'active'
+  const [filter, setFilter] = useState("all"); // 'all', 'booked', or 'unbooked'
+  const [selectedDate, setSelectedDate] = useState("");
 
   const [currentPage, setCurrentPage] = useState(0);
 
   useEffect(() => {
-    if (user && user.is_superuser) {
+    if (user && user.is_doctor) {
       const fetchData = async () => {
         try {
-          const response = await axios.get(
-            `${API_URL}/myadmin/api/get/all/users/`
-          );
-          setUsers(response.data);
+          let apiUrl = `${API_URL}/doctor/api/get/dashboard/slots/${user.id}/`;
+
+          if (selectedDate) {
+            apiUrl = `${API_URL}/doctor/api/get/booked/slots/?date=${selectedDate}`;
+          }
+          const response = await axios.get(apiUrl);
+          console.log("API Response:", response.data); // Log the response data
+          setslots(response.data);
+
         } catch (err) {
-          console.error("Error fetching users:", err);
+          console.error("Error fetching booked slots:", err);
         }
       };
       fetchData();
     }
-  }, [user]);
+  }, [user, selectedDate]);
 
   // Function to handle page change
   const handlePageChange = ({ selected }) => {
     setCurrentPage(selected);
   };
 
-  const toggleUserStatus = async (userId, is_active) => {
-    try {
-      await axios.patch(`${API_URL}/myadmin/api/block/users/${userId}/`, {
-        is_active: !is_active, // Toggle the is_active flag
-      });
-      // Update the users state to reflect the changes
-      setUsers((prevUsers) =>
-        prevUsers.map((user) =>
-          user.id === userId ? { ...user, is_active: !is_active } : user
-        )
-      );
-    } catch (err) {
-      console.error("Error toggling user status:", err);
-    }
-  };
-
   const offset = currentPage * ITEMS_PER_PAGE;
-  const paginatedUsers = users
-    .filter((user) => {
-      const nameMatches = user.name.toLowerCase().includes(searchQuery.toLowerCase());
-      if (filter === 'blocked') return !user.is_active;
-      if (filter === 'active') return user.is_active;
-      return nameMatches;
-    })
-    .slice(offset, offset + ITEMS_PER_PAGE);
+  const paginatedslots = slots
+    ? slots
+        .filter((user) => {
+          const nameMatches = user.doctor_name?.toLowerCase().includes(searchQuery.toLowerCase());
+          const startTimeMatches = startTime === "" || (user.start_time && user.start_time?.localeCompare(startTime) >= 0);
+          const endTimeMatches = endTime === "" || (user.end_time && user.end_time?.localeCompare(endTime) <= 0);
+          const dateMatches = !selectedDate || user.date === selectedDate;
+          if (filter === "booked") return user.is_booked;
+          if (filter === "unbooked") return user.hasOwnProperty("is_booked") && !user.is_booked;
+          return nameMatches && startTimeMatches && endTimeMatches && dateMatches;
+        })
+        .slice(offset, offset + ITEMS_PER_PAGE)
+    : [];
 
   return (
     <div className="flex flex-col items-center bg-acontent flex-grow  p-4">
       <div className="mx-auto p-4 bg-white shadow-xl rounded-xl lg:w-full">
         <div className="bg-white px-3 rounded-xl">
           <div className="w-full p-5 flex flex-col sm:flex-row justify-between">
-            <h1 className="text-3xl text-start  sm:mb-0">Users List</h1>
+            <h1 className="text-3xl text-start sm:mb-0">View Slots</h1>
             <div className="flex gap-4 items-center">
               <input
                 type="text"
-                placeholder="&#x1F50D; Search email or name"
+                placeholder="&#x1F50D; Search"
                 className="border border-primaryBlue border-solid focus:outline-none px-2 w-full sm:w-1/4 rounded-lg"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              <input
+                type="time"
+                
+                className="border border-primaryBlue border-solid focus:outline-none px-2 w-full sm:w-1/4 rounded-lg"
+                value={startTime}
+                onChange={(e) => setStartTime(e.target.value)}
+              />
+              <input
+                type="time"
+                className="border border-primaryBlue border-solid focus:outline-none px-2 w-full sm:w-1/4 rounded-lg"
+                value={endTime}
+                onChange={(e) => setEndTime(e.target.value)}
+              />
+              <input
+                type="date"
+                className="border border-primaryBlue border-solid focus:outline-none px-2 w-full sm:w-1/4 rounded-lg"
+                value={selectedDate}
+                onChange={(e) => setSelectedDate(e.target.value)}
               />
               <button
                 className={`custom-btn text-white ${
@@ -85,19 +101,19 @@ const ViewAllUsers = ({ user }) => {
               </button>
               <button
                 className={`custom-btn text-white ${
-                  filter === "blocked" ? "bg-red-800" : "bg-gray-500"
-                } hover:bg-red-900 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none`}
-                onClick={() => setFilter("blocked")}
+                  filter === "booked" ? "bg-green-800" : "bg-gray-500"
+                } hover:bg-green-900 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none`}
+                onClick={() => setFilter("booked")}
               >
-                Blocked
+                Booked
               </button>
               <button
                 className={`custom-btn text-white ${
-                  filter === "active" ? "bg-green-800" : "bg-gray-500"
-                } hover:bg-green-900 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none`}
-                onClick={() => setFilter("active")}
+                  filter === "unbooked" ? "bg-red-800" : "bg-gray-500"
+                } hover:bg-red-900 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none`}
+                onClick={() => setFilter("unbooked")}
               >
-                Active
+                Unbooked
               </button>
             </div>
           </div>
@@ -109,12 +125,12 @@ const ViewAllUsers = ({ user }) => {
                   <thead className="bg-gray-50">
                     <tr>
                       <th scope="col" className="px-6 py-3 text-lg text-gray-900">
-                        Users Name
+                        Doctor Name
                       </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-lg text-gray-900 hidden md:table-cell"
-                      >
+                      <th scope="col" className="px-6 py-3 text-lg text-gray-900 hidden md:table-cell text-center">
+                        Time
+                      </th>
+                      <th scope="col" className="px-6 py-3 text-lg text-gray-900 hidden md:table-cell">
                         Status
                       </th>
                       <th scope="col" className="px-6 py-3 text-lg text-gray-900">
@@ -123,16 +139,16 @@ const ViewAllUsers = ({ user }) => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100 border-t border-gray-100">
-                    {paginatedUsers?.length > 0 ? (
-                      paginatedUsers?.map((user, index) => (
+                    {paginatedslots.length > 0 ? (
+                      paginatedslots.map((user, index) => (
                         <tr className="hover:bg-gray-100" key={index}>
-                          {/* users Name */}
+                          {/* slots Name */}
                           <th className="flex flex-col gap-3 sm:flex-row items-start sm:items-center px-6 py-3 text-base text-gray-900">
                             <div className="relative h-10 w-10">
-                              {user?.users_profile_image ? (
+                              {user?.doctor_image ? (
                                 <img
                                   className="h-full w-full rounded-full object-cover object-center"
-                                  src={`${API_URL}${user?.users_profile_image}`}
+                                  src={`${API_URL}${user?.doctor_image}`}
                                   alt="avatar"
                                 />
                               ) : (
@@ -145,47 +161,51 @@ const ViewAllUsers = ({ user }) => {
                             </div>
                             <div className="text-sm">
                               <div className="font-medium text-gray-700">
-                                {user?.name}
+                                {user?.doctor_name}
                               </div>
-                              <div className="text-gray-400">{user?.email}</div>
+                              <div className="text-gray-400">{user?.doctor_email}</div>
                             </div>
                           </th>
+                          {/* Time */}
+                          <td className="px-6 py-3 hidden md:table-cell text-center">
+                            <span className="font-medium text-gray-700">
+                              {user?.start_time}
+                            </span>
+                            <span className="text-center"> to </span>
+                            <span className="text-gray-700">{user?.end_time}</span>
+                          </td>
                           {/* Status */}
                           <td className="px-6 py-3 hidden md:table-cell">
-                            {user?.is_active ? (
+                            {user?.is_booked ? (
                               <span className="inline-flex items-center gap-1 rounded-full bg-green-100 px-2 py-1 text-xs font-semibold text-green-600">
                                 <span className="h-1.5 w-1.5 rounded-full bg-green-700"></span>
-                                Active
+                                Booked
                               </span>
                             ) : (
                               <span className="inline-flex items-center gap-1 rounded-full bg-red-100 px-2 py-1 text-xs font-semibold text-red-600">
                                 <span className="h-1.5 w-1.5 rounded-full bg-red-700"></span>
-                                Blocked
+                                Unbooked
                               </span>
                             )}
                           </td>
                           {/* Action */}
                           <td className="px-6 py-3">
                             <div className="flex justify-center sm:justify-start">
-                              {user?.is_active ? (
+                              {user?.is_booked ? (
                                 <button
                                   type="button"
-                                  onClick={() =>
-                                    toggleUserStatus(user.id, user.is_active)
-                                  }
+                                  onClick={() => toggleslotstatus(user.id, user.is_active)}
                                   className="custom-btn text-white bg-red-800 hover:bg-red-900 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none w-[6rem]"
                                 >
-                                  Block
+                                  Cancel
                                 </button>
                               ) : (
                                 <button
                                   type="button"
-                                  onClick={() =>
-                                    toggleUserStatus(user.id, user.is_active)
-                                  }
+                                  onClick={() => toggleslotstatus(user.id, user.is_active)}
                                   className="custom-btn text-white bg-green-800 hover:bg-green-900 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none w-[6rem]"
                                 >
-                                  Unblock
+                                  Book
                                 </button>
                               )}
                             </div>
@@ -194,11 +214,8 @@ const ViewAllUsers = ({ user }) => {
                       ))
                     ) : (
                       <tr>
-                        <td
-                          colSpan="3"
-                          className="px-6 py-3 text-center text-red-500 font-bold"
-                        >
-                          No related Users found.
+                        <td colSpan="3" className="px-6 py-3 text-center text-red-500 font-bold">
+                          No related slots found.
                         </td>
                       </tr>
                     )}
@@ -208,13 +225,13 @@ const ViewAllUsers = ({ user }) => {
             </div>
           </div>
         </div>
-        {users?.length > ITEMS_PER_PAGE && (
+        {slots?.length > ITEMS_PER_PAGE && (
           <div className="flex justify-center my-5">
             <ReactPaginate
               previousLabel={"Previous"}
               nextLabel={"Next"}
               breakLabel={"..."}
-              pageCount={Math.ceil(users.length / ITEMS_PER_PAGE)}
+              pageCount={Math.ceil(slots.length / ITEMS_PER_PAGE)}
               marginPagesDisplayed={2}
               pageRangeDisplayed={5}
               onPageChange={handlePageChange}
@@ -241,4 +258,4 @@ const mapStateToProps = (state) => ({
   user: state.auth.user,
 });
 
-export default connect(mapStateToProps)(ViewAllUsers);
+export default connect(mapStateToProps)(ViewAllSlotsTable);
