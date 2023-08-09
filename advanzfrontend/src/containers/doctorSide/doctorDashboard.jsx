@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import DoctorDonutChart from "../../components/Doctor/DoctorDonutChart";
 import DoctorSidebar from "../../components/Doctor/DoctorSidebar";
 import DoctorLatestBooking from "../../components/Doctor/DoctorLatestBooking";
-import profile from "../../assets/userSide/Booking/bgBookingImage2.jpg";
+import profile from "../../assets/userSide/Booking/bgBookingImage.jpg";
 import notificationAudio from "../../assets/userSide/Booking/notificationSound.wav";
 import { IoNotificationsSharp } from "react-icons/io5";
 import axios from "axios";
