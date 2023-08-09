@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { connect } from "react-redux";
 import ReactPaginate from "react-paginate";
-import profile from "../../assets/userside/Booking/bgBookingImage.jpg";
+import profile from "../../assets/userSide/Booking/bgBookingImage.jpg";
 
 const ViewAllBookingTable = ({ user }) => {
   const API_URL = import.meta.env.VITE_API_URL;
