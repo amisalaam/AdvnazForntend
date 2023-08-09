@@ -14,7 +14,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 
   const Home = () => {
     const [loading, setLoading] = useState(true);
-    console.log(API_URL)
+    console.log('aaaaaaaaaaaaaaaaaa',API_URL)
   
     useEffect(() => {
       const loadingTimeout = setTimeout(() => {
