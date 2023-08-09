@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ResetImg from "../../assets/authentication/resetImg4.png";
+import ResetImg from "../../assets/authentication/resetimg4.png";
 import { connect } from "react-redux";
 
 import ConfirmImg from "../../assets/alert/info.png";
