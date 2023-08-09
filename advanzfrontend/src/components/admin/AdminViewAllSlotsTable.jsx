@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { connect } from "react-redux";
 import ReactPaginate from "react-paginate";
-import profile from "../../assets/userside/Booking/bgBookingImage.jpg";
+import profile from "../../assets/userSide/Booking/bgBookingImage.jpg";
 import CreateSlotsModal from "./CreateSlotsModal";
 
 const ViewAllSlots = ({ user }) => {
