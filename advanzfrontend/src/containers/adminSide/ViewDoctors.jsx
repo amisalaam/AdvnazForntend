@@ -12,7 +12,7 @@ const ViewDoctors = () => {
 
 
   return (
-    <div className="flex flex-wrap">
+    <div className="flex ">
       <AdminSidebar className="w-full md:w-1/4 lg:w-1/5" /> 
       <ViewAllDoctors className="w-full md:w-3/4 lg:w-4/5" />
     </div>

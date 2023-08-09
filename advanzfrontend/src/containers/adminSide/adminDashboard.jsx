@@ -113,25 +113,26 @@ const AdminDashboard = ({logout}) => {
           New Notification Received!
         </div>
       )}
-      <div className="flex flex-col md:flex-row ">
+      <div className="flex flex-col md:flex-row overflow-x-hidden">
         <AdminSidebar />
-        <div className="md:h-[40rem] flex-1">
-          <div className="grid gap-7 md:grid-cols-3">
-            <div className="bg-gradient-to-bl from-pink-700 via-pink-400 to-pink-700 h-[6rem] md:w-[15rem] rounded-md m-5">
+        <div className="flex  flex-grow justify-center flex-col xl:flex-row">
+        <div className="flex-grow">
+          <div className="grid xl:grid-cols-3 grid-cols-1 md:grid-cols-2 p-3 gap-3">
+            <div className="bg-gradient-to-bl from-pink-700 via-pink-400 to-pink-700 h-[6rem]  rounded-md">
               <h2 className="text-white ml-5 mt-3 font-bold text-1xl">
                 Total Doctors
               </h2>
               <AnimatedNumber initialValue={0} finalValue={36} />
             </div>
 
-            <div className="bg-gradient-to-bl from-indigo-900 via-blue-400 to-indigo-800 h-[6rem] md:w-[15rem] rounded-md m-5">
+            <div className="bg-gradient-to-bl from-indigo-900 via-blue-400 to-indigo-800 h-[6rem] rounded-md">
               <h2 className="text-white ml-5 mt-3 font-bold text-1xl">
                 Total Patients
               </h2>
               <AnimatedNumber initialValue={0} finalValue={36} />
             </div>
 
-            <div className="bg-gradient-to-bl from-emerald-900 via-emerald-400 to-emerald-800 h-[6rem] md:w-[15rem] rounded-md m-5 ">
+            <div className="bg-gradient-to-bl from-emerald-900 via-emerald-400 to-emerald-800 h-[6rem] rounded-md ">
               <h2 className="text-white ml-5 mt-3 font-bold text-1xl">
                 Total Appointments
               </h2>
@@ -139,10 +140,12 @@ const AdminDashboard = ({logout}) => {
             </div>
           </div>
 
+          <div className="">
           <AdminDashboardLineChart />
+          </div>
           <AdminLatestBooking />
         </div>
-        <div className="mt-5 md:flex-2">
+        <div className="px-2 py-2 flex flex-col md:flex-row xl:flex-col ">
           <div className="max-w-sm border border-gray-200 rounded-lg shadow w-full  md:w-[18rem] md:mx-0 md:mr-4 ">
             <div className="flex justify-end px-5 pt-5">
               <div className="relative">
@@ -188,7 +191,7 @@ const AdminDashboard = ({logout}) => {
               </div>
             </div>
 
-            <div className="flex flex-col items-center pb-10">
+            <div className="flex flex-col flex-grow items-center pb-10">
               <img
                 className="w-24 h-24 mb-2 rounded-full shadow-lg"
                 src={profile}
@@ -222,6 +225,7 @@ const AdminDashboard = ({logout}) => {
             </div>
           </div>
           <AdminDonutChart />
+        </div>
         </div>
       </div>
     </div>

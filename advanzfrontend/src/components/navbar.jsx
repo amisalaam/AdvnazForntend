@@ -141,7 +141,7 @@ const Navbar = ({ logout, isAuthenticated, user }) => {
       <div className="bg-advanzRed md:pe-20"></div>
       <div className="bg-advanzBlue md:pe-20">
         <div className="flex flex-wrap items-center justify-between mx-auto">
-          <div className="bg-white relative p-2 before:contents[''] before:absolute before:w-0 before:h-0 before:top-0 before:-right-[65px] before:border-[36px] before:border-advanzBlue before:border-t-white before:border-l-white">
+          <div className="bg-white relative p-2 before:contents[''] before:absolute before:w-0 before:h-0 before:top-0 before:-right-[43px] xl:before:-right-[72px] before:border-[23px] xl:before:border-[37px] before:border-transparent before:border-t-white before:border-l-white">
             <img src={AdvanzLogo} className="h-7 xl:h-14" alt="AdvanzLogo" />
           </div>
           <ToastContainer />

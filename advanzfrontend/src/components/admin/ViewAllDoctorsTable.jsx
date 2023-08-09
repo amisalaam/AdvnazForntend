@@ -166,13 +166,13 @@ const ViewAllDoctors = ({ user }) => {
                             <div className="relative h-10 w-10">
                               {doctor?.doctor_profile_image ? (
                                 <img
-                                  className="h-full w-full rounded-full object-cover object-center"
+                                  className="h-full w-full rounded-full  object-center"
                                   src={`${API_URL}${doctor?.doctor_profile_image}`}
                                   alt="avatar"
                                 />
                               ) : (
                                 <img
-                                  className="h-full w-full rounded-full object-cover object-center"
+                                  className="h-full w-full rounded-full  object-center"
                                   src=""
                                   alt="avatar"
                                 />

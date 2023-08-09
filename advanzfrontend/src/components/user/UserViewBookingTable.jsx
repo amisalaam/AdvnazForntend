@@ -3,76 +3,34 @@ import axios from "axios";
 import { connect } from "react-redux";
 import ReactPaginate from "react-paginate";
 import profile from "../../assets/userside/Booking/bgBookingImage.jpg";
-import CreateSlotsModal from "./CreateSlotsModal";
 
-const ViewAllSlots = ({ user }) => {
+const UserViewAllBookingTable = ({ user }) => {
   const API_URL = import.meta.env.VITE_API_URL;
-  const ITEMS_PER_PAGE = 5; // Change this value to set the number of users per page
+  const ITEMS_PER_PAGE = 6; // Change this value to set the number of booking per page
 
-  const [slots, setslots] = useState([]);
+  const [booking, setbooking] = useState([]);
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [filter, setFilter] = useState("all"); // 'all', 'booked', or 'unbooked'
   const [selectedDate, setSelectedDate] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [idSearchQuery, setIdSearchQuery] = useState("");
 
   const [currentPage, setCurrentPage] = useState(0);
-
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
   useEffect(() => {
-    if (user && user.is_superuser) {
+    if (user && user.id) {
       const fetchData = async () => {
         try {
-          let apiUrl = `${API_URL}/myadmin/api/get/booked/slots/`;
-          if (selectedDate) {
-            apiUrl = `${API_URL}/myadmin/api/get/booked/slots/?date=${selectedDate}`;
-          }
+          const apiUrl = `${API_URL}/doctor/api/get/user/appointment/${user.id}/`;
           const response = await axios.get(apiUrl);
           console.log("API Response:", response.data); // Log the response data
-          setslots(response.data);
+          setbooking(response.data);
         } catch (err) {
-          console.error("Error fetching booked slots:", err);
+          console.error("Error fetching booked booking:", err);
         }
       };
       fetchData();
     }
-  }, [user, selectedDate]);
-
-  const handleSlotAction = async (slotId, action) => {
-    if (user && user.is_superuser) {
-      try {
-        const response = await axios.patch(
-          `${API_URL}/myadmin/api/cancel/or/book/slots/${slotId}/`,
-          { action }
-        );
-
-        console.log("Slot action response:", response.data);
-
-        // Update local state to reflect the new status
-        const updatedSlots = slots.map((slot) => {
-          if (slot.id === slotId) {
-            return {
-              ...slot,
-              is_booked: action === "book",
-            };
-          }
-          return slot;
-        });
-
-        setslots(updatedSlots);
-      } catch (error) {
-        console.error("Error during slot action:", error);
-      }
-    }
-  };
+  }, [user]);
 
   // Function to handle page change
   const handlePageChange = ({ selected }) => {
@@ -80,42 +38,35 @@ const ViewAllSlots = ({ user }) => {
   };
 
   const offset = currentPage * ITEMS_PER_PAGE;
-  const paginatedslots = slots
-    .filter((user) => {
-      const idMatches = user?.id.toString().includes(searchQuery);
-      const nameMatches = user?.doctor_name
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase());
-      const startTimeMatches =
-        startTime === "" || user.start_time?.localeCompare(startTime) >= 0;
-      const endTimeMatches =
-        endTime === "" || user.end_time?.localeCompare(endTime) <= 0;
-      const dateMatches = !selectedDate || user.date === selectedDate;
-      if (filter === "booked") return user.is_booked;
-      if (filter === "unbooked")
-        return user.hasOwnProperty("is_booked") && !user.is_booked;
-
-      return (
-        (idMatches || nameMatches) && // Fix this line
-        startTimeMatches &&
-        endTimeMatches &&
-        dateMatches
-      );
-    })
-    .slice(offset, offset + ITEMS_PER_PAGE);
+  const paginatedbooking = booking
+    ? booking
+        .filter((user) => {
+          const nameMatches = user.doctor_name
+            ?.toLowerCase()
+            .includes(searchQuery.toLowerCase());
+          const startTimeMatches =
+            startTime === "" ||
+            (user.start_time && user.start_time?.localeCompare(startTime) >= 0);
+          const endTimeMatches =
+            endTime === "" ||
+            (user.end_time && user.end_time?.localeCompare(endTime) <= 0);
+          const dateMatches = !selectedDate || user.date === selectedDate;
+          if (filter === "booked") return user.is_booked;
+          if (filter === "unbooked")
+            return user.hasOwnProperty("is_booked") && !user.is_booked;
+          return (
+            nameMatches && startTimeMatches && endTimeMatches && dateMatches
+          );
+        })
+        .slice(offset, offset + ITEMS_PER_PAGE)
+    : [];
 
   return (
     <div className="flex flex-col items-center bg-acontent flex-grow  p-4">
       <div className="mx-auto p-4 bg-white shadow-xl rounded-xl lg:w-full">
         <div className="bg-white px-3 rounded-xl">
-          <button
-            className="custom-btn text-white bg-green-800 hover:bg-green-900 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none"
-            onClick={openModal} // Open the modal when the button is clicked
-          >
-            Create Slots
-          </button>
           <div className="w-full p-5 flex flex-col sm:flex-row justify-between">
-            <h1 className="text-3xl text-start sm:mb-0">View Slots</h1>
+            <h1 className="text-3xl text-start sm:mb-0">View booking</h1>
             <div className="flex gap-4 items-center">
               <input
                 type="text"
@@ -142,7 +93,6 @@ const ViewAllSlots = ({ user }) => {
                 value={selectedDate}
                 onChange={(e) => setSelectedDate(e.target.value)}
               />
-
               <button
                 className={`custom-btn text-white ${
                   filter === "all" ? "bg-blue-800" : "bg-gray-500"
@@ -178,16 +128,11 @@ const ViewAllSlots = ({ user }) => {
                     <tr>
                       <th
                         scope="col"
-                        className="px-6 py-3 text-lg text-gray-900 hidden md:table-cell"
-                      >
-                        Id
-                      </th>
-                      <th
-                        scope="col"
                         className="px-6 py-3 text-lg text-gray-900"
                       >
                         Doctor Name
                       </th>
+                      
                       <th
                         scope="col"
                         className="px-6 py-3 text-lg text-gray-900 hidden md:table-cell text-center"
@@ -215,15 +160,10 @@ const ViewAllSlots = ({ user }) => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100 border-t border-gray-100">
-                    {paginatedslots.length > 0 ? (
-                      paginatedslots.map((user, index) => (
+                    {paginatedbooking.length > 0 ? (
+                      paginatedbooking.map((user, index) => (
                         <tr className="hover:bg-gray-100" key={index}>
-                          <td className="px-6 py-3 hidden md:table-cell ">
-                            <span className="font-medium text-gray-700">
-                              {user?.id}
-                            </span>
-                          </td>
-                          {/* slots Name */}
+                          {/* booking Name */}
                           <th className="flex flex-col gap-3 sm:flex-row items-start sm:items-center px-6 py-3 text-base text-gray-900">
                             <div className="relative h-10 w-10">
                               {user?.doctor_image ? (
@@ -250,6 +190,7 @@ const ViewAllSlots = ({ user }) => {
                             </div>
                           </th>
                           {/* Time */}
+                          
                           <td className="px-6 py-3 hidden md:table-cell text-center">
                             <span className="font-medium text-gray-700">
                               {user?.start_time}
@@ -259,32 +200,38 @@ const ViewAllSlots = ({ user }) => {
                               {user?.end_time}
                             </span>
                           </td>
+
                           <td className="px-6 py-3 hidden md:table-cell text-center">
-                            <span className="font-medium text-gray-700">
-                              {user?.date}
-                            </span>
+                            <span className="text-gray-700">{user?.date}</span>
                           </td>
                           {/* Status */}
                           <td className="px-6 py-3 hidden md:table-cell">
-                            {user?.is_booked ? (
+                            {user?.status === "approved" ? (
                               <span className="inline-flex items-center gap-1 rounded-full bg-green-100 px-2 py-1 text-xs font-semibold text-green-600">
                                 <span className="h-1.5 w-1.5 rounded-full bg-green-700"></span>
-                                Booked
+                                {user?.status}
                               </span>
-                            ) : (
+                            ) : user?.status === "rejected" ? (
                               <span className="inline-flex items-center gap-1 rounded-full bg-red-100 px-2 py-1 text-xs font-semibold text-red-600">
                                 <span className="h-1.5 w-1.5 rounded-full bg-red-700"></span>
-                                Unbooked
+                                {user?.status}
+                              </span>
+                            ) : (
+                              <span className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-2 py-1 text-xs font-semibold text-blue-600">
+                                <span className="h-1.5 w-1.5 rounded-full bg-blue-700"></span>
+                                {user?.status}
                               </span>
                             )}
                           </td>
                           {/* Action */}
                           <td className="px-6 py-3">
                             <div className="flex justify-center sm:justify-start">
-                              {user.is_booked ? (
+                              {user?.status ? (
                                 <button
                                   type="button"
-                                  onClick={() => handleSlotAction(user.id)}
+                                  onClick={() =>
+                                    togglebookingtatus(user.id, user.is_active)
+                                  }
                                   className="custom-btn text-white bg-red-800 hover:bg-red-900 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none w-[6rem]"
                                 >
                                   Cancel
@@ -292,10 +239,12 @@ const ViewAllSlots = ({ user }) => {
                               ) : (
                                 <button
                                   type="button"
-                                  className="custom-btn text-gray-500 bg-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none w-[6rem] cursor-not-allowed"
-                                  disabled
+                                  onClick={() =>
+                                    togglebookingtatus(user.id, user.is_active)
+                                  }
+                                  className="custom-btn text-white bg-green-800 hover:bg-green-900 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none w-[6rem]"
                                 >
-                                  Cancel
+                                  Approve
                                 </button>
                               )}
                             </div>
@@ -308,7 +257,7 @@ const ViewAllSlots = ({ user }) => {
                           colSpan="3"
                           className="px-6 py-3 text-center text-red-500 font-bold"
                         >
-                          No related slots found.
+                          No related booking found.
                         </td>
                       </tr>
                     )}
@@ -318,13 +267,13 @@ const ViewAllSlots = ({ user }) => {
             </div>
           </div>
         </div>
-        {slots?.length > ITEMS_PER_PAGE && (
+        {booking?.length > ITEMS_PER_PAGE && (
           <div className="flex justify-center my-5">
             <ReactPaginate
               previousLabel={"Previous"}
               nextLabel={"Next"}
               breakLabel={"..."}
-              pageCount={Math.ceil(slots.length / ITEMS_PER_PAGE)}
+              pageCount={Math.ceil(booking.length / ITEMS_PER_PAGE)}
               marginPagesDisplayed={2}
               pageRangeDisplayed={5}
               onPageChange={handlePageChange}
@@ -345,9 +294,6 @@ const ViewAllSlots = ({ user }) => {
           </div>
         )}
       </div>
-      {isModalOpen && (
-        <CreateSlotsModal isOpen={isModalOpen} onClose={closeModal} />
-      )}
     </div>
   );
 };
@@ -356,4 +302,4 @@ const mapStateToProps = (state) => ({
   user: state.auth.user,
 });
 
-export default connect(mapStateToProps)(ViewAllSlots);
+export default connect(mapStateToProps)(UserViewAllBookingTable);

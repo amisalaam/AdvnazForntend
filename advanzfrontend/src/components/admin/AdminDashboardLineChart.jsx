@@ -127,8 +127,8 @@ const AdminDashboardLineChart = () => {
   };
 
   return (
-    <div className="">
-      <div className="card border border-gray-200 rounded-lg shadow mx-5">
+    <div className=" p-2">
+      <div className="card border border-gray-200 rounded-lg shadow">
         <div className="card-header">
           <h3 className="card-heading text-2xl m-6 text-advanzRed ">
             Department
@@ -138,7 +138,7 @@ const AdminDashboardLineChart = () => {
         <div className="card-body">
           {/* Apply responsive styles to the parent container */}
           <div className="overflow-x-auto">
-            <div className="w-full h-60">
+            <div className=" h-60">
               <Line data={data} options={options} />
             </div>
           </div>
