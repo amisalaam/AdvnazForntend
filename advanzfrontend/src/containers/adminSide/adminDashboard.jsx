@@ -3,7 +3,7 @@ import AdminSidebar from "../../components/admin/AdminSidebar";
 import AdminDashboardLineChart from "../../components/admin/AdminDashboardLineChart";
 import AdminDonutChart from "../../components/admin/AdminDonutChart";
 import AdminLatestBooking from "../../components/admin/AdminLatestBooking";
-import profile from "../../assets/userSide/Booking/bgBookingImage2.jpg";
+import profile from "../../assets/userSide/Booking/bgBookingImage.jpg";
 import notificationAudio from "../../assets/userSide/Booking/notificationSound.wav";
 
 
