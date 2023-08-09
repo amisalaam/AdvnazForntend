@@ -5,10 +5,10 @@ import { Provider } from "react-redux";
 import store from "./store";
 import Layout from "./hocs/Layout";
 import Home from "./containers/userSide/home";
-import Login from "./containers/authentication/Login";
-import Signup from "./containers/authentication/Signup";
-import Activate from "./containers/authentication/Activate";
-import ResetPassword from "./containers/authentication/ResetPassword";
+import Login from "./containers/authentication/login";
+import Signup from "./containers/authentication/signup";
+import Activate from "./containers/authentication/activate";
+import ResetPassword from "./containers/authentication/resetpassword";
 import ResetPasswordConfirm from "./containers/authentication/ResetPasswordConfirm";
 import DoctorDashboard from "./containers/doctorSide/doctorDashboard";
 import AdminDashboard from "./containers/adminSide/adminDashboard";
@@ -22,7 +22,7 @@ import ViewUsers from "./containers/adminSide/viewUsers";
 import AdminViewSlots from "./containers/adminSide/ViewSlots";
 import ViewSlots from "./containers/doctorSide/ViewSlots";
 import ViewBooking from "./containers/doctorSide/ViewBooking";
-import AdminViewBooking from "./containers/adminSide/viewAllBooking";
+import AdminViewBooking from "./containers/adminSide/ViewAllBooking";
 import UserViewBooking from "./containers/userSide/Dashboard/UserViewBooking";
 
 const App = () => {
