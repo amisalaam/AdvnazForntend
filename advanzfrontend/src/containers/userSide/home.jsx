@@ -7,10 +7,14 @@ import Banner1 from '../../assets/userSide/home/home1.jpg';
 import LoadingComponent from "../../components/Loading";
 
 import DoctorCarousel from "../../components/carousel/doctorcarousel";
+const API_URL = import.meta.env.VITE_API_URL;
+
+
 
 
   const Home = () => {
     const [loading, setLoading] = useState(true);
+    console.log(API_URL)
   
     useEffect(() => {
       const loadingTimeout = setTimeout(() => {
