@@ -45,7 +45,7 @@ const DoctorDashboard = ({user,logout}) => {
     if (user && user.id && user.is_doctor) {
       const doctorId = user.id;
       const socket = new WebSocket(
-        `ws://localhost:8000/ws/doctor/${doctorId}/`
+        `ws://${API_URL}/ws/doctor/${doctorId}/`
       );
 
       socket.onmessage = (event) => {

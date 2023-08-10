@@ -45,7 +45,7 @@ const AdminDashboard = ({logout}) => {
   };
   useEffect(() => {
     const socket = new WebSocket(
-      "ws://localhost:8000/ws/superuser-notifications/"
+      `ws://${API_URL}/ws/superuser-notifications/`
     );
     const config = {
       headers: {
