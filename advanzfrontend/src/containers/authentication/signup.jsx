@@ -105,7 +105,7 @@ const Signup = ({ signup, isAuthenticated }) => {
               value={password}
               onChange={(e) => onChange(e)}
               required
-              minLength={6}
+              minLength={8}
             />
             <input
               className="text-md w-full px-4 py-2 border border-solid border-gray-300 rounded mt-4"
@@ -115,7 +115,7 @@ const Signup = ({ signup, isAuthenticated }) => {
               value={re_password}
               onChange={(e) => onChange(e)}
               required
-              minLength={6}
+              minLength={8}
             />
 
             <div className="text-center md:text-left">
