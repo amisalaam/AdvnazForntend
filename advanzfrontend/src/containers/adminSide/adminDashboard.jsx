@@ -45,6 +45,7 @@ const AdminDashboard = ({ logout }) => {
     const socket = new WebSocket(
       "ws://localhost:8000/ws/superuser-notifications/"
     );
+
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -53,33 +54,54 @@ const AdminDashboard = ({ logout }) => {
       },
     };
 
-    const fetchDataAndProcessMessages = async () => {
-      try {
-        // Fetch data from the server using Axios
-        const res = await axios.get(
-          `${API_URL}/doctor/api/get/admin/notification/`,
-          config
-        );
-        const newMessages = res.data;
-
-        // Set messages with the fetched data
-        setMessages(newMessages);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
-    socket.onmessage = (event) => {
-      const message = JSON.parse(event.data);
-      console.log(message);
-      // Add the new message to the top of the messages array
-      setMessages((prevMessages) => [message, ...prevMessages]);
+    const playNotificationSound = () => {
       const audio = new Audio(notificationAudio);
       audio.play();
       setShowNotification(true);
     };
 
-    // Fetch initial data and process messages
+    socket.onopen = () => {
+      console.log("WebSocket connection established.");
+    };
+
+    socket.onmessage = (event) => {
+      const message = JSON.parse(event.data);
+      setMessages((prevMessages) => [message, ...prevMessages]);
+      playNotificationSound();
+    };
+
+    socket.onerror = (error) => {
+      console.error("WebSocket error:", error);
+      // Handle the error, show an error message, or perform other actions
+    };
+
+    socket.onclose = (event) => {
+      if (event.wasClean) {
+        console.log(
+          `WebSocket connection closed cleanly, code=${event.code}, reason=${event.reason}`
+        );
+      } else {
+        console.error(
+          `WebSocket connection died, code=${event.code}, reason=${event.reason}`
+        );
+        // Handle the unexpected closure, attempt reconnection, or other actions
+      }
+    };
+
+    const fetchDataAndProcessMessages = async () => {
+      try {
+        const res = await axios.get(
+          `${API_URL}/doctor/api/get/admin/notification/`,
+          config
+        );
+        const newMessages = res.data;
+        setMessages(newMessages);
+      } catch (err) {
+        console.error("Error fetching data:", err);
+        // Display an error message to the user or trigger appropriate actions
+      }
+    };
+
     if (localStorage.getItem("access")) {
       fetchDataAndProcessMessages();
     }
@@ -88,6 +110,7 @@ const AdminDashboard = ({ logout }) => {
       socket.close();
     };
   }, []);
+
   useEffect(() => {
     if (showNotification) {
       const audio = new Audio(notificationAudio);

@@ -46,9 +46,12 @@ const DoctorDashboard = ({user,logout}) => {
       const doctorId = user.id;
       const socket = new WebSocket(
         `ws://localhost:8000/ws/doctor/${doctorId}/`
-        // "wss://advanzbackend.onrender.com/ws/superuser-notifications/"
       );
-
+  
+      socket.onopen = () => {
+        console.log('WebSocket connection opened');
+      };
+  
       socket.onmessage = (event) => {
         const message = JSON.parse(event.data);
         console.log(message);
@@ -57,7 +60,12 @@ const DoctorDashboard = ({user,logout}) => {
         const audio = new Audio(notificationAudio);
         audio.play();
       };
-
+  
+      socket.onerror = (error) => {
+        console.error('WebSocket error:', error);
+        // Handle the error, e.g., show an error message to the user
+      };
+  
       // Fetch data from the API only once when the WebSocket connection is established
       const fetchUserData = async () => {
         try {
@@ -68,7 +76,7 @@ const DoctorDashboard = ({user,logout}) => {
               Accept: "application/json",
             },
           };
-
+  
           const res = await axios.get(
             `${API_URL}/doctor/api/get/doctor/notification/${doctorId}/`,
             config
@@ -79,15 +87,17 @@ const DoctorDashboard = ({user,logout}) => {
           console.log(err);
         }
       };
-
+  
       fetchUserData();
-
+  
       // Clean up the WebSocket connection when the component unmounts
       return () => {
         socket.close();
       };
     }
   }, [user]);
+
+  
 
   useEffect(() => {
     if (showNotification) {
