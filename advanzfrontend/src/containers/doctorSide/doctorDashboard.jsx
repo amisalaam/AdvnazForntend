@@ -45,8 +45,8 @@ const DoctorDashboard = ({user,logout}) => {
     if (user && user.id && user.is_doctor) {
       const doctorId = user.id;
       const socket = new WebSocket(
-        `ws://localhost:8000/ws/doctor/${doctorId}/`
-        
+        `wss://advanzbackend.onrender.com//doctor/${doctorId}/`
+        // wss://advanzbackend.onrender.com/
       );
   
       socket.onopen = () => {
