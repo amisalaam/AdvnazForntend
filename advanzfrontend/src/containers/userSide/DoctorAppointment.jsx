@@ -144,8 +144,8 @@ const UserPage = () => {
           config
         );
         console.log("Slot successfully booked!");
-        const socket = new WebSocket(`wss://advanzbackend.onrender.com/ws/doctor/${id}/`);
-        // const socket = new WebSocket(`ws://localhost:8000/ws/doctor/${id}/`);
+        // const socket = new WebSocket(`wss://advanzbackend.onrender.com/ws/doctor/${id}/`);
+        const socket = new WebSocket(`ws://localhost:8000/ws/doctor/${id}/`);
 
         socket.onopen = () => {
           const notification = {
@@ -156,10 +156,11 @@ const UserPage = () => {
           socket.close();
         };
 
-        // const superuserSocket = new WebSocket(
-        //   "ws://localhost:8000/ws/superuser-notifications/"
-        // );
-        const superuserSocket = new WebSocket(`wss://advanzbackend.onrender.com/ws/superuser-notifications/`);
+        const superuserSocket = new WebSocket(
+          "ws://localhost:8000/ws/superuser-notifications/"
+        );
+
+        // const superuserSocket = new WebSocket(`wss://advanzbackend.onrender.com/ws/superuser-notifications/`);
 
         superuserSocket.onopen = () => {
           const superuserNotification = {

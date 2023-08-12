@@ -43,8 +43,8 @@ const AdminDashboard = ({ logout }) => {
   };
   useEffect(() => {
     const socket = new WebSocket(
-      // "ws://localhost:8000/ws/superuser-notifications/"
-      "wss://advanzbackend.onrender.com/ws/superuser-notifications/"
+      "ws://localhost:8000/ws/superuser-notifications/"
+      // "wss://advanzbackend.onrender.com/ws/superuser-notifications/"
 
     );
 
