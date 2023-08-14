@@ -44,28 +44,28 @@ const DoctorDashboard = ({user,logout}) => {
   useEffect(() => {
     if (user && user.id && user.is_doctor) {
       const doctorId = user.id;
-      const socket = new WebSocket(
-        `wss://advanzbackend.onrender.com//doctor/${doctorId}/`
-        // wss://advanzbackend.onrender.com/
-      );
+      // const socket = new WebSocket(
+      //   `wss://advanzbackend.onrender.com//doctor/${doctorId}/`
+      //   // wss://advanzbackend.onrender.com/
+      // );
   
-      socket.onopen = () => {
-        console.log('WebSocket connection opened');
-      };
+      // socket.onopen = () => {
+      //   console.log('WebSocket connection opened');
+      // };
   
-      socket.onmessage = (event) => {
-        const message = JSON.parse(event.data);
-        console.log(message);
-        setMessages((prevMessages) => [message, ...prevMessages]);
-        setShowNotification(true);
-        const audio = new Audio(notificationAudio);
-        audio.play();
-      };
+      // socket.onmessage = (event) => {
+      //   const message = JSON.parse(event.data);
+      //   console.log(message);
+      //   setMessages((prevMessages) => [message, ...prevMessages]);
+      //   setShowNotification(true);
+      //   const audio = new Audio(notificationAudio);
+      //   audio.play();
+      // };
   
-      socket.onerror = (error) => {
-        console.error('WebSocket error:', error);
-        // Handle the error, e.g., show an error message to the user
-      };
+      // socket.onerror = (error) => {
+      //   console.error('WebSocket error:', error);
+      //   // Handle the error, e.g., show an error message to the user
+      // };
   
       // Fetch data from the API only once when the WebSocket connection is established
       const fetchUserData = async () => {
@@ -92,9 +92,9 @@ const DoctorDashboard = ({user,logout}) => {
       fetchUserData();
   
       // Clean up the WebSocket connection when the component unmounts
-      return () => {
-        socket.close();
-      };
+      // return () => {
+      //   socket.close();
+      // };
     }
   }, [user]);
 

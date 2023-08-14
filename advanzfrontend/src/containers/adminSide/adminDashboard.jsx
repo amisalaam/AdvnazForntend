@@ -42,11 +42,11 @@ const AdminDashboard = ({ logout }) => {
     setIsDropdownOpen((prevState) => !prevState);
   };
   useEffect(() => {
-    const socket = new WebSocket(
-      // "ws://localhost:8000/ws/superuser-notifications/"
-      "wss://advanzbackend.onrender.com/ws/superuser-notifications/"
+    // const socket = new WebSocket(
+    //   // "ws://localhost:8000/ws/superuser-notifications/"
+    //   "wss://advanzbackend.onrender.com/ws/superuser-notifications/"
 
-    );
+    // );
 
     const config = {
       headers: {
@@ -62,33 +62,33 @@ const AdminDashboard = ({ logout }) => {
       setShowNotification(true);
     };
 
-    socket.onopen = () => {
-      console.log("WebSocket connection established.");
-    };
+    // socket.onopen = () => {
+    //   console.log("WebSocket connection established.");
+    // };
 
-    socket.onmessage = (event) => {
-      const message = JSON.parse(event.data);
-      setMessages((prevMessages) => [message, ...prevMessages]);
-      playNotificationSound();
-    };
+    // socket.onmessage = (event) => {
+    //   const message = JSON.parse(event.data);
+    //   setMessages((prevMessages) => [message, ...prevMessages]);
+    //   playNotificationSound();
+    // };
 
-    socket.onerror = (error) => {
-      console.error("WebSocket error:", error);
-      // Handle the error, show an error message, or perform other actions
-    };
+    // socket.onerror = (error) => {
+    //   console.error("WebSocket error:", error);
+    //   // Handle the error, show an error message, or perform other actions
+    // };
 
-    socket.onclose = (event) => {
-      if (event.wasClean) {
-        console.log(
-          `WebSocket connection closed cleanly, code=${event.code}, reason=${event.reason}`
-        );
-      } else {
-        console.error(
-          `WebSocket connection died, code=${event.code}, reason=${event.reason}`
-        );
-        // Handle the unexpected closure, attempt reconnection, or other actions
-      }
-    };
+    // socket.onclose = (event) => {
+    //   if (event.wasClean) {
+    //     console.log(
+    //       `WebSocket connection closed cleanly, code=${event.code}, reason=${event.reason}`
+    //     );
+    //   } else {
+    //     console.error(
+    //       `WebSocket connection died, code=${event.code}, reason=${event.reason}`
+    //     );
+    //     // Handle the unexpected closure, attempt reconnection, or other actions
+    //   }
+    // };
 
     const fetchDataAndProcessMessages = async () => {
       try {
@@ -108,9 +108,9 @@ const AdminDashboard = ({ logout }) => {
       fetchDataAndProcessMessages();
     }
 
-    return () => {
-      socket.close();
-    };
+    // return () => {
+    //   socket.close();
+    // };
   }, []);
 
   useEffect(() => {

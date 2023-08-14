@@ -144,32 +144,32 @@ const UserPage = () => {
           config
         );
         console.log("Slot successfully booked!");
-        const socket = new WebSocket(`wss://advanzbackend.onrender.com/ws/doctor/${id}/`);
+        // const socket = new WebSocket(`wss://advanzbackend.onrender.com/ws/doctor/${id}/`);
         // const socket = new WebSocket(`ws://localhost:8000/ws/doctor/${id}/`);
 
-        socket.onopen = () => {
-          const notification = {
-            type: "slot_booked",
-            message: `Slot ${selectedSlot.id} has been booked!`,
-          };
-          socket.send(JSON.stringify(notification));
-          socket.close();
-        };
+        // socket.onopen = () => {
+        //   const notification = {
+        //     type: "slot_booked",
+        //     message: `Slot ${selectedSlot.id} has been booked!`,
+        //   };
+        //   socket.send(JSON.stringify(notification));
+        //   socket.close();
+        // };
 
         // const superuserSocket = new WebSocket(
         //   "ws://localhost:8000/ws/superuser-notifications/"
         // );
 
-        const superuserSocket = new WebSocket(`wss://advanzbackend.onrender.com/ws/superuser-notifications/`);
+        // const superuserSocket = new WebSocket(`wss://advanzbackend.onrender.com/ws/superuser-notifications/`);
 
-        superuserSocket.onopen = () => {
-          const superuserNotification = {
-            type: "notification",
-            message: `Slot ${selectedSlot.id} has been booked by Doctor ${id}!`,
-          };
-          superuserSocket.send(JSON.stringify(superuserNotification));
-          superuserSocket.close();
-        };
+        // superuserSocket.onopen = () => {
+        //   const superuserNotification = {
+        //     type: "notification",
+        //     message: `Slot ${selectedSlot.id} has been booked by Doctor ${id}!`,
+        //   };
+        //   superuserSocket.send(JSON.stringify(superuserNotification));
+        //   superuserSocket.close();
+        // };
         toast.success(`You have made a booking for Dr. ${doctor.name} at ${selectedSlot.start_time}`);
         setBookedSlot(selectedSlot);
       } catch (e) {
