@@ -32,6 +32,31 @@ const UserViewAllBookingTable = ({ user }) => {
     }
   }, [user]);
 
+  const cancelBooking = async (bookingId) => {
+    if (user && user.id) {
+      // Show a confirmation dialog
+      const confirmCancel = window.confirm(`Are you sure you want to cancel the Appointment ?`);
+      if (!confirmCancel) {
+        return; // User cancelled the action
+      }
+
+      try {
+        const apiUrl = `${API_URL}/api/cancel/user/appointment/${bookingId}/${user.id}/`;
+        await axios.put(apiUrl);
+        console.log("Booking canceled");
+
+        // Update the booking status locally in the state
+        setbooking(prevBookings =>
+          prevBookings.map(booking =>
+            booking.id === bookingId ? { ...booking, status: "canceled" } : booking
+          )
+        );
+      } catch (err) {
+        console.error("Error canceling booking:", err);
+      }
+    }
+  };
+
   // Function to handle page change
   const handlePageChange = ({ selected }) => {
     setCurrentPage(selected);
@@ -51,9 +76,6 @@ const UserViewAllBookingTable = ({ user }) => {
             endTime === "" ||
             (user.end_time && user.end_time?.localeCompare(endTime) <= 0);
           const dateMatches = !selectedDate || user.date === selectedDate;
-          if (filter === "booked") return user.is_booked;
-          if (filter === "unbooked")
-            return user.hasOwnProperty("is_booked") && !user.is_booked;
           return (
             nameMatches && startTimeMatches && endTimeMatches && dateMatches
           );
@@ -93,30 +115,8 @@ const UserViewAllBookingTable = ({ user }) => {
                 value={selectedDate}
                 onChange={(e) => setSelectedDate(e.target.value)}
               />
-              <button
-                className={`custom-btn text-white ${
-                  filter === "all" ? "bg-blue-800" : "bg-gray-500"
-                } hover:bg-blue-900 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none`}
-                onClick={() => setFilter("all")}
-              >
-                All
-              </button>
-              <button
-                className={`custom-btn text-white ${
-                  filter === "booked" ? "bg-green-800" : "bg-gray-500"
-                } hover:bg-green-900 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none`}
-                onClick={() => setFilter("booked")}
-              >
-                Booked
-              </button>
-              <button
-                className={`custom-btn text-white ${
-                  filter === "unbooked" ? "bg-red-800" : "bg-gray-500"
-                } hover:bg-red-900 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none`}
-                onClick={() => setFilter("unbooked")}
-              >
-                Unbooked
-              </button>
+
+              
             </div>
           </div>
           <div className="overflow-x-auto overflow-y-auto w-full">
@@ -132,7 +132,7 @@ const UserViewAllBookingTable = ({ user }) => {
                       >
                         Doctor Name
                       </th>
-                      
+
                       <th
                         scope="col"
                         className="px-6 py-3 text-lg text-gray-900 hidden md:table-cell text-center"
@@ -185,12 +185,13 @@ const UserViewAllBookingTable = ({ user }) => {
                                 {user?.doctor_name}
                               </div>
                               <div className="text-gray-400">
-                                {user?.doctor_email}
+                                {user?.department_name}
+                                {console.log(user)}
                               </div>
                             </div>
                           </th>
                           {/* Time */}
-                          
+
                           <td className="px-6 py-3 hidden md:table-cell text-center">
                             <span className="font-medium text-gray-700">
                               {user?.start_time}
@@ -216,9 +217,14 @@ const UserViewAllBookingTable = ({ user }) => {
                                 <span className="h-1.5 w-1.5 rounded-full bg-red-700"></span>
                                 {user?.status}
                               </span>
+                            ): user?.status === "pending" ? (
+                              <span className="inline-flex items-center gap-1 rounded-full bg-red-100 px-2 py-1 text-xs font-semibold text-yellow-400">
+                                <span className="h-1.5 w-1.5 rounded-full bg-yellow-400"></span>
+                                {user?.status}
+                              </span>
                             ) : (
-                              <span className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-2 py-1 text-xs font-semibold text-blue-600">
-                                <span className="h-1.5 w-1.5 rounded-full bg-blue-700"></span>
+                              <span className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-2 py-1 text-xs font-semibold text-red-600">
+                                <span className="h-1.5 w-1.5 rounded-full bg-red-700"></span>
                                 {user?.status}
                               </span>
                             )}
@@ -226,12 +232,10 @@ const UserViewAllBookingTable = ({ user }) => {
                           {/* Action */}
                           <td className="px-6 py-3">
                             <div className="flex justify-center sm:justify-start">
-                              {user?.status ? (
+                              {user?.status === "approved" ? (
                                 <button
                                   type="button"
-                                  onClick={() =>
-                                    togglebookingtatus(user.id, user.is_active)
-                                  }
+                                  onClick={() => cancelBooking(user.id)}
                                   className="custom-btn text-white bg-red-800 hover:bg-red-900 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none w-[6rem]"
                                 >
                                   Cancel
@@ -239,12 +243,10 @@ const UserViewAllBookingTable = ({ user }) => {
                               ) : (
                                 <button
                                   type="button"
-                                  onClick={() =>
-                                    togglebookingtatus(user.id, user.is_active)
-                                  }
-                                  className="custom-btn text-white bg-green-800 hover:bg-green-900 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none w-[6rem]"
+                                  disabled
+                                  className="custom-btn text-white bg-red-300 cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none w-[6rem]"
                                 >
-                                  Approve
+                                  Cancel
                                 </button>
                               )}
                             </div>
