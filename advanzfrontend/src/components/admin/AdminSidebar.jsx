@@ -40,6 +40,17 @@ const AdminSidebar = () => {
             </li>
             <li>
               <Link
+                to="/admin/dashboard/users"
+                className={`flex items-center p-2 text-white rounded-lg hover:bg-advanzRed ${
+                  location.pathname === "/admin/dashboard/users" ? "bg-advanzRed" : ""
+                }`}
+              >
+                <FaUsers size={25} />
+                <span className="flex-1 ml-3 whitespace-nowrap">Users</span>
+              </Link>
+            </li>
+            <li>
+              <Link
                 to="/admin/dashboard/doctors"
                 className={`flex items-center p-2 text-white rounded-lg hover:bg-advanzRed ${
                   location.pathname === "/admin/dashboard/doctors" ? "bg-advanzRed" : ""
@@ -51,15 +62,16 @@ const AdminSidebar = () => {
             </li>
             <li>
               <Link
-                to="/admin/dashboard/users"
+                to="/admin/dashboard/doctors"
                 className={`flex items-center p-2 text-white rounded-lg hover:bg-advanzRed ${
-                  location.pathname === "/admin/dashboard/users" ? "bg-advanzRed" : ""
+                  location.pathname === "/admin/dashboard/departments" ? "bg-advanzRed" : ""
                 }`}
               >
-                <FaUsers size={25} />
-                <span className="flex-1 ml-3 whitespace-nowrap">Users</span>
+                <FaUserMd size={25} />
+                <span className="flex-1 ml-3 whitespace-nowrap">Departments</span>
               </Link>
             </li>
+            
             <li>
               <Link
                 to="/admin/dashboard/slots"

@@ -1,15 +1,16 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate ,useLocation} from "react-router-dom";
 import { logout } from "../actions/auth";
-import { toast, ToastContainer } from "react-toastify";
+import {  ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BsJustify } from "react-icons/bs";
 import { connect } from "react-redux";
-import AdvanzLogo from "../assets/authentication/advanzLogo.png";
+import AdvanzLogo from "../assets/authentication/advanzLogo.webp";
 import { IoIosPie } from "react-icons/io";
 
 const Navbar = ({ logout, isAuthenticated, user }) => {
   const navigate = useNavigate();
+  const location = useLocation()
 
   useEffect(() => {
     if (user && user.is_superuser) {
@@ -24,18 +25,24 @@ const Navbar = ({ logout, isAuthenticated, user }) => {
   const guestLinks = () => (
     <ul className="text-xl font-bold flex flex-col p-4 md:p-0 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-advanzBlue">
       <li>
-        <Link
+      <Link
           to="/"
-          className="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-white md:p-0 md:hover:text-advanzRed"
+          className={`block py-2 pl-3 pr-4  rounded md:bg-transparent md:text-white md:p-0 md:hover:text-advanzRed ${
+            location.pathname === "/" ? "text-white  bg-advanzRed md:text-advanzRed" : ""
+          }`} 
           aria-current="page"
         >
           Home
         </Link>
+        
       </li>
       <li>
-        <Link
+      <Link
           to="/doctors"
-          className="block py-2 pl-3 pr-4 md:text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-advanzRed md:p-0"
+          className={`block py-2 pl-3 pr-4  rounded md:bg-transparent md:text-white md:p-0 md:hover:text-advanzRed ${
+            location.pathname === "/doctors" ? "text-white  bg-advanzRed md:text-advanzRed" : ""
+          }`} 
+          aria-current="page"
         >
           Doctors
         </Link>
@@ -50,16 +57,19 @@ const Navbar = ({ logout, isAuthenticated, user }) => {
       </li>
       <li>
         <Link
-          to="/pricing"
+          to="/about"
           className="block py-2 pl-3 pr-4 md:text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-advanzRed md:p-0"
         >
-          Pricing
+         About
         </Link>
       </li>
       <li>
-        <Link
+      <Link
           to="/login"
-          className="block py-2 pl-3 pr-4 md:text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-advanzRed md:p-0"
+          className={`block py-2 pl-3 pr-4  rounded md:bg-transparent md:text-white md:p-0 md:hover:text-advanzRed ${
+            location.pathname === "/login" ? "text-white bg-advanzRed md:text-advanzRed" : ""
+          }`} 
+          aria-current="page"
         >
           Login
         </Link>
@@ -70,18 +80,23 @@ const Navbar = ({ logout, isAuthenticated, user }) => {
   const authLinks = () => (
     <ul className="text-xl font-bold flex flex-col p-4 md:p-0 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-advanzBlue">
       <li>
-        <Link
+      <Link
           to="/"
-          className="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-white md:p-0 md:hover:text-advanzRed"
+          className={`block py-2 pl-3 pr-4  rounded md:bg-transparent md:text-white md:p-0 md:hover:text-advanzRed ${
+            location.pathname === "/" ? "text-white bg-advanzRed md:text-advanzRed" : ""
+          }`} 
           aria-current="page"
         >
           Home
         </Link>
       </li>
       <li>
-        <Link
+      <Link
           to="/doctors"
-          className="block py-2 pl-3 pr-4 md:text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-advanzRed md:p-0"
+          className={`block py-2 pl-3 pr-4  rounded md:bg-transparent md:text-white md:p-0 md:hover:text-advanzRed ${
+            location.pathname === "/doctors" ? "text-white  bg-advanzRed md:text-advanzRed" : ""
+          }`} 
+          aria-current="page"
         >
           Doctors
         </Link>
@@ -99,34 +114,43 @@ const Navbar = ({ logout, isAuthenticated, user }) => {
           to="/pricing"
           className="block py-2 pl-3 pr-4 md:text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-advanzRed md:p-0"
         >
-          Pricing
+          About
         </Link>
       </li>
       <li>
         {user && user.is_doctor ? (
           <Link
-            to="/doctor/dashboard"
-            className=" p-1 md:text-white rounded bg-advanzRed hover:bg-red-900     flex items-center"
-          >
-            <IoIosPie size={25} />
-            Dashboard
-          </Link>
+          to="/doctor/dashboard"
+          className={`p-1 md:text-white rounded md:bg-advanzRed md:hover:bg-red-900 flex items-center ${
+            location.pathname === "/doctor/dashboard" ? "text-white bg-advanzRed md:bg-none  " : ""
+          }`} 
+          aria-current="page"
+        >
+          <IoIosPie size={25} />
+          Dashboard
+        </Link>
         ) : user && user.is_superuser ? (
           <Link
-            to="/admin/dashboard"
-            className=" p-1 md:text-white rounded bg-advanzRed hover:bg-red-900     flex items-center"
-          >
-            <IoIosPie size={25} />
-            Dashboard
-          </Link>
+          to="/admin/dashboard"
+          className={`p-1 md:text-white rounded md:bg-advanzRed md:hover:bg-red-900 flex items-center ${
+            location.pathname === "/admin/dashboard" ? "text-white bg-advanzRed md:bg-none  " : ""
+          }`} 
+          aria-current="page"
+        >
+          <IoIosPie size={25} />
+          Dashboard
+        </Link>
         ) : (
-          <Link
-            to="/user/dashboard"
-            className=" p-1 md:text-white rounded bg-advanzRed hover:bg-red-900     flex items-center"
-          >
-            <IoIosPie size={25} />
-            Dashboard
-          </Link>
+           <Link
+          to="/user/dashboard"
+          className={`p-1 md:text-white rounded md:bg-advanzRed md:hover:bg-red-900 flex items-center ${
+            location.pathname === "/user/dashboard" ? "text-white bg-advanzRed md:bg-none  " : ""
+          }`} 
+          aria-current="page" 
+        >
+          <IoIosPie size={25} />
+          Dashboard
+        </Link>
         )}
       </li>
     </ul>
@@ -137,12 +161,12 @@ const Navbar = ({ logout, isAuthenticated, user }) => {
   };
 
   return (
-    <nav className="bg-white border-gray-200 ">
+    <nav className="bg-white border-gray-200 z-10 relative">
       <div className="bg-advanzRed md:pe-20"></div>
       <div className="bg-advanzBlue md:pe-20">
         <div className="flex flex-wrap items-center justify-between mx-auto">
-          <div className="bg-white relative p-2 before:contents[''] before:absolute before:w-0 before:h-0 before:top-0 before:-right-[43px] xl:before:-right-[72px] before:border-[23px] xl:before:border-[37px] before:border-transparent before:border-t-white before:border-l-white">
-            <img src={AdvanzLogo} className="h-7 xl:h-14" alt="AdvanzLogo" />
+          <div className="bg-white relative p-2 before:contents[''] before:absolute before:w-0 before:h-0 before:top-0 before:-right-[55px] xl:before:-right-[72px] before:border-[29px] xl:before:border-[37px] before:border-transparent before:border-t-white before:border-l-white">
+            <img src={AdvanzLogo} className="h-10 xl:h-14" alt="AdvanzLogo" />
           </div>
           <ToastContainer />
 
@@ -150,7 +174,7 @@ const Navbar = ({ logout, isAuthenticated, user }) => {
             data-collapse-toggle="navbar-default"
             type="button"
             onClick={toggleDropdown}
-            className="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
+            className="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded md:hidden hover:bg-gray-100 focus:outline-none  "
             aria-controls="navbar-default"
             aria-expanded={isDropdownOpen ? "true" : "false"}
           >
