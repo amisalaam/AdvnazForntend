@@ -53,7 +53,7 @@ const ViewAllBookingTable = ({ user }) => {
           const dateMatches = !selectedDate || user.date === selectedDate;
           if (filter === "booked") return user.status === 'approved';
           if (filter === "unbooked")
-            return !user.is_booked && user.status ==='approved';
+            return !user.is_booked && !user.status ==='approved';
           return (
             nameMatches && startTimeMatches && endTimeMatches && dateMatches
           );
