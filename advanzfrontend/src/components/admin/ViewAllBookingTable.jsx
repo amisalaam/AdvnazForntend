@@ -220,9 +220,14 @@ const ViewAllBookingTable = ({ user }) => {
                                 <span className="h-1.5 w-1.5 rounded-full bg-green-700"></span>
                                 {user?.status}
                               </span>
-                            ) : user?.status === "rejected" ? (
+                            ) : user?.status === "cancelled" ? (
                               <span className="inline-flex items-center gap-1 rounded-full bg-red-100 px-2 py-1 text-xs font-semibold text-red-600">
                                 <span className="h-1.5 w-1.5 rounded-full bg-red-700"></span>
+                                {user?.status}
+                              </span>
+                            ) : user?.status === "pending" ? (
+                              <span className="inline-flex items-center gap-1 rounded-full bg-red-100 px-2 py-1 text-xs font-semibold text-yellow-400">
+                                <span className="h-1.5 w-1.5 rounded-full bg-yellow-500"></span>
                                 {user?.status}
                               </span>
                             ) : (
