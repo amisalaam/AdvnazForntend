@@ -51,9 +51,9 @@ const ViewAllBookingTable = ({ user }) => {
             endTime === "" ||
             (user.end_time && user.end_time?.localeCompare(endTime) <= 0);
           const dateMatches = !selectedDate || user.date === selectedDate;
-          if (filter === "booked") return user.is_booked;
+          if (filter === "booked") return user.status === 'approved';
           if (filter === "unbooked")
-            return user.hasOwnProperty("is_booked") && !user.is_booked;
+            return !user.is_booked && user.status ==='approved';
           return (
             nameMatches && startTimeMatches && endTimeMatches && dateMatches
           );
