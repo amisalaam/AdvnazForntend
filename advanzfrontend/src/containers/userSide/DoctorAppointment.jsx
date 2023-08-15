@@ -5,17 +5,18 @@ import classNames from "classnames";
 import LoadingComponent from "../../components/Loading";
 import { useParams } from "react-router";
 import axios from "axios";
+import notificationAudio from "../../assets/userSide/Booking/notificationSound.wav";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const sendNotificationToDoctor = (socket, selectedSlot, doctorId) => {
-  const notification = {
-    type: "slot_booked",
-    message: `Slot ${selectedSlot.id} has been booked!`,
-  };
-  socket.emit("notification", notification);
-  console.log(notification);
-};
+// const sendNotificationToDoctor = (socket, selectedSlot) => {
+//   const notification = {
+//     type: "slot_booked",
+//     message: `Slot ${selectedSlot.id} has been booked!`,
+//   };
+//   socket.emit("notification", notification);
+//   console.log(notification);
+// };
 
 const UserPage = () => {
   const [doctor, setDoctor] = useState({});
@@ -170,6 +171,8 @@ const UserPage = () => {
         //   superuserSocket.send(JSON.stringify(superuserNotification));
         //   superuserSocket.close();
         // };
+        const audio = new Audio(notificationAudio);
+      audio.play();
         toast.success(`You have made a booking for Dr. ${doctor.name} at ${selectedSlot.start_time}`);
         setBookedSlot(selectedSlot);
       } catch (e) {

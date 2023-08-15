@@ -43,12 +43,12 @@ const UserViewAllBookingTable = ({ user }) => {
       try {
         const apiUrl = `${API_URL}/api/cancel/user/appointment/${bookingId}/${user.id}/`;
         await axios.put(apiUrl);
-        console.log("Booking canceled");
+        console.log("Booking cancelled");
 
         // Update the booking status locally in the state
         setbooking(prevBookings =>
           prevBookings.map(booking =>
-            booking.id === bookingId ? { ...booking, status: "canceled" } : booking
+            booking.id === bookingId ? { ...booking, status: "cancelled" } : booking
           )
         );
       } catch (err) {
