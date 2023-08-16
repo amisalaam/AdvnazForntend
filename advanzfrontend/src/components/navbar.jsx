@@ -161,8 +161,7 @@ const Navbar = ({ logout, isAuthenticated, user }) => {
   };
 
   return (
-    <nav className="bg-white border-gray-200 z-10 relative">
-      <div className="bg-advanzRed md:pe-20"></div>
+    <nav className="bg-white border-gray-200 z-10 relative ">
       <div className="bg-advanzBlue md:pe-20">
         <div className="flex flex-wrap items-center justify-between mx-auto">
           <div className="bg-white relative p-2 before:contents[''] before:absolute before:w-0 before:h-0 before:top-0 before:-right-[55px] xl:before:-right-[72px] before:border-[29px] xl:before:border-[37px] before:border-transparent before:border-t-white before:border-l-white">
@@ -184,7 +183,7 @@ const Navbar = ({ logout, isAuthenticated, user }) => {
           <div
             className={`${
               isDropdownOpen ? "block" : "hidden"
-            } w-full md:block md:w-auto relative`}
+            } w-full md:block md:w-auto absolute top-[50px] md:top-0 md:relative`}
             id="navbar-default"
           >
             {isAuthenticated ? authLinks() : guestLinks()}

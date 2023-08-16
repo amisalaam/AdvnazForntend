@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import AshikAshraf from "../../assets/userSide/home/ashikashrafhome.jpg";
 import Abdurahman from "../../assets/userSide/home/abdurahmanhome.webp";
 import Carousel from "../../components/carousel/servicecarousel";
-
-import Banner1 from "../../assets/userSide/home/home.webp";
+import BannerDesktop from "../../assets/userSide/home/home.webp";
 import LoadingComponent from "../../components/Loading";
 import {  AiFillExperiment } from "react-icons/ai";
 import { FaTruckMedical ,FaHospitalUser,FaXRay,FaVirus} from "react-icons/fa6";
@@ -17,7 +16,7 @@ const Home = () => {
   useEffect(() => {
     const loadingTimeout = setTimeout(() => {
       setLoading(false);
-    }, 3500);
+    }, 4500);
 
     return () => {
       clearTimeout(loadingTimeout);
@@ -32,7 +31,7 @@ const Home = () => {
     <>
       <div
         className="bg-cover bg-center min-h-[38rem] flex items-center justify-center"
-        style={{ backgroundImage: `url(${Banner1})` }}
+        style={{ backgroundImage: `url(${BannerDesktop})` }}
       >
         <div className="container mx-auto text-center max-w-[25 rem]">
           <h1 className="text-4xl font-bold text-advanzRed mb-4 sm:text-6xl md:text-3xl lg:text-8xl">

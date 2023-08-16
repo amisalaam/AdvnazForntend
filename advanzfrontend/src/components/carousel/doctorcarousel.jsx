@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
-import Banner1 from "../../assets/userSide/home/labcarousel.jpg";
 import "slick-carousel/slick/slick-theme.css";
-import Abdurahman from "../../assets/userSide/home/doctorcarousel1.jpg";
+
 import axios from 'axios';
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -31,7 +30,7 @@ const DoctorCarousel = () => {
     infinite: doctors.length > 3,
     speed: 500,
     slidesToShow: 4, // Update slidesToShow value
-    slidesToScroll: 1,// Update slidesToScroll value
+    slidesToScroll: 4,// Update slidesToScroll value
     autoplay: true,
     autoplaySpeed: 2000,
     responsive: [

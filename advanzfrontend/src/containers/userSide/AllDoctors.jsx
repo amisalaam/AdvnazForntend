@@ -48,6 +48,10 @@ const AllDoctors = () => {
     };
   }, []);
 
+  const handleDepartmentClick = (department) => {
+    setSelectedDepartment(department);
+  };
+
   const filteredDoctors = useMemo(() => {
     if (selectedDepartment === "All Doctors") {
       return doctors.filter((doctor) =>
@@ -68,23 +72,18 @@ const AllDoctors = () => {
 
   return (
     <div>
-      <div className="flex min-h-screen">
+      <div className="grid lg:grid-cols-2 items-center min-h-screen relative">
         <div
-          className="w-1/2 bg-cover bg-center py-20 my-20"
-          style={{
-            backgroundImage: `url(${BG})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-          }}
-        ></div>
-        <div className="w-1/2 flex items-center justify-center ">
+          className="bg-cover bg-center"
+        > 
+        <img src={BG} alt="" /></div>
+        <div className="w-full z-[1] flex items-center justify-center ">
           <div className="container mx-auto text-center">
-            <h1 className="text-5xl font-bold text-advanzRed mb-4 sm:text-6xl md:text-5xl lg:text-5xl">
+            <h1 className="text-5xl font-bold text-advanzRed mb-4 sm:text-4xl md:text-5xl lg:text-5xl">
               Our aim is to take of
               <br />
               <span className="text-advanzRed">Your health</span>{" "}
-              {/* Wrap the word "Website" with a span */}
+              
             </h1>
             <p className="text-lg text-gray-700 mb-8 sm:text-xl md:text-2xl lg:text-2xl">
               We provide{" "}
@@ -101,8 +100,8 @@ const AllDoctors = () => {
         </div>
       </div>
 
-      <div className="container mx-auto lg:px-20 py-10">
-        <div className="mb-4 text-right">
+      <div className="container mx-auto py-10 ">
+        <div className="mb-4 md:text-right text-center md:px-20">
           <div className="relative">
             <input
               type="text"
@@ -114,12 +113,12 @@ const AllDoctors = () => {
           </div>
         </div>
 
-        <div className="mb-4">
+        <div className="mb-4 lg:px-20 ">
           {isMobile ? (
             <select
               value={selectedDepartment}
               onChange={(e) => handleDepartmentClick(e.target.value)}
-              className="w-full mb-4 px-4 py-3 rounded-lg text-white bg-advanzBlue"
+              className="w-full mb-4 px-4 py-3 h-14 text-white bg-advanzBlue"
             >
               {departments.map((department) => (
                 <option key={department} value={department}>
@@ -146,13 +145,13 @@ const AllDoctors = () => {
           )}
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-20">
           {filteredDoctors.map((doctor) => (
             <div
               key={doctor.user}
               className="relative flex flex-col bg-white bg-clip-border text-gray-700 shadow-md my-5"
             >
-              <div className="relative h-64 sm:h-80 md:h-96 overflow-hidden rounded-xl bg-white bg-clip-border text-gray-700">
+              <div className="relative h-[20rem] sm:h-80 md:h-96 overflow-hidden rounded-xl bg-white bg-clip-border text-gray-700">
                 <img
                   src={`${API_URL}${doctor?.doctor_profile_image}`}
                   className="h-full w-full object-cover"

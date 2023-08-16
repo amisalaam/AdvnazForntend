@@ -30,31 +30,34 @@ const App = () => {
       <Router>
         <Layout>
           <Routes>
-            
             {/* NO AUTHENTICARTED USER SIDE PATHS  */}
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Signup />} />
             <Route path="/reset_password" element={<ResetPassword />} />
             <Route path="/activate/:uid/:token" element={<Activate />} />
             <Route
-              path="/password/reset/confirm/:uid/:token"element={<ResetPasswordConfirm />}/>
+              path="/password/reset/confirm/:uid/:token"
+              element={<ResetPasswordConfirm />}
+            />
             <Route path="/" element={<Home />} />
             <Route path="/doctors" element={<AllDoctors />} />
 
             {/*  AUTHENTICARTED USER SIDE PATHS  */}
-
-            <Route path="/user/booking/:id" element={<DoctorAppointment />}/>
-            <Route path="/user/dashboard" element={<UserDashboard />} />
-            <Route path="/user/dashboard/booking" element={<UserViewBooking />}/>
-
+            <Route path="/user/dashboard" element={<PrivateRoute only_user />}>
+              <Route path="booking" element={<UserViewBooking />} />
+              <Route index element={<UserDashboard />} />
+            </Route>
+            <Route path="/user/booking/:id" element={<PrivateRoute only_user />}>
+            <Route index element={<DoctorAppointment />} />
+            </Route>
             {/* DOCTOR SIDE PATHS  */}
             <Route
               path="/doctor/dashboard"
               element={<PrivateRoute is_doctor />}
             >
               <Route index element={<DoctorDashboard />} />
-            <Route path="slots" element={<ViewSlots />} />
-            <Route path="booking" element={<ViewBooking />} />
+              <Route path="slots" element={<ViewSlots />} />
+              <Route path="booking" element={<ViewBooking />} />
             </Route>
             {/* ADMIN SIDE PATHS */}
             <Route
@@ -68,7 +71,6 @@ const App = () => {
               <Route path="booking" element={<AdminViewBooking />} />
             </Route>
             <Route path="*" element={<Home />} />
-
           </Routes>
         </Layout>
       </Router>
