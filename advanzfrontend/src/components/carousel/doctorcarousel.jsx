@@ -29,16 +29,16 @@ const DoctorCarousel = () => {
     dots: true,
     infinite: doctors.length > 3,
     speed: 500,
-    slidesToShow: 4, // Update slidesToShow value
-    slidesToScroll: 4,// Update slidesToScroll value
-    autoplay: true,
+    slidesToShow: 4, 
+    slidesToScroll: 4,
+    autoplay: false,
     autoplaySpeed: 2000,
     responsive: [
       {
         breakpoint: 1224,
         settings: {
-          slidesToShow: 2, // Update slidesToShow value
-          slidesToScroll: 2, // Update slidesToScroll value
+          slidesToShow: 2, 
+          slidesToScroll: 2, 
           infinite: doctors.length > 2,
           dots: true,
         },
@@ -46,8 +46,8 @@ const DoctorCarousel = () => {
       {
         breakpoint: 668,
         settings: {
-          slidesToShow: Math.min(doctors.length, 1), // Update slidesToShow value
-          slidesToScroll: Math.min(doctors.length, 1), // Update slidesToScroll value
+          slidesToShow: Math.min(doctors.length, 1), 
+          slidesToScroll: Math.min(doctors.length, 1), 
           dots: true,
         },
       },

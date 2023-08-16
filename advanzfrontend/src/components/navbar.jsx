@@ -11,6 +11,9 @@ import { IoIosPie } from "react-icons/io";
 const Navbar = ({ logout, isAuthenticated, user }) => {
   const navigate = useNavigate();
   const location = useLocation()
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
 
   useEffect(() => {
     if (user && user.is_superuser) {
@@ -27,6 +30,7 @@ const Navbar = ({ logout, isAuthenticated, user }) => {
       <li>
       <Link
           to="/"
+          onClick={toggleDropdown}
           className={`block py-2 pl-3 pr-4  rounded md:bg-transparent md:text-white md:p-0 md:hover:text-advanzRed ${
             location.pathname === "/" ? "text-white  bg-advanzRed md:text-advanzRed" : ""
           }`} 
@@ -39,6 +43,7 @@ const Navbar = ({ logout, isAuthenticated, user }) => {
       <li>
       <Link
           to="/doctors"
+          onClick={toggleDropdown}
           className={`block py-2 pl-3 pr-4  rounded md:bg-transparent md:text-white md:p-0 md:hover:text-advanzRed ${
             location.pathname === "/doctors" ? "text-white  bg-advanzRed md:text-advanzRed" : ""
           }`} 
@@ -50,6 +55,7 @@ const Navbar = ({ logout, isAuthenticated, user }) => {
       <li>
         <Link
           to="/services"
+          onClick={toggleDropdown}
           className="block py-2 pl-3 pr-4 md:text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-advanzRed md:p-0"
         >
           Services
@@ -57,6 +63,7 @@ const Navbar = ({ logout, isAuthenticated, user }) => {
       </li>
       <li>
         <Link
+        onClick={toggleDropdown}
           to="/about"
           className="block py-2 pl-3 pr-4 md:text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-advanzRed md:p-0"
         >
@@ -66,6 +73,7 @@ const Navbar = ({ logout, isAuthenticated, user }) => {
       <li>
       <Link
           to="/login"
+          onClick={toggleDropdown}
           className={`block py-2 pl-3 pr-4  rounded md:bg-transparent md:text-white md:p-0 md:hover:text-advanzRed ${
             location.pathname === "/login" ? "text-white bg-advanzRed md:text-advanzRed" : ""
           }`} 
@@ -82,6 +90,7 @@ const Navbar = ({ logout, isAuthenticated, user }) => {
       <li>
       <Link
           to="/"
+          onClick={toggleDropdown}
           className={`block py-2 pl-3 pr-4  rounded md:bg-transparent md:text-white md:p-0 md:hover:text-advanzRed ${
             location.pathname === "/" ? "text-white bg-advanzRed md:text-advanzRed" : ""
           }`} 
@@ -93,6 +102,7 @@ const Navbar = ({ logout, isAuthenticated, user }) => {
       <li>
       <Link
           to="/doctors"
+          onClick={toggleDropdown}
           className={`block py-2 pl-3 pr-4  rounded md:bg-transparent md:text-white md:p-0 md:hover:text-advanzRed ${
             location.pathname === "/doctors" ? "text-white  bg-advanzRed md:text-advanzRed" : ""
           }`} 
@@ -104,6 +114,7 @@ const Navbar = ({ logout, isAuthenticated, user }) => {
       <li>
         <Link
           to="/services"
+          onClick={toggleDropdown}
           className="block py-2 pl-3 pr-4 md:text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-advanzRed md:p-0"
         >
           Services
@@ -112,6 +123,7 @@ const Navbar = ({ logout, isAuthenticated, user }) => {
       <li>
         <Link
           to="/pricing"
+          onClick={toggleDropdown}
           className="block py-2 pl-3 pr-4 md:text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-advanzRed md:p-0"
         >
           About
@@ -121,6 +133,7 @@ const Navbar = ({ logout, isAuthenticated, user }) => {
         {user && user.is_doctor ? (
           <Link
           to="/doctor/dashboard"
+          onClick={toggleDropdown}
           className={`p-1 md:text-white rounded md:bg-advanzRed md:hover:bg-red-900 flex items-center ${
             location.pathname === "/doctor/dashboard" ? "text-white bg-advanzRed md:bg-none  " : ""
           }`} 
@@ -132,6 +145,7 @@ const Navbar = ({ logout, isAuthenticated, user }) => {
         ) : user && user.is_superuser ? (
           <Link
           to="/admin/dashboard"
+          onClick={toggleDropdown}
           className={`p-1 md:text-white rounded md:bg-advanzRed md:hover:bg-red-900 flex items-center ${
             location.pathname === "/admin/dashboard" ? "text-white bg-advanzRed md:bg-none  " : ""
           }`} 
@@ -143,6 +157,7 @@ const Navbar = ({ logout, isAuthenticated, user }) => {
         ) : (
            <Link
           to="/user/dashboard"
+          onClick={toggleDropdown}
           className={`p-1 md:text-white rounded md:bg-advanzRed md:hover:bg-red-900 flex items-center ${
             location.pathname === "/user/dashboard" ? "text-white bg-advanzRed md:bg-none  " : ""
           }`} 
@@ -156,9 +171,7 @@ const Navbar = ({ logout, isAuthenticated, user }) => {
     </ul>
   );
 
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
+
 
   return (
     <nav className="bg-white border-gray-200 z-10 relative ">

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import AshikAshraf from "../../assets/userSide/home/ashikashrafhome.jpg";
 import Abdurahman from "../../assets/userSide/home/abdurahmanhome.webp";
 import Carousel from "../../components/carousel/servicecarousel";
-import BannerDesktop from "../../assets/userSide/home/home.webp";
+import BannerDesktop from "../../assets/userSide/home/home3.jpg";
 import LoadingComponent from "../../components/Loading";
 import {  AiFillExperiment } from "react-icons/ai";
 import { FaTruckMedical ,FaHospitalUser,FaXRay,FaVirus} from "react-icons/fa6";
