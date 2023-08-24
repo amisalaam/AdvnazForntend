@@ -1,6 +1,6 @@
 import React from 'react';
 import AdminSidebar from '../../components/admin/AdminSidebar';
-import DepartmentTable from '../../components/admin/departmentTable';
+import DepartmentTable from '../../components/admin/DepartmentTable';
 
 const ViewDepartments = () => {
     return (
