@@ -144,6 +144,10 @@ const UserPage = () => {
           },
           config
         );
+
+        await getAvailableSlots();
+        setSelectedSlot(null);
+        console.log("Selected slot cleared:", selectedSlot);
         console.log("Slot successfully booked!");
         // const socket = new WebSocket(`wss://advanzbackend.onrender.com/ws/doctor/${id}/`);
         // const socket = new WebSocket(`ws://localhost:8000/ws/doctor/${id}/`);
@@ -172,11 +176,13 @@ const UserPage = () => {
         //   superuserSocket.close();
         // };
         const audio = new Audio(notificationAudio);
-      audio.play();
-        toast.success(`You have made a booking for Dr. ${doctor.name} at ${selectedSlot.start_time}`);
+        audio.play();
+        toast.success(
+          `You have made a booking for Dr. ${doctor.name} at ${selectedSlot.start_time}`
+        );
         setBookedSlot(selectedSlot);
       } catch (e) {
-        console.log(e);
+        toast.error("You are not able to book to this slot");
       }
     }
   };
@@ -244,9 +250,11 @@ const UserPage = () => {
                           "font-semibold py-2 px-4 border-[3px] rounded-xl m-1",
                           {
                             "bg-blue-700 text-white border-blue-700":
-                              slot.selected,
+                              slot.selected && !slot.is_booked,
                             "border-blue-700 text-blue-700":
                               !slot.selected && !slot.is_booked,
+                            "bg-disabled text-gray-500 cursor-not-allowed":
+                              slot.is_booked,
                           }
                         )}
                         onClick={() => handleSlotSelect(slot.id)}
