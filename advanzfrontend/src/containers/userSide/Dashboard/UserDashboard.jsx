@@ -5,6 +5,7 @@ import {logout} from "../../../actions/auth"
 import UserLatestBooking from "../../../components/user/UserLatestBooking";
 import UserDonutChart from "../../../components/user/UserDonutChart";
 import { connect } from "react-redux";
+import axios from "axios";
 
 const AnimatedNumber = ({ initialValue, finalValue }) => {
   const [currentValue, setCurrentValue] = useState(initialValue);
