@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate ,useLocation} from "react-router-dom";
-import { logout } from "../actions/auth";
 import {  ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BsJustify } from "react-icons/bs";
@@ -8,7 +7,7 @@ import { connect } from "react-redux";
 import AdvanzLogo from "../assets/authentication/advanzLogo.webp";
 import { IoIosPie } from "react-icons/io";
 
-const Navbar = ({ logout, isAuthenticated, user }) => {
+const Navbar = ({  isAuthenticated, user }) => {
   const navigate = useNavigate();
   const location = useLocation()
   const toggleDropdown = () => {
@@ -180,4 +179,4 @@ const mapStateToProps = (state) => ({
   user: state.auth.user,
 });
 
-export default connect(mapStateToProps, { logout })(Navbar);
+export default connect(mapStateToProps)(Navbar);

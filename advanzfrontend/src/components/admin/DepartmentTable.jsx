@@ -129,10 +129,10 @@ const DepartmentTable = ({ user }) => {
                           {/* department Name */}
                           <th className="flex flex-col gap-3 sm:flex-row items-start sm:items-center px-6 py-3 text-base text-gray-900">
                             <div className="relative h-10 w-10">
-                              {user?.department_profile_image ? (
+                              {user?.department_image ? (
                                 <img
                                   className="h-full w-full rounded-full object-cover object-center"
-                                  src={`${API_URL}${user?.department_profile_image}`}
+                                  src={`${API_URL}${user?.department_image}`}
                                   alt="avatar"
                                 />
                               ) : (

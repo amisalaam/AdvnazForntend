@@ -79,7 +79,7 @@ const AdminSidebar = () => {
                   location.pathname === "/admin/dashboard/slots" ? "bg-advanzRed" : ""
                 }`}
               >
-                <FaCalendarCheck size={25} />
+                <BsFillCalendarRangeFill size={25} />
                 <span className="flex-1 ml-3 whitespace-nowrap"> View Slots </span>
               </Link>
             </li>
@@ -90,7 +90,7 @@ const AdminSidebar = () => {
                   location.pathname === "/admin/dashboard/booking" ? "bg-advanzRed" : ""
                 }`}
               >
-                <BsFillCalendarRangeFill size={25} />
+                <FaCalendarCheck size={25} />
                 <span className="flex-1 ml-3 whitespace-nowrap"> View Booking </span>
               </Link>
             </li>

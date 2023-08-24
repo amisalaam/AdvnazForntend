@@ -5,6 +5,7 @@ import axios from 'axios';
 
 const UserLatestBooking = ({ user }) => {
   const [booking, setBooking] = useState([]);
+  const [loading, setLoading] = useState(true);
   
   const API_URL = import.meta.env.VITE_API_URL;
 
@@ -16,8 +17,10 @@ const UserLatestBooking = ({ user }) => {
           const response = await axios.get(apiUrl);
           console.log("API Response:", response.data); 
           setBooking(response.data);
+          setLoading(false); // Set loading to false after fetching data
         } catch (err) {
           console.error("Error fetching booked booking:", err);
+          setLoading(false); // Set loading to false in case of an error as well
         }
       };
       fetchData();
@@ -33,28 +36,37 @@ const UserLatestBooking = ({ user }) => {
         </a>
       </div>
       <div className="flow-root">
-        <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700">
-          {booking.slice(0, 4).map((bookingItem) => (
-            
-            <li key={bookingItem.id} className="py-3 sm:py-4 my-3">
-              <div className="flex items-center space-x-4">
-                <div className="flex-shrink-0">
-                  <img className="w-8 h-8 rounded-full" src={`${API_URL}${bookingItem.doctor_image}`} alt='' />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-900 truncate">{bookingItem.doctor_name}</p>
-                  <p className="text-sm text-gray-500 truncate">{bookingItem.doctor_email}</p>
-                  <div className="flex space-x-4 text-xs text-gray-500">
-                    {/* <p>Department: {bookingItem.department}</p> */}
-                    {/* <p>Patient: {bookingItem.patient_name}</p> */}
-                    <p className='text-red-900 text-sm'>Status: {bookingItem.status}</p>
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700">
+            {booking.length === 0 ? (
+              <li className="py-3 sm:py-4 my-3">
+                <p>No bookings to show.</p>
+              </li>
+            ) : (
+              booking.slice(0, 4).map((bookingItem) => (
+                <li key={bookingItem.id} className="py-3 sm:py-4 my-3">
+                  <div className="flex items-center space-x-4">
+                    <div className="flex-shrink-0">
+                      <img className="w-8 h-8 rounded-full" src={`${API_URL}${bookingItem.doctor_image}`} alt='' />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-gray-900 truncate">{bookingItem.doctor_name}</p>
+                      <p className="text-sm text-gray-500 truncate">{bookingItem.doctor_email}</p>
+                      <div className="flex space-x-4 text-xs text-gray-500">
+                        {/* <p>Department: {bookingItem.department}</p> */}
+                        {/* <p>Patient: {bookingItem.patient_name}</p> */}
+                        <p className='text-red-900 text-sm'>Status: {bookingItem.status}</p>
+                      </div>
+                    </div>
+                    <div className="inline-flex items-center text-base font-semibold text-gray-900">Id : {bookingItem.id}</div>
                   </div>
-                </div>
-                <div className="inline-flex items-center text-base font-semibold text-gray-900">Id : {bookingItem.id}</div>
-              </div>
-            </li>
-          ))}
-        </ul>
+                </li>
+              ))
+            )}
+          </ul>
+        )}
       </div>
     </div>
   );

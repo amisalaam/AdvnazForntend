@@ -12,8 +12,6 @@ const PrivateRoute = ({ user, is_superuser, is_doctor, only_user }) => {
   if ((is_superuser && user.is_superuser) || (is_doctor && user.is_doctor) || (only_user && user.is_active)) {
     return <Outlet />;
   }
-
-  return <Navigate to="/" />;
 };
 
 const mapStateToProps = (state) => ({

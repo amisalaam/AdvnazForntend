@@ -130,6 +130,9 @@ const ViewAllSlotsTable = ({ user }) => {
                       <th scope="col" className="px-6 py-3 text-lg text-gray-900 hidden md:table-cell text-center">
                         Time
                       </th>
+                      <th scope="col" className="px-6 py-3 text-lg text-gray-900 hidden md:table-cell text-center">
+                        Date
+                      </th>
                       <th scope="col" className="px-6 py-3 text-lg text-gray-900 hidden md:table-cell">
                         Status
                       </th>
@@ -171,6 +174,12 @@ const ViewAllSlotsTable = ({ user }) => {
                             </span>
                             <span className="text-center"> to </span>
                             <span className="text-gray-700">{user?.end_time}</span>
+                          </td>
+                          <td className="px-6 py-3 hidden md:table-cell text-center">
+                            <span className="font-medium text-gray-700">
+                              {user?.date}
+                            </span>
+                            
                           </td>
                           {/* Status */}
                           <td className="px-6 py-3 hidden md:table-cell">

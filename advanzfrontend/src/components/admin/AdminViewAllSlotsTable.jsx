@@ -59,33 +59,7 @@ const ViewAllSlots = ({ user }) => {
     }
 };
 
-  const handleSlotAction = async (slotId, action) => {
-    if (user && user.is_superuser) {
-      try {
-        const response = await axios.patch(
-          `${API_URL}/myadmin/api/cancel/or/book/slots/${slotId}/`,
-          { action }
-        );
 
-        console.log("Slot action response:", response.data);
-
-        // Update local state to reflect the new status
-        const updatedSlots = slots.map((slot) => {
-          if (slot.id === slotId) {
-            return {
-              ...slot,
-              is_booked: action === "book",
-            };
-          }
-          return slot;
-        });
-
-        setslots(updatedSlots);
-      } catch (error) {
-        console.error("Error during slot action:", error);
-      }
-    }
-  };
 
   // Function to handle page change
   const handlePageChange = ({ selected }) => {
@@ -219,12 +193,7 @@ const ViewAllSlots = ({ user }) => {
                       >
                         Status
                       </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-lg text-gray-900"
-                      >
-                        Action
-                      </th>
+                      
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100 border-t border-gray-100">
@@ -292,27 +261,7 @@ const ViewAllSlots = ({ user }) => {
                             )}
                           </td>
                           {/* Action */}
-                          <td className="px-6 py-3">
-                            <div className="flex justify-center sm:justify-start">
-                              {user.is_booked ? (
-                                <button
-                                  type="button"
-                                  onClick={() => handleSlotAction(user.id)}
-                                  className="custom-btn text-white bg-red-800 hover:bg-red-900 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none w-[6rem]"
-                                >
-                                  Cancel
-                                </button>
-                              ) : (
-                                <button
-                                  type="button"
-                                  className="custom-btn text-gray-500 bg-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none w-[6rem] cursor-not-allowed"
-                                  disabled
-                                >
-                                  Cancel
-                                </button>
-                              )}
-                            </div>
-                          </td>
+                          
                         </tr>
                       ))
                     ) : (

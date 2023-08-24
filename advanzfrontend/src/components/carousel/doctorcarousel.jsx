@@ -15,7 +15,6 @@ const DoctorCarousel = () => {
       .get(`${API_URL}/doctor/api/details/`)
       .then(response => {
         setDoctors(response.data);
-        
       })
       .catch(error => {
         console.error(error);
@@ -24,44 +23,40 @@ const DoctorCarousel = () => {
 
   const settings = {
     arrows: false,
-    lazyLoad:true,
-
+    lazyLoad: true,
     dots: true,
-    infinite: doctors.length > 3,
+    infinite: false,
     speed: 500,
-    slidesToShow: 4, 
+    slidesToShow: 4,
     slidesToScroll: 4,
     autoplay: false,
-    autoplaySpeed: 2000,
+    autoplaySpeed: 5000,
     responsive: [
       {
         breakpoint: 1224,
         settings: {
-          slidesToShow: 2, 
-          slidesToScroll: 2, 
-          infinite: doctors.length > 2,
+          slidesToShow: 2,
+          slidesToScroll: 2,
           dots: true,
         },
       },
       {
         breakpoint: 668,
         settings: {
-          slidesToShow: Math.min(doctors.length, 1), 
-          slidesToScroll: Math.min(doctors.length, 1), 
+          slidesToShow: 1,
+          slidesToScroll: 1,
           dots: true,
         },
       },
     ],
   };
 
-  const renderDots = dots => <ul className="custom-dots">{dots}</ul>;
-
   return (
-    <Slider className="mb-10 mx-10 p-4" {...settings} appendDots={renderDots}>
+    <Slider className="mb-10 mx-10 p-4" {...settings}>
       {doctors.map(doctor => (
-      <div key={doctor.user} className="relative flex w-96 flex-col bg-white bg-clip-border text-gray-700 shadow-md">
+        <div key={doctor.user} className="relative flex w-96 flex-col bg-white bg-clip-border text-gray-700 shadow-md">
           <div className="relative mx-4 mt-4 h-96 overflow-hidden rounded-xl bg-white bg-clip-border text-gray-700">
-            <img src={`${API_URL}${doctor.doctor_profile_image}`}className="h-full w-full object-cover" alt="Doctor" />
+            <img src={`${API_URL}${doctor.doctor_profile_image}`} className="h-full w-full object-cover" alt="Doctor" />
           </div>
           <div className="p-6">
             <div className="mb-2 flex items-center justify-between">
