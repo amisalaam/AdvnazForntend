@@ -23,6 +23,7 @@ import ViewBooking from "./containers/doctorSide/ViewBooking";
 import AdminViewBooking from "./containers/adminSide/ViewAllBooking";
 import UserViewBooking from "./containers/userSide/Dashboard/UserViewBooking";
 import PrivateRoute from "./containers/authentication/Routes/PrivateRoute";
+import ViewDepartments from "./containers/adminSide/ViewDepartments";
 
 const App = () => {
   return (
@@ -69,6 +70,7 @@ const App = () => {
               <Route path="users" element={<ViewUsers />} />
               <Route path="slots" element={<AdminViewSlots />} />
               <Route path="booking" element={<AdminViewBooking />} />
+              <Route path="department" element={<ViewDepartments />} />
             </Route>
             <Route path="*" element={<Home />} />
           </Routes>

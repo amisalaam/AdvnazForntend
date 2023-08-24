@@ -52,24 +52,8 @@ const Navbar = ({ logout, isAuthenticated, user }) => {
           Doctors
         </Link>
       </li>
-      <li>
-        <Link
-          to="/services"
-          onClick={toggleDropdown}
-          className="block py-2 pl-3 pr-4 md:text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-advanzRed md:p-0"
-        >
-          Services
-        </Link>
-      </li>
-      <li>
-        <Link
-        onClick={toggleDropdown}
-          to="/about"
-          className="block py-2 pl-3 pr-4 md:text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-advanzRed md:p-0"
-        >
-         About
-        </Link>
-      </li>
+     
+      
       <li>
       <Link
           to="/login"
@@ -111,24 +95,8 @@ const Navbar = ({ logout, isAuthenticated, user }) => {
           Doctors
         </Link>
       </li>
-      <li>
-        <Link
-          to="/services"
-          onClick={toggleDropdown}
-          className="block py-2 pl-3 pr-4 md:text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-advanzRed md:p-0"
-        >
-          Services
-        </Link>
-      </li>
-      <li>
-        <Link
-          to="/pricing"
-          onClick={toggleDropdown}
-          className="block py-2 pl-3 pr-4 md:text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-advanzRed md:p-0"
-        >
-          About
-        </Link>
-      </li>
+     
+     
       <li>
         {user && user.is_doctor ? (
           <Link

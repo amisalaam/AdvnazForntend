@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const AddDoctorModal = React.memo(({ isOpen, onClose, onDoctorAdded }) => {
+const AddDoctorModal = React.memo(({ isOpen, onClose,onDoctorAdded}) => {
   const API_URL = import.meta.env.VITE_API_URL;
   const [department, setDepartment] = useState([]);
 
@@ -10,7 +12,7 @@ const AddDoctorModal = React.memo(({ isOpen, onClose, onDoctorAdded }) => {
     email: "",
     department: "",
     password: "",
-    retypePassword: "", // Corrected name attribute for retype password field
+    retypePassword: "",
     imageFile: null,
   });
 
@@ -49,12 +51,13 @@ const AddDoctorModal = React.memo(({ isOpen, onClose, onDoctorAdded }) => {
 
       if (formData.password !== formData.retypePassword) {
         console.error("Passwords do not match");
+        toast.error("password not match")
       } else {
         const newFormData = new FormData();
         newFormData.append("name", formData.name);
         newFormData.append("email", formData.email);
-        newFormData.append("department_id", formData.department); // Use department_id instead of department
-        newFormData.append("doctor_profile_image", formData.imageFile); // Use doctor_profile_image instead of imageFile
+        newFormData.append("department_id", formData.department);
+        newFormData.append("doctor_profile_image", formData.imageFile);
         newFormData.append("password", formData.password);
 
         const response = await axios.post(
@@ -67,8 +70,8 @@ const AddDoctorModal = React.memo(({ isOpen, onClose, onDoctorAdded }) => {
           }
         );
 
-        // Notify the parent component that a new doctor has been added
-        onDoctorAdded(response.data);
+        
+       
 
         // Reset the form data after successful creation
         setFormData({
@@ -79,10 +82,17 @@ const AddDoctorModal = React.memo(({ isOpen, onClose, onDoctorAdded }) => {
           retypePassword: "",
           imageFile: null,
         });
+
+        // Show a success toast notification
+        onDoctorAdded(response.data);
+        toast.success("Doctor added successfully!");
+
+       
       }
     } catch (error) {
-      // Handle errors, e.g., show an error message to the user
       console.error("Error adding a new doctor:", error);
+      toast.error('Failed ,Try again',error);
+
     }
   };
 
@@ -190,6 +200,7 @@ const AddDoctorModal = React.memo(({ isOpen, onClose, onDoctorAdded }) => {
             Cancel
           </button>
         </div>
+        <ToastContainer/>
       </div>
     </div>
   );

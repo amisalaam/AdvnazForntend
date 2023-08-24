@@ -8,7 +8,7 @@ const ViewAllBookingTable = ({ user }) => {
   const API_URL = import.meta.env.VITE_API_URL;
   const ITEMS_PER_PAGE = 6; // Change this value to set the number of booking per page
 
-  const [booking, setbooking] = useState([]);
+  const [booking, setBooking] = useState([]);
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
@@ -22,8 +22,7 @@ const ViewAllBookingTable = ({ user }) => {
         try {
           const apiUrl = `${API_URL}/doctor/api/get/dashboard/appointment/${user.id}/`;
           const response = await axios.get(apiUrl);
-          console.log("API Response:", response.data); // Log the response data
-          setbooking(response.data);
+          setBooking(response.data);
         } catch (err) {
           console.error("Error fetching booked booking:", err);
         }
@@ -31,6 +30,44 @@ const ViewAllBookingTable = ({ user }) => {
       fetchData();
     }
   }, [user]);
+
+  const handleRejectAppointment = async (appointmentId) => {
+    
+  
+    if (!user?.is_doctor) {
+      return; // Exit early if the user is not a superuser
+    }
+  
+    // Show a confirmation dialog
+    const confirmed = window.confirm("Are you sure you want to reject this appointment?");
+    if (!confirmed) {
+      return; // Exit if not confirmed
+    }
+  
+    const apiUrl = `${API_URL}/doctor/api/reject/appointment/${appointmentId}/`;
+  
+    try {
+      const response = await axios.patch(apiUrl);
+  
+      if (response.status === 200) {
+        // Update the booking data in state to reflect the status change
+        setBooking(prevBookings => prevBookings.map(bookingItem => {
+          if (bookingItem.id === appointmentId) {
+            return { ...bookingItem, status: "rejected" };
+          }
+          return bookingItem;
+        }));
+  
+        toast.success("Appointment rejected Successfully");
+      } else {
+        toast.error("Appointment reject Failed");
+      }
+    } catch (error) {
+      console.error("Error rejecting appointment:", error);
+      toast.error("An error occurred while rejecting the appointment");
+    }
+  };
+  
 
   // Function to handle page change
   const handlePageChange = ({ selected }) => {
@@ -93,30 +130,8 @@ const ViewAllBookingTable = ({ user }) => {
                 value={selectedDate}
                 onChange={(e) => setSelectedDate(e.target.value)}
               />
-              <button
-                className={`custom-btn text-white ${
-                  filter === "all" ? "bg-blue-800" : "bg-gray-500"
-                } hover:bg-blue-900 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none`}
-                onClick={() => setFilter("all")}
-              >
-                All
-              </button>
-              <button
-                className={`custom-btn text-white ${
-                  filter === "booked" ? "bg-green-800" : "bg-gray-500"
-                } hover:bg-green-900 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none`}
-                onClick={() => setFilter("booked")}
-              >
-                Booked
-              </button>
-              <button
-                className={`custom-btn text-white ${
-                  filter === "unbooked" ? "bg-red-800" : "bg-gray-500"
-                } hover:bg-red-900 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none`}
-                onClick={() => setFilter("unbooked")}
-              >
-                Unbooked
-              </button>
+             
+             
             </div>
           </div>
           <div className="overflow-x-auto overflow-y-auto w-full">
@@ -235,26 +250,24 @@ const ViewAllBookingTable = ({ user }) => {
                           {/* Action */}
                           <td className="px-6 py-3">
                             <div className="flex justify-center sm:justify-start">
-                              {user?.status ? (
+                              {user?.status =="approved"? (
                                 <button
                                   type="button"
                                   onClick={() =>
-                                    togglebookingtatus(user.id, user.is_active)
+                                    handleRejectAppointment(user.id)
                                   }
                                   className="custom-btn text-white bg-red-800 hover:bg-red-900 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none w-[6rem]"
                                 >
-                                  Cancel
+                                  Reject
                                 </button>
                               ) : (
                                 <button
-                                  type="button"
-                                  onClick={() =>
-                                    togglebookingtatus(user.id, user.is_active)
-                                  }
-                                  className="custom-btn text-white bg-green-800 hover:bg-green-900 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none w-[6rem]"
-                                >
-                                  Approve
-                                </button>
+                                type="button"
+                                className="custom-btn text-gray-500 bg-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none w-[6rem] cursor-not-allowed"
+                                disabled
+                              >
+                               Reject
+                              </button>
                               )}
                             </div>
                           </td>

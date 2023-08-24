@@ -3,12 +3,13 @@ import axios from "axios";
 import { connect } from "react-redux";
 import ReactPaginate from "react-paginate";
 import profile from "../../assets/userSide/Booking/bgBookingImage.jpg"
+import { toast } from "react-toastify";
 
 const ViewAllBookingTable = ({ user }) => {
   const API_URL = import.meta.env.VITE_API_URL;
   const ITEMS_PER_PAGE = 6; // Change this value to set the number of booking per page
 
-  const [booking, setbooking] = useState([]);
+  const [booking, setBooking] = useState([]);
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
@@ -23,7 +24,7 @@ const ViewAllBookingTable = ({ user }) => {
           const apiUrl = `${API_URL}/myadmin/api/get/dashboard/appointment/`;
           const response = await axios.get(apiUrl);
           console.log("API Response:", response.data); // Log the response data
-          setbooking(response.data);
+          setBooking(response.data);
         } catch (err) {
           console.error("Error fetching booked booking:", err);
         }
@@ -31,6 +32,46 @@ const ViewAllBookingTable = ({ user }) => {
       fetchData();
     }
   }, [user]);
+
+  const handleBlockAppointment = async (appointmentId) => {
+    console.log("handleBlockAppointment called");
+    console.log(appointmentId);
+  
+    if (!user?.is_superuser) {
+      return; // Exit early if the user is not a superuser
+    }
+  
+    // Show a confirmation dialog
+    const confirmed = window.confirm("Are you sure you want to block this appointment?");
+    if (!confirmed) {
+      return; // Exit if not confirmed
+    }
+  
+    const apiUrl = `${API_URL}/myadmin/api/block/appointment/${appointmentId}/`;
+  
+    try {
+      const response = await axios.patch(apiUrl);
+  
+      if (response.status === 200) {
+        // Update the booking data in state to reflect the status change
+        setBooking(prevBookings => prevBookings.map(bookingItem => {
+          if (bookingItem.id === appointmentId) {
+            return { ...bookingItem, status: "blocked" };
+          }
+          return bookingItem;
+        }));
+  
+        toast.success("Appointment Blocked Successfully");
+      } else {
+        toast.error("Appointment Block Failed");
+      }
+    } catch (error) {
+      console.error("Error blocking appointment:", error);
+      toast.error("An error occurred while blocking the appointment");
+    }
+  };
+  
+  
 
   // Function to handle page change
   const handlePageChange = ({ selected }) => {
@@ -231,8 +272,8 @@ const ViewAllBookingTable = ({ user }) => {
                                 {user?.status}
                               </span>
                             ) : (
-                              <span className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-2 py-1 text-xs font-semibold text-blue-600">
-                                <span className="h-1.5 w-1.5 rounded-full bg-blue-700"></span>
+                              <span className="inline-flex items-center gap-1 rounded-full bg-red-100 px-2 py-1 text-xs font-semibold text-red-600">
+                                <span className="h-1.5 w-1.5 rounded-full bg-red-700"></span>
                                 {user?.status}
                               </span>
                             )}
@@ -240,26 +281,24 @@ const ViewAllBookingTable = ({ user }) => {
                           {/* Action */}
                           <td className="px-6 py-3">
                             <div className="flex justify-center sm:justify-start">
-                              {user?.status ? (
+                              {user?.status =="approved"? (
                                 <button
                                   type="button"
                                   onClick={() =>
-                                    togglebookingtatus(user.id, user.is_active)
+                                    handleBlockAppointment(user.id)
                                   }
                                   className="custom-btn text-white bg-red-800 hover:bg-red-900 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none w-[6rem]"
                                 >
-                                  Cancel
+                                  Block
                                 </button>
                               ) : (
                                 <button
-                                  type="button"
-                                  onClick={() =>
-                                    togglebookingtatus(user.id, user.is_active)
-                                  }
-                                  className="custom-btn text-white bg-green-800 hover:bg-green-900 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none w-[6rem]"
-                                >
-                                  Approve
-                                </button>
+                                type="button"
+                                className="custom-btn text-gray-500 bg-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none w-[6rem] cursor-not-allowed"
+                                disabled
+                              >
+                               Block
+                              </button>
                               )}
                             </div>
                           </td>

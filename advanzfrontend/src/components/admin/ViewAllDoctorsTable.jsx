@@ -12,7 +12,7 @@ const ViewAllDoctors = ({ user }) => {
   const [filteredDoctors, setFilteredDoctors] = useState([]);
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+ 
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -54,19 +54,18 @@ const ViewAllDoctors = ({ user }) => {
     setAddingModalOpen(false);
   };
 
-  const handleAddDoctor = (newDoctor) => {
+  const updateDoctorList = (newDoctor) => {
     setDoctors((prevDoctors) => [...prevDoctors, newDoctor]);
-    setFilteredDoctors((prevFilteredDoctors) => [
-      ...prevFilteredDoctors,
-      newDoctor,
-      setAddingModalOpen(false)
-    ]);
+    
+    setFilteredDoctors((prevFilteredDoctors) => [...prevFilteredDoctors, newDoctor]);
+    setAddingModalOpen(false);
   };
+
 
   // Fetch data on component mount
   useEffect(() => {
     if (user && user.is_superuser) {
-      const fetchData = async () => {
+      const fetchDoctor = async () => {
         try {
           const response = await axios.get(
             `${API_URL}/myadmin/api/get/all/doctors/`
@@ -75,11 +74,11 @@ const ViewAllDoctors = ({ user }) => {
           setFilteredDoctors(response.data);
           setLoading(false);
         } catch (err) {
-          setError(err.message || "An error occurred while fetching data.");
+          
           setLoading(false);
         }
       };
-      fetchData();
+      fetchDoctor();
     }
   }, [user, API_URL]);
 
@@ -235,12 +234,14 @@ const ViewAllDoctors = ({ user }) => {
             isOpen={modalOpen}
             onClose={handleCloseModal}
             doctor={selectedDoctor}
+            setDoctor={setDoctors}
           />
           {addingModalOpen && (
             <AddDoctorModal
               isOpen={addingModalOpen}
               onClose={handleAddDoctorModalClose}
-              onDoctorAdded={handleAddDoctor}
+              onDoctorAdded={updateDoctorList}
+
             />
           )}
 

@@ -15,6 +15,9 @@ import { connect } from "react-redux";
 const AnimatedNumber = ({ initialValue, finalValue }) => {
   const [currentValue, setCurrentValue] = useState(initialValue);
 
+  
+
+
   useEffect(() => {
     const step = Math.ceil((finalValue - initialValue) / 100);
     const interval = setInterval(() => {
@@ -32,11 +35,53 @@ const AnimatedNumber = ({ initialValue, finalValue }) => {
   );
 };
 
-const AdminDashboard = ({ logout }) => {
+
+const AdminDashboard = ({ logout,user }) => {
+  console.log(user)
   const [messages, setMessages] = useState([]);
   const [showNotification, setShowNotification] = useState(false);
-
+  
+  
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [doctorCount, setDoctorCount] = useState(0);
+  const [patientCount, setPatientCount] = useState(0);
+  const [appointmentsCount, setAppointmentsCount] = useState(0);
+
+  const fetchDoctorCount = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/myadmin/api/doctors/count/`);
+      const count = response.data.doctors_count; 
+      setDoctorCount(count);
+    } catch (error) {
+      console.error("Error fetching doctor count:", error);
+    }
+  };
+  const fetchPatientCount = async () => {
+    
+    try {
+      const response = await axios.get(`${API_URL}/myadmin/api/patients/count/`);
+
+      const count = response.data.patients_count; 
+      setPatientCount(count);
+    } catch (error) {
+      console.error("Error fetching Patient count:", error);
+    }
+  };
+
+  const fetchAppointmentsCount = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/myadmin/api/appointments/count/`);
+
+      const count = response.data.appointment_count; 
+      setAppointmentsCount(count);
+    } catch (error) {
+      console.error("Error fetching appointments count:", error);
+    }
+  };
+
+
+
+  
 
   const handleNotificationClick = () => {
     setIsDropdownOpen((prevState) => !prevState);
@@ -123,8 +168,13 @@ const AdminDashboard = ({ logout }) => {
 
       return () => clearTimeout(notificationTimeout);
     }
+    fetchDoctorCount();
+    fetchPatientCount();
+    fetchAppointmentsCount();
   }, [showNotification]);
   const notificationCount = messages.length;
+
+
 
   return (
     <div>
@@ -145,26 +195,26 @@ const AdminDashboard = ({ logout }) => {
                 <h2 className="text-white ml-5 mt-3 font-bold text-1xl">
                   Total Doctors
                 </h2>
-                <AnimatedNumber initialValue={0} finalValue={36} />
+                <AnimatedNumber initialValue={0} finalValue={doctorCount} />
               </div>
 
               <div className="bg-gradient-to-bl from-indigo-900 via-blue-400 to-indigo-800 h-[6rem] rounded-md">
                 <h2 className="text-white ml-5 mt-3 font-bold text-1xl">
                   Total Patients
                 </h2>
-                <AnimatedNumber initialValue={0} finalValue={36} />
+                <AnimatedNumber initialValue={0} finalValue={patientCount} />
               </div>
 
               <div className="bg-gradient-to-bl from-emerald-900 via-emerald-400 to-emerald-800 h-[6rem] rounded-md ">
                 <h2 className="text-white ml-5 mt-3 font-bold text-1xl">
                   Total Appointments
                 </h2>
-                <AnimatedNumber initialValue={0} finalValue={36} />
+                <AnimatedNumber initialValue={0} finalValue={appointmentsCount} />
               </div>
             </div>
 
             <div className="">
-              <AdminDashboardLineChart />
+              {/* <AdminDashboardLineChart /> */}
             </div>
             <AdminLatestBooking />
           </div>
@@ -221,22 +271,15 @@ const AdminDashboard = ({ logout }) => {
                   alt="Profile"
                 />
                 <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-gray-500">
-                  Username
+                  {user.name}
                 </h5>
+                
                 <span className="text-sm text-gray-500 dark:text-gray-400">
-                  Country: India
-                </span>
-                <span className="text-sm text-gray-500 dark:text-gray-400">
-                  Age: 30
+                  {user.email}
                 </span>
 
                 <div className="flex mt-2 space-x-3 md:mt-2">
-                  <button
-                    type="button"
-                    className="text-white bg-advanzBlue hover:bg-blue-900 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2  w-[7rem]"
-                  >
-                    Edit
-                  </button>{" "}
+                 
                   <button
                     type="button"
                     onClick={logout}
@@ -247,7 +290,7 @@ const AdminDashboard = ({ logout }) => {
                 </div>
               </div>
             </div>
-            <AdminDonutChart />
+            {/* <AdminDonutChart /> */}
           </div>
         </div>
       </div>

@@ -133,9 +133,7 @@ const ViewAllSlotsTable = ({ user }) => {
                       <th scope="col" className="px-6 py-3 text-lg text-gray-900 hidden md:table-cell">
                         Status
                       </th>
-                      <th scope="col" className="px-6 py-3 text-lg text-gray-900">
-                        Action
-                      </th>
+                     
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100 border-t border-gray-100">
@@ -187,29 +185,7 @@ const ViewAllSlotsTable = ({ user }) => {
                                 Unbooked
                               </span>
                             )}
-                          </td>
-                          {/* Action */}
-                          <td className="px-6 py-3">
-                            <div className="flex justify-center sm:justify-start">
-                              {user?.is_booked ? (
-                                <button
-                                  type="button"
-                                  onClick={() => toggleslotstatus(user.id, user.is_active)}
-                                  className="custom-btn text-white bg-red-800 hover:bg-red-900 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none w-[6rem]"
-                                >
-                                  Cancel
-                                </button>
-                              ) : (
-                                <button
-                                  type="button"
-                                  onClick={() => toggleslotstatus(user.id, user.is_active)}
-                                  className="custom-btn text-white bg-green-800 hover:bg-green-900 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none w-[6rem]"
-                                >
-                                  Book
-                                </button>
-                              )}
-                            </div>
-                          </td>
+                          </td> 
                         </tr>
                       ))
                     ) : (

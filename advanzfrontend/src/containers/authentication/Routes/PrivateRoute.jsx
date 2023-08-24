@@ -1,33 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { Outlet, Navigate } from 'react-router-dom';
 
 const PrivateRoute = ({ user, is_superuser, is_doctor, only_user }) => {
-  const [attemptedRoute, setAttemptedRoute] = useState(null);
+  const isAuthenticated = !!user;
 
-  if (!user) {
+  if (!isAuthenticated) {
     return <Navigate to="/login" />;
   }
 
-  if (is_superuser && user.is_superuser) {
+  if ((is_superuser && user.is_superuser) || (is_doctor && user.is_doctor) || (only_user && user.is_active)) {
     return <Outlet />;
   }
 
-  if (is_doctor && user.is_doctor) {
-    return <Outlet />;
-  }
-
-  if (only_user && user.is_active) {
-    return <Outlet />;
-  }
-
-  if (attemptedRoute) {
-    const route = attemptedRoute;
-    setAttemptedRoute(null); // Clear the stored route
-    return <Navigate to={route} replace />;
-  }
-
-  return <Navigate to="/login" />;
+  return <Navigate to="/" />;
 };
 
 const mapStateToProps = (state) => ({

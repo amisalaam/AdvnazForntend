@@ -16,7 +16,7 @@ const ViewAllSlots = ({ user }) => {
   const [filter, setFilter] = useState("all"); // 'all', 'booked', or 'unbooked'
   const [selectedDate, setSelectedDate] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [idSearchQuery, setIdSearchQuery] = useState("");
+  
 
   const [currentPage, setCurrentPage] = useState(0);
 
@@ -45,6 +45,19 @@ const ViewAllSlots = ({ user }) => {
       fetchData();
     }
   }, [user, selectedDate]);
+
+  const updateSlots = async () => {
+    try {
+        let apiUrl = `${API_URL}/myadmin/api/get/booked/slots/`;
+        if (selectedDate) {
+            apiUrl = `${API_URL}/myadmin/api/get/booked/slots/?date=${selectedDate}`;
+        }
+        const response = await axios.get(apiUrl);
+        setslots(response.data);
+    } catch (err) {
+        console.error("Error fetching booked slots:", err);
+    }
+};
 
   const handleSlotAction = async (slotId, action) => {
     if (user && user.is_superuser) {
@@ -346,7 +359,7 @@ const ViewAllSlots = ({ user }) => {
         )}
       </div>
       {isModalOpen && (
-        <CreateSlotsModal isOpen={isModalOpen} onClose={closeModal} />
+        <CreateSlotsModal isOpen={isModalOpen} onClose={closeModal} onCreatedSlots={updateSlots} />
       )}
     </div>
   );

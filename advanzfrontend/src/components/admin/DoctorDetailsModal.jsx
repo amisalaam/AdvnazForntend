@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const DoctorModal = ({ isOpen, onClose, doctor, setDoctor }) => {
   const API_URL = import.meta.env.VITE_API_URL;
@@ -34,11 +36,22 @@ const DoctorModal = ({ isOpen, onClose, doctor, setDoctor }) => {
     const newValue = e.target.type === "file" ? e.target.files[0] : value;
   
     if (name === "id") {
+      const selectedDepartment = departments.find(
+        (department) => department.id === parseInt(newValue)
+      );
       setEditedDoctor((prevDoctor) => ({
         ...prevDoctor,
         department: {
-          ...prevDoctor.department,
           id: newValue,
+          department_name: selectedDepartment.department_name, // Update department name
+        },
+      }));
+    } else if (name === "is_active") {
+      setEditedDoctor((prevDoctor) => ({
+        ...prevDoctor,
+        user: {
+          ...prevDoctor.user,
+          is_active: newValue === "true", // Convert to boolean
         },
       }));
     } else {
@@ -55,40 +68,74 @@ const DoctorModal = ({ isOpen, onClose, doctor, setDoctor }) => {
 
   const handleSave = async () => {
     const shouldSave = window.confirm("Are you sure you want to save changes?");
-
-    if (shouldSave) {
-      try {
-        const formData = new FormData();
-
-        formData.append("name", editedDoctor.user.name);
-        formData.append("is_active", editedDoctor.user.is_active);
-        formData.append("department", editedDoctor.department.id); 
-
-        if (editedDoctor.doctor_profile_image instanceof File) {
-          formData.append("doctor_profile_image", editedDoctor.doctor_profile_image);
-        }
-
-        console.log("Edited Doctor:", editedDoctor);
-
-        const response = await axios.put(
-          `${API_URL}/myadmin/api/edit/doctor/${doctor.user.id}/`,
-          formData, 
-          {
-            headers: {
-              "Content-Type": "multipart/form-data", 
-            },
-          }
-        );
-
-        setDoctor(response.data.doctor);
-
-        setIsEditMode(false);
-        onClose();
-      } catch (error) {
-        console.error("Error saving doctor:", error.response.data);
+      
+    if (!shouldSave) {
+      return;
+    }
+  
+    const hasChanges =
+      JSON.stringify(editedDoctor.user) !== JSON.stringify(doctor.user) ||
+      JSON.stringify(editedDoctor.department) !== JSON.stringify(doctor.department) ||
+      editedDoctor.doctor_profile_image instanceof File;
+  
+    if (!hasChanges) {
+      toast.info("No changes to save.");
+      setIsEditMode(false);
+      onClose();
+      return;
+    }
+  
+    try {
+      const formData = new FormData();
+      formData.append("name", editedDoctor.user.name);
+      formData.append("is_active", editedDoctor.user.is_active);
+      formData.append("department", editedDoctor.department.id);
+  
+      if (editedDoctor.doctor_profile_image instanceof File) {
+        formData.append("doctor_profile_image", editedDoctor.doctor_profile_image);
       }
+  
+      const response = await axios.put(
+        `${API_URL}/myadmin/api/edit/doctor/${doctor.user.id}/`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+  
+      const updatedDoctor = {
+        ...doctor,
+        user: {
+          ...doctor.user,
+          name: editedDoctor.user.name,
+          is_active: editedDoctor.user.is_active,
+        },
+        department: {
+          ...doctor.department,
+          id: editedDoctor.department.id,
+        },
+        // Include any other properties you want to update
+        doctor_profile_image: editedDoctor.doctor_profile_image instanceof File
+          ? editedDoctor.doctor_profile_image
+          : doctor.doctor_profile_image,
+      };
+  
+      setIsEditMode(false);
+      onClose();
+      toast.success("Doctor details saved successfully!");
+      setDoctor((prevDoctorList) =>
+        prevDoctorList.map((prevDoctor) =>
+          prevDoctor.user.id === doctor.user.id ? updatedDoctor : prevDoctor
+        )
+      );
+    } catch (error) {
+      console.error("Error saving doctor:", error.response?.data || error.message);
+      toast.error("Error saving doctor: See console for details.");
     }
   };
+  
 
   // Function to handle deleting the doctor
   const handleDelete = async () => {
@@ -103,8 +150,13 @@ const DoctorModal = ({ isOpen, onClose, doctor, setDoctor }) => {
         );
 
         onClose();
+        toast.success("Doctor deleted successfully!");
+        setDoctor((prevDoctorList) =>
+        prevDoctorList.filter((prevDoctor) => prevDoctor.user.id !== doctor.user.id)
+      );
       } catch (error) {
         console.error("Error deleting doctor:", error);
+        toast.error("Doctor deleted failed!");
       }
     }
   };

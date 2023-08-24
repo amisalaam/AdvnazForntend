@@ -4,6 +4,7 @@ import { BsFillCalendarRangeFill ,BsFillCalendarWeekFill} from "react-icons/bs";
 import { Link, useLocation } from "react-router-dom";
 
 const DoctorSidebar = () => {
+  const location = useLocation();
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
@@ -11,54 +12,52 @@ const DoctorSidebar = () => {
   };
 
   return (
-    <div>
+    <div className={`absolute lg:relative transition-all bg-advanzBlue ${
+      isSidebarOpen ? "left-0" : "-left-[268px] lg:left-0"
+    } sm:translate-x-0`}>
+      
       <aside
         id="default-sidebar"
-        className={`left-0 z-40 w-[268px] h-screen transition-transform rounded ${
-          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } sm:translate-x-0`}
+        className={`left-0 relative bg-advanzBlue z-40 w-[268px] h-screen transition-transform rounded `}
         aria-label="Sidebar"
       >
-        <div className="h-full px-3 py-4 overflow-y-auto bg-advanzBlue">
+        <div className="absolute lg:hidden -right-10 shadow bg-white p-3 rounded-sm">
+    <button onClick={()=> setSidebarOpen(prev => !prev)}>X</button>
+      </div>
+        <div className="h-full px-3 py-4 overflow-y-auto ">
           <ul className="space-y-2 font-medium">
             <li>
               <Link
                 to="/doctor/dashboard"
                 className={`flex items-center p-2 text-white rounded-lg hover:bg-advanzRed ${
-                  location.pathname === "/doctor/dashboard"
-                    ? "bg-advanzRed"
-                    : ""
+                  location.pathname === "/doctor/dashboard" ? "bg-advanzRed" : ""
                 }`}
               >
                 <IoIosPie size={25} />
                 <span className="ml-3">Dashboard</span>
               </Link>
             </li>
+            <li>
               <Link
                 to="/doctor/dashboard/booking"
                 className={`flex items-center p-2 text-white rounded-lg hover:bg-advanzRed ${
-                  location.pathname === "/doctor/dashboard/booking"
-                    ? "bg-advanzRed"
-                    : ""
+                  location.pathname === "/doctor/dashboard/booking" ? "bg-advanzRed" : ""
                 }`}
               >
                 <BsFillCalendarRangeFill size={25} />
-                <span className="ml-3">View Booking</span>
+                <span className="flex-1 ml-3 whitespace-nowrap">View Booking</span>
               </Link>
+            </li>
             <li>
               <Link
                 to="/doctor/dashboard/slots"
                 className={`flex items-center p-2 text-white rounded-lg hover:bg-advanzRed ${
-                  location.pathname === "/doctor/dashboard/slots"
-                    ? "bg-advanzRed"
-                    : ""
+                  location.pathname === "/doctor/dashboard/slots" ? "bg-advanzRed" : ""
                 }`}
               >
                 <BsFillCalendarWeekFill size={25} />
-                <span className="ml-3">View Slots</span>
+                <span className="flex-1 ml-3 whitespace-nowrap">View Slots</span>
               </Link>
-            </li>
-            <li>
             </li>
           </ul>
         </div>

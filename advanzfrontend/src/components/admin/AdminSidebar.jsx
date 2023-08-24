@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { IoIosPie } from "react-icons/io";
 import { FaUserMd, FaUsers, FaCalendarCheck } from "react-icons/fa";
-import { BsFillCalendarRangeFill } from "react-icons/bs";
+import { BsFillCalendarRangeFill,BsFillBuildingsFill } from "react-icons/bs";
 
 const AdminSidebar = () => {
   const location = useLocation();
@@ -62,12 +62,12 @@ const AdminSidebar = () => {
             </li>
             <li>
               <Link
-                to="/admin/dashboard/doctors"
+                to="/admin/dashboard/department"
                 className={`flex items-center p-2 text-white rounded-lg hover:bg-advanzRed ${
-                  location.pathname === "/admin/dashboard/departments" ? "bg-advanzRed" : ""
+                  location.pathname === "/admin/dashboard/department" ? "bg-advanzRed" : ""
                 }`}
               >
-                <FaUserMd size={25} />
+                <BsFillBuildingsFill size={25} />
                 <span className="flex-1 ml-3 whitespace-nowrap">Departments</span>
               </Link>
             </li>
