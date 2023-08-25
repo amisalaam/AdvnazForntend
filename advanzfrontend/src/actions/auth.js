@@ -104,11 +104,26 @@ export const signup = (name,email, password,re_password) => async (dispatch) => 
     toast.success('Signup Success. Please Check your given email address');
 
   } catch (err) {
-    console.log(err)
+    if (err.response && err.response.data) {
+      if (err.response.data.password) {
+        // Display password error messages to the user
+        err.response.data.password.forEach((errorMsg) => {
+          toast.error(errorMsg);
+        });
+      }
+      if (err.response.data.email) {
+        // Display email error messages to the user
+        err.response.data.email.forEach((errorMsg) => {
+          toast.error(errorMsg);
+        });
+      }
+    } else {
+      toast.error('An error occurred during signup.');
+    }
+
     dispatch({
       type: SIGNUP_FAIL,
     });
-    toast.error('Signup failed. Please try again.');
   }
 };
 
@@ -161,12 +176,17 @@ console.log(res)
     dispatch(load_user());
     
   } catch (err) {
-    console.log(err);
+    console.log(err)
+    if (err.response && err.response.data && err.response.data.detail) {
+      const errorMessage = err.response.data.detail;
+      toast.error(errorMessage);
+    } else {
+      toast.error('Login failed. Please try again.');
+    }
+
     dispatch({
       type: LOGIN_FAIL,
     });
-    toast.error('Login failed. Please try again.');
-
   }
 };
 
