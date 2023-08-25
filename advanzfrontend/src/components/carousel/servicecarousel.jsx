@@ -3,20 +3,24 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import axios from "axios";
+import ImageLoadingComponent from "../ImageLoading";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 const Carousel = () => {
   const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     axios
       .get(`${API_URL}/doctor/api/get/services/`)
       .then(response => {
         setServices(response.data);
+        setLoading(false);
       })
       .catch(error => {
         console.error(error);
+        // setLoading(false);
       });
   }, []);
 
@@ -53,6 +57,9 @@ const Carousel = () => {
 
   const renderDots = dots => <ul className="custom-dots">{dots}</ul>;
 
+  if (loading) {
+    return <div><ImageLoadingComponent/></div>;
+  }
   return (
     <Slider className="mb-10 mx-10" {...settings} appendDots={renderDots}>
       {services.map(service => (

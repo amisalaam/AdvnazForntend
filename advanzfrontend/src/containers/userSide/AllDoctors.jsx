@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import BG from "../../assets/userSide/Booking/bookingImg2.webp";
 import LoadingComponent from "../../components/Loading";
 import { VscSearch } from "react-icons/vsc";
+import ImageLoadingComponent from "../../components/ImageLoading";
 
 const AllDoctors = () => {
   const [departments, setDepartments] = useState([]);
@@ -66,10 +67,7 @@ const AllDoctors = () => {
     }
   }, [doctors, selectedDepartment, searchQuery]);
 
-  if (loading) {
-    return <LoadingComponent />;
-  }
-
+  
   return (
     <div>
       <div className="grid lg:grid-cols-2 items-center min-h-screen relative">
@@ -90,12 +88,12 @@ const AllDoctors = () => {
               <span className="text-advanzRed">amazing services</span> to
               enhance your online presence.
             </p>
-            <a
-              href="#"
+            <span
+              
               className="px-6 py-3 text-white bg-advanzBlue rounded-full uppercase text-sm font-semibold hover:bg-advanzRedtransition-colors duration-300 ease-in-out"
             >
               See Doctors
-            </a>
+            </span>
           </div>
         </div>
       </div>
@@ -144,7 +142,9 @@ const AllDoctors = () => {
             </div>
           )}
         </div>
-
+        {loading ? (
+        <ImageLoadingComponent/>
+      ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-20">
           {filteredDoctors.map((doctor) => (
             <div
@@ -181,6 +181,7 @@ const AllDoctors = () => {
             </div>
           ))}
         </div>
+        )}
       </div>
     </div>
   );

@@ -4,17 +4,20 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 import axios from 'axios';
+import ImageLoadingComponent from "../ImageLoading";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 const DoctorCarousel = () => {
   const [doctors, setDoctors] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     axios
       .get(`${API_URL}/doctor/api/details/`)
       .then(response => {
         setDoctors(response.data);
+        setLoading(false)
       })
       .catch(error => {
         console.error(error);
@@ -50,7 +53,9 @@ const DoctorCarousel = () => {
       },
     ],
   };
-
+  if (loading) {
+    return <div><ImageLoadingComponent/></div>;
+  }
   return (
     <Slider className="mb-10 mx-10 p-4" {...settings}>
       {doctors.map(doctor => (
