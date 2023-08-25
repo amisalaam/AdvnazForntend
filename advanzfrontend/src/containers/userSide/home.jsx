@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import AshikAshraf from "../../assets/userSide/home/ashikashrafhome.jpg";
 import Abdurahman from "../../assets/userSide/home/abdurahmanhome.webp";
 import Carousel from "../../components/carousel/servicecarousel";
-import BannerDesktop from "../../assets/userSide/home/home3.jpg";
+import BannerDesktop from "../../assets/userSide/home/homeBanner.webp";
 import LoadingComponent from "../../components/Loading";
 import { AiFillExperiment } from "react-icons/ai";
 import {
@@ -98,7 +98,7 @@ const Home = () => {
           </span>
         </div>
 
-        <div className="md:border-t-2 md:border-white md:p-5 md:mt-8 my-7  "></div>
+        <div className="md:border-t-2 md:border-white  md:p-5 md:mt-8 my-7  "></div>
         <h5 className="mb-2 lg:text-3xl text-xl font-bold text-white lg:py-4">
           WELCOME TO ADVANZ MEDICAL CENTRE
         </h5>
@@ -119,7 +119,7 @@ const Home = () => {
 
       {/* DOCTOR ABDHURAHMAN */}
       <div className="md:grid md:grid-cols-2">
-        <div className="md:pl-4 lg:pl-20 flex flex-col justify-center">
+        <div className=" p-6 flex flex-col justify-center">
           <h1 className="my-4 mx-4 lg:text-3xl text-2xl font-bold text-advanzRed ">
             Complete Medical Solutions <br />
             in One Place
@@ -235,13 +235,13 @@ const Home = () => {
       </div>
       {/* ASHIK ASHRAF HOME */}
       <div className="md:grid md:grid-cols-2">
-        <div className="md:pl-4 lg:pl-20 flex flex-col justify-center">
-          <h1 className=" mx-4 lg:text-3xl text-2xl font-bold text-advanzRed ">
+        <div className=" p-6 flex flex-col justify-center">
+          <h1 className="my-4 mx-4 lg:text-3xl text-2xl font-bold text-advanzRed ">
             Complete Medical Solutions <br />
             in One Place
           </h1>
           <div>
-            <p className="my-4 mx-4 leading-loose">
+            <p className="my-4 mx-4  leading-loose">
               As the founder of this hospital, my vision was to create a place
               where excellence meets compassion, where healing becomes an art.
               This hospital stands as a testament to my unwavering commitment to
@@ -250,17 +250,18 @@ const Home = () => {
               is not just a case, but a person deserving of respect, dignity,
               and personalized attention.
             </p>
+            <p className="text-right m-3">Dr: Ashik Ashraf </p>
           </div>
-          <p className="text-right ">Dr: Ashik Ashraf</p>
         </div>
-        <div className="md:p-8 lg:pr-20 ">
+        <div className="md:p-8 lg:pr-20 p-8">
           <img
-            className="w-full h-auto object-cover max-w-full sm:py-10 md:pr-10"
+            className="w-full h-auto object-cover max-w-full md:py-10 md:pr-10 "
             src={AshikAshraf}
             alt=""
           />
         </div>
       </div>
+     
       <div>
         <h1 className="y-4 lg:mx-20 lg:text-3xl my-5 text-2xl text-left p-5 font-bold text-advanzRed ">
           Our Doctors

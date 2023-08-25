@@ -6,7 +6,7 @@ const LoadingComponent = () => {
     <div className="flex items-center justify-center h-screen bg-gray-100">
       <div className="flex flex-col items-center ">
         <img
-          className="w-40 md:48"
+          className="w-40 "
           src={LoadingGif}
           alt="Loading..."
         />

@@ -146,13 +146,13 @@ const AllDoctors = () => {
         {loading ? (
         <ImageLoadingComponent/>
       ) : (
-        <div  className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-20">
+        <div  className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 p-5 md:px-20">
           {filteredDoctors.map((doctor) => (
             <div
               key={doctor.user}
-              className="relative flex flex-col bg-white bg-clip-border text-gray-700 shadow-md my-5"
+              className="relative flex flex-col bg-white bg-clip-border text-gray-700 shadow-xl my-5"
             >
-              <div className="relative h-[20rem] sm:h-80 md:h-96 overflow-hidden rounded-xl bg-white bg-clip-border text-gray-700">
+              <div className="relative h-[22rem] sm:h-80 md:h-96 overflow-hidden rounded-xl bg-white bg-clip-border text-gray-700">
                 <img
                   src={`${API_URL}${doctor?.doctor_profile_image}`}
                   className="h-full w-full object-cover"
@@ -176,7 +176,7 @@ const AllDoctors = () => {
                   style={{ width: "fit-content" }}
                   to={`/user/booking/${doctor.user}`}
                 >
-                  View Details
+                  View Booking
                 </Link>
               </div>
             </div>

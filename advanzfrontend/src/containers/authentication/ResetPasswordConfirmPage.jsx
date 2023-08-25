@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ConfirmImg from "../../assets/authentication/confirm_password.png";
+import ConfirmImg from "../../assets/authentication/confirm_password.webp";
 import { connect } from "react-redux";
 import { Navigate,useParams } from "react-router-dom";
 

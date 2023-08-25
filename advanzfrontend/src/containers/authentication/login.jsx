@@ -3,7 +3,7 @@ import {  Navigate} from "react-router";
 import { Link} from "react-router-dom";
 import { connect } from "react-redux";
 import { login } from "../../actions/auth";
-import LoginImag from "../../assets/authentication/loginImg.jpg";
+import LoginImag from "../../assets/authentication/loginImg.webp";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 

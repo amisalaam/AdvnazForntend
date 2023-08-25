@@ -192,16 +192,16 @@ const UserPage = () => {
   }
 
   return (
-    <div className="bg-cover bg-center bg-gradient-to-t from-white to-advanzBlue min-h-screen flex items-center justify-center">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 max-w-screen-lg mx-auto overflow-hidden rounded-xl bg-white bg-clip-border text-gray-700">
-        <div className="p-5 md:p-8 md:flex md:flex-col md:items-center">
+    <div className="bg-cover bg-center bg-gradient-to-t from-white to-advanzBlue min-h-screen flex items-center justify-center ">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 max-w-screen-lg mx-auto overflow-hidden rounded-xl bg-white bg-clip-border text-gray-700 m-10">
+        <div className="flex flex-col items-center">
           <img
             src={`${API_URL}${doctor.doctor_profile_image}`}
             alt="Profile Picture"
-            className="h-64 w-64 md:h-80 md:w-80 rounded-xl mb-4 border-4 border-white object-cover"
+            className="h-64 w-64 md:h-80 md:w-80 rounded-xl mb-4 border-4 border-white object-cover mt-8"
           />
-          <section className="mt-8 text-center">
-            <h2 className="mb-6 font-sans text-3xl md:text-3xl font-medium tracking-normal text-advanzBlue antialiased">
+          <section className="text-center">
+            <h2 className="mb-4 font-sans text-3xl md:text-3xl font-medium tracking-normal text-advanzBlue antialiased">
               Dr: {doctor.name}
             </h2>
             <p className="mb-4 font-sans text-xl md:text-2xl font-semibold tracking-normal text-gray-400 antialiased">
@@ -217,7 +217,7 @@ const UserPage = () => {
             <Calendar
               value={selectedDate}
               onChange={handleDateChange}
-              className="bg-white text-gray-700 p-2 rounded"
+              className="bg-white text-gray-700 p-2 rounded m-10"
               calendarClassName="w-full"
               tileClassName={tileClassName}
               tileContent={({ date }) =>
@@ -233,8 +233,8 @@ const UserPage = () => {
 
           {showSlots && (
             <>
-              <div className="mt-4">
-                <p className="font-sans text-lg md:text-xl font-semibold tracking-normal text-gray-600 antialiased">
+              <div className="m-5">
+                <p className="font-sans mb-2 text-lg md:text-xl font-semibold tracking-normal text-gray-600 antialiased">
                   Available Slots
                 </p>
                 {noSlotsAvailable ? (
