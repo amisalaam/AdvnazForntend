@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Navigate, useParams } from "react-router";
 import { connect } from "react-redux";
 import { verify } from "../../actions/auth";
-import ConfirmImg from "../../assets/authentication/confirm_password.png";
+import ConfirmImg from "../../assets/authentication/confirm_password.webp";
 
 const Activate = ({ verify }) => {
   const [verified, setVerified] = useState(false);

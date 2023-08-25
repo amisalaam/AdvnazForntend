@@ -234,7 +234,7 @@ const Home = () => {
         </div>
       </div>
       {/* ASHIK ASHRAF HOME */}
-      <div className="md:grid md:grid-cols-2">
+      <div className="md:grid md:grid-cols-2 lg:ml-10">
         <div className=" p-6 flex flex-col justify-center">
           <h1 className="my-4 mx-4 lg:text-3xl text-2xl font-bold text-advanzRed ">
             Complete Medical Solutions <br />
