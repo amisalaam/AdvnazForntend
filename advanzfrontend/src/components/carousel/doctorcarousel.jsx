@@ -57,9 +57,9 @@ const DoctorCarousel = () => {
     return <div><ImageLoadingComponent/></div>;
   }
   return (
-    <Slider className="mb-10 mx-10 p-4" {...settings}>
+    <Slider className="mb-10 mx-5 lg:mx-10 p-4" {...settings}>
       {doctors.map(doctor => (
-        <div key={doctor.user} className="relative flex w-96 flex-col bg-white bg-clip-border text-gray-700 shadow-md">
+        <div key={doctor.user} className="   ">
           <div className="relative mx-4 mt-4 h-96 overflow-hidden rounded-xl bg-white bg-clip-border text-gray-700">
             <img src={`${API_URL}${doctor.doctor_profile_image}`} className="h-full w-full object-cover" alt="Doctor" />
           </div>

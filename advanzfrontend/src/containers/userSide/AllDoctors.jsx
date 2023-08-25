@@ -88,17 +88,18 @@ const AllDoctors = () => {
               <span className="text-advanzRed">amazing services</span> to
               enhance your online presence.
             </p>
-            <span
+            <a
+            href='#doctors'
               
               className="px-6 py-3 text-white bg-advanzBlue rounded-full uppercase text-sm font-semibold hover:bg-advanzRedtransition-colors duration-300 ease-in-out"
             >
               See Doctors
-            </span>
+            </a>
           </div>
         </div>
       </div>
 
-      <div className="container mx-auto py-10 ">
+      <div id="doctors" className="container mx-auto py-10 ">
         <div className="mb-4 md:text-right text-center md:px-20">
           <div className="relative">
             <input
@@ -111,7 +112,7 @@ const AllDoctors = () => {
           </div>
         </div>
 
-        <div className="mb-4 lg:px-20 ">
+        <div  className="mb-4 lg:px-20  ">
           {isMobile ? (
             <select
               value={selectedDepartment}
@@ -145,7 +146,7 @@ const AllDoctors = () => {
         {loading ? (
         <ImageLoadingComponent/>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-20">
+        <div  className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-20">
           {filteredDoctors.map((doctor) => (
             <div
               key={doctor.user}
