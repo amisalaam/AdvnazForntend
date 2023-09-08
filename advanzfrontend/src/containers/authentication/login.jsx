@@ -13,9 +13,10 @@ const Login = ({ login ,isAuthenticated}) => {
   
   const [formData, setFormData] = useState({
     email: "",
-    password: "",
+    password: "",   
   });
   const { email, password } = formData;
+  const [loading, setLoading] = useState(false);
  
 
   const onChange = (e) =>
@@ -23,10 +24,10 @@ const Login = ({ login ,isAuthenticated}) => {
   
 
   const onSubmit = (e) => {
-   
+    setLoading(true);
     e.preventDefault();
     login(email, password);
-  
+    setLoading(false);
   };
 
   if (isAuthenticated) {
@@ -70,13 +71,16 @@ const Login = ({ login ,isAuthenticated}) => {
             </Link>
           </div>
           <div className="text-center md:text-left">
-            <button 
-              className="mt-4 bg-advanzBlue hover:bg-advanzRed px-4 py-2 text-white uppercase rounded text-xs tracking-wider"
-              type="submit"
-            >
-              Login
-            </button>
-          </div>
+              {loading ? (
+                <button className="mt-4 bg-advanzBlue px-4 py-2 text-white uppercase rounded text-xs tracking-wider" type="button" disabled>
+                  <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Logging In...
+                </button>
+              ) : (
+                <button className="mt-4 bg-advanzBlue hover:bg-advanzRed px-4 py-2 text-white uppercase rounded text-xs tracking-wider" type="submit">
+                  Login
+                </button>
+              )}
+            </div>
         </form>
         <div className="mt-4 font-semibold text-md text-slate-500 text-center md:text-left">
           Don't have an account?{" "}
